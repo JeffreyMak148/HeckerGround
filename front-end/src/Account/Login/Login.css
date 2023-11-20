@@ -1,0 +1,138 @@
+/* .modal {
+    width: 0% !important;
+} */
+
+.login-modal-dialog {
+    width: 25% !important;
+}
+
+.login-modal-header {
+    background-color: #2d2d39;
+    color: #e8e8e8;
+    border-top-right-radius: 5px;;
+    border-top-left-radius: 5px;
+    border-bottom: 1px solid #4d4b57;
+    padding: 4px;
+    height: 8vh;
+    overflow: hidden;
+}
+
+.login-modal-body {
+    background-color: #272731;
+    color: #e8e8e8;
+}
+
+.login-modal-footer {
+    background-color: #1d1928 !important;
+    color: #e8e8e8;
+    padding: 0 !important;
+    height: 8vh;
+    border-top: 1px solid #4d4b57 !important;
+    position: relative;
+}
+
+.header-flex {
+    display: flex;
+    vertical-align: middle;
+}
+
+.header-text {
+    flex: none;
+    display: flex;
+    vertical-align: middle;
+    align-items: center;
+    color: #9179ce;
+    font-size: 1.5rem;
+    padding: 1rem 1rem 0 1rem;
+}
+
+.header-logo {
+    text-align:center;
+    padding-right: 0.5rem;
+}
+
+.header-logo > img {
+    height: 96px;
+    /* width: 96px; */
+    overflow: hidden;
+}
+
+.header-logo > svg {
+    height: 64px;
+    overflow: hidden;
+}
+
+.invalid-input {
+    border: 1px solid #b12f2f !important;
+    box-shadow: 0 0 10px #b12f2f !important;
+    outline: none !important;
+}
+
+.invalid-input:focus {
+    border: 1px solid #b12f2f !important;
+    box-shadow: 0 0 10px #b12f2f !important;
+    outline: none !important;
+}
+
+.login-email-input {
+    color: #e8e8e8;
+    background-color:rgb(21, 21, 21);
+    width:100%;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+    border:1px solid transparent;
+    padding: 0px 8px 0px;
+}
+
+.login-email-input:focus {
+    border: 1px solid #635985;
+    box-shadow: 0 0 10px #635985;
+    outline: none;
+}
+
+.login-password-input {
+    color: #e8e8e8;
+    background-color:rgb(21, 21, 21);
+    width:100%;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+    border:1px solid transparent;
+    padding: 0px 8px 0px;
+}
+
+.login-password-input:focus {
+    border: 1px solid #635985;
+    box-shadow: 0 0 10px #635985;
+    outline: none;
+}
+
+.forgot-password-button {
+    padding: 0 4px;
+    font-size: 0.8rem;
+    text-decoration: none;
+    color: #999;
+    border: 0px solid transparent;
+    background-color: transparent;
+}
+
+.forgot-password-button:hover {
+    color: #9179ce;
+}
+
+.login-button {
+    height: 100%;
+    flex: 1;
+    padding: 0 !important;
+    margin: 0 !important;
+    background-color: #1d1928;
+    color: #e8e8e8;
+    border: 1px solid transparent;
+    border-bottom-left-radius: 5px;
+}
+
+.login-button:hover {
+    background-color: #43434f;
+    transition: all 0.4s;
+}

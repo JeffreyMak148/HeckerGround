@@ -1,0 +1,29 @@
+.loading-bar {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    transition: transform 0.2s linear 0s;
+    transform-origin: left center;
+    background-color: #9887c4;
+    width: auto;
+    animation: 2s cubic-bezier(0.4, 0.8, 0.2, 0.1) 0s infinite normal none running loading;
+    height: 2px;
+    z-index: 9999;
+}
+
+@keyframes loading {
+    0% {
+        left: -100%;
+        right: 100%;
+    }
+
+    60% {
+        left: 100%;
+        right: -100%;
+    }
+
+    100% {
+        left: 100%;
+        right: -100%;
+    }
+}

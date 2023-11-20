@@ -1,0 +1,68 @@
+.Input__wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.Input__label {
+    display: flex;
+    flex: 1;
+    color: #717171;
+}
+.Input__input {
+    display: flex;
+    flex: 5;
+    border: 1px solid #999;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    min-width: 0;
+    background-color: rgb(20, 20, 20);
+    color: #e8e8e8;
+}
+
+.Input__input.disabled {
+    cursor: not-allowed;
+    color: #717171;
+}
+
+.Input__field {
+    display: flex;
+    flex: 5;
+    border: 1px solid #999;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    min-width: 0;
+    background-color: rgb(20, 20, 20);
+    color: #717171;
+    cursor: pointer;
+}
+
+.Input__field:hover {
+    color: #e8e8e8;
+    transition-duration: 0.1s;
+}
+
+.Input__field.active {
+    color: #e8e8e8;
+    border-color: #fff;
+    transition-duration: 0.1s;
+}
+
+.Input__file__input {
+    display: none;
+}
+
+.Input__img {
+    max-height: 100px;
+    max-width: 100px;
+    object-fit: cover;
+}

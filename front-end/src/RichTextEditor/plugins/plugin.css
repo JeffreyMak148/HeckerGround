@@ -1,0 +1,133 @@
+.toolbar {
+    margin-top: 0.3rem;
+    padding: 0.2rem 0.2rem 0.3rem 0.5rem;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    min-height: 1.5rem;
+    background-color: #201c2c;
+    border-radius: 6px 6px 0 0;
+}
+
+.toolbar-item.single {
+    width: 2rem;
+    height: 1.5rem;
+    margin-left: 2px;
+}
+
+.toolbar-item.auto {
+    margin-left: 2px;
+    height: 1.5rem;
+    font-size: 14px;
+}
+
+button.toolbar-item.single,
+button.toolbar-item.auto {
+    border: 0px solid transparent;
+    background-color: #201c2c;
+    color: #e8e8e8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    vertical-align: middle;
+}
+
+button.toolbar-item.single.active,
+button.toolbar-item.auto.active {
+    background-color: rgba(59, 59, 63, 0.5);
+    color: #9179ce;
+    border-radius: 2px;
+}
+
+button.toolbar-item.single:hover,
+button.toolbar-item.auto:hover {
+    background-color: rgb(59, 59, 63);
+    color: #9179ce;
+    transition: all 0.1s;
+    border-radius: 2px;
+}
+
+button.toolbar-item.single.disabled,
+button.toolbar-item.auto.disabled {
+    opacity: 0.2;
+    cursor: not-allowed;
+}
+
+button.toolbar-item.single.disabled:hover,
+button.toolbar-item.auto.disabled:hover {
+    background-color: unset;
+}
+
+.toolbar .toolbar-tooltip {
+    background-color: #e8e8e8;
+    color: #333;
+    padding: 0.2rem 1rem;
+    font-size: 0.9rem;
+    max-width: 25%;
+    z-index: 9;
+    transition: opacity 0.3s ease-out;
+}
+
+.toolbar-buttons {
+    flex: 1;
+    display: flex;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        overflow: hidden;
+    }
+
+    to {
+        transform: translateX(0%);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0%);
+    }
+
+    to {
+        transform: translateX(100%);
+    }
+}
+
+.toolbar-options{    
+    overflow: hidden;
+}
+
+.toolbar-headings.slideIn {
+    animation: slideIn 0.3s ease;
+}
+
+.toolbar-headings.slideOut {
+    animation: slideOut 0.2s ease;
+}
+
+.insert-image-wrapper {
+    padding: 15px;
+}
+
+.insert-image-label {
+    flex: 2;
+}
+
+.insert-image-input {
+    flex: 3;
+}
+
+.insert-image-dropdown {
+    width: 355px;
+    max-width: 400px;
+}
+
+.image-confirm-button {
+    margin-right: auto;
+    width:100px;
+}
+
+.image-clear-button {
+    width:100px;
+}

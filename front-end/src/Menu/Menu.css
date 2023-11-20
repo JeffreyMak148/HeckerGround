@@ -1,0 +1,131 @@
+.nav-menu {
+    background-color: #4e4e644d;
+    width: 0px;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: -12px;
+    transition: 250ms;
+    z-index: -1;
+}
+
+.nav-menu.active {
+    left: -12px;
+    width: 250px;
+    transition: 250ms;
+    z-index: 6000;
+    backdrop-filter: blur(5px);
+}
+
+.menu-text {
+    list-style: none;
+    height: 50px;
+    padding-left: 1rem;
+    font-family: "Arvo";
+}
+
+.menu-text a {
+    text-decoration: none;
+    color: #e8e8e8;
+    font-size: 18px;
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    display:block;
+    text-align: left;
+    line-height: 55px;
+}
+
+.menu-text a:hover {
+    /* color: rgb(133, 76, 186); */
+    color: #9179ce;
+}
+
+.nav-menu span {
+    margin-left: 16px;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* opacity: 0; */
+    z-index: -1;
+    transition: 250ms;
+}
+
+.overlay.active {
+    /* opacity: 1; */
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 5999;
+    transition: 250ms;
+}
+
+.left-menu {
+    background-color: #141418;
+    flex-grow: 1;
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.right-menu {
+    flex-grow: 2;
+    padding-top: 1rem;
+}
+
+.selected-category-color {
+    /* color: rgb(133, 76, 186); */
+    color : #9179ce;
+}
+
+
+.menu-icon-div {
+    height: 4rem;
+    width: 4rem;
+    padding: 1rem 6px 1rem 6px;
+    position: relative;
+    text-align: center;
+}
+
+.menu-icon {
+    background-color: #141418;
+    color:#e8e8e8;
+    cursor:pointer;
+}
+
+.menu-icon:hover {
+    color: #9179ce;
+}
+
+.user-icon, .notification-icon, .bookmark-icon {
+    background-color: inherit;
+    color: inherit;
+    border: 0 solid transparent;
+}
+
+.user-icon:hover, .notification-icon:hover, .bookmark-icon:hover {
+    /* color: rgb(133, 76, 186); */
+    color: #9179ce;
+}
+
+.notification-count {
+    box-shadow: 0px 0px 0px 2px #141418;
+    background: #ff4500;
+    border-radius: 8px;
+    color: #e8e8e8;
+    width: 1rem;
+    height: 1rem;
+    font-size: 0.7rem;
+    line-height: 1rem;
+    left: 55%;
+    min-width: 1rem;
+    position: absolute;
+    top: 20%;
+    cursor: pointer;
+}

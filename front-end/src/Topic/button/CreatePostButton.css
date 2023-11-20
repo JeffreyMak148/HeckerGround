@@ -1,0 +1,14 @@
+.add-button {
+    background-color: #2d2d39;
+    border: none;
+    color: #fff;
+    height: 3rem;
+    width: 2.5rem;
+    z-index:1;
+    position: relative;
+}
+
+.add-button:hover {
+    background-color: #43434f;
+    transition: all 0.1s;
+}

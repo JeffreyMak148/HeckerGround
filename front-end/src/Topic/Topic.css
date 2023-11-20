@@ -1,0 +1,264 @@
+.topic-color {
+    background-color: #272731;
+    color: rgba(255, 255, 255, 0.788);
+}
+
+.topic-height {
+    height: calc(100vh - 49px);
+}
+
+.post-topic-div {
+    text-align: center;
+    min-height: 75px;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.post-topic-div-inner {
+    display:flex;
+    flex-direction: column;
+    overflow: hidden;
+    width: 100%;
+    padding: 1rem 1.5rem;
+    position: relative;
+}
+
+.post-topic-div:after {
+    content: '';
+    display: block;
+    height: 1px;
+    width: 85%;
+    margin: 0px auto;
+    border-top: 1px solid #4d4b57;
+}
+
+.menu-button {
+    background-color: #2d2d39;
+    border: none;
+    color: #fff;
+    height: 3rem;
+    width: 2.5rem;
+    z-index:1;
+    position: relative;
+}
+
+.menu-button:hover {
+    background-color: #43434f;
+    transition: all 0.1s;
+}
+
+.border-none {
+    border: none;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    height: 100%;
+}
+
+.post-topic-link {
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+}
+
+.post-topic-link:hover {
+    background-color: #43434f3e;
+    transition: all 0.2s;
+    color: #e8e8e8;
+}
+
+.selected-post-color {
+    background-color: #43434f3e;
+}
+
+.post-topic-top-half {
+    font-size: 0.8rem;
+    line-height: 1rem;
+    text-align: left;
+    /* text-overflow: ellipsis; */
+    /* white-space: nowrap; */
+    /* overflow: hidden;  */
+}
+
+.post-topic-bottom-half {
+    font-size: 0.9rem;
+    line-height: 1.3rem;
+    text-align: left;
+    text-overflow: ellipsis;
+    overflow: hidden; 
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow-wrap: break-word;
+    padding-top: 0.5rem;
+    display: flex;
+}
+
+.post-topic-center {
+    font-size: 1rem;
+    text-align: center;
+    color: #e8e8e8;
+}
+
+.data-title {
+    text-overflow: ellipsis;
+    overflow: hidden; 
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    color: #e8e8e8;
+}
+
+.line-height-2 {
+    line-height:2rem;
+}
+
+@media (max-width: 768px) {
+
+    .post-topic-bottom-half {
+        line-height:1.1rem;
+    }
+}
+
+span {
+    margin: 0;
+}
+
+
+.username-color, .notification-color {
+    color: #9179ce;
+    padding-right: 4px;
+}
+
+.date-color, .read {
+    color: #717171;
+}
+
+.title-read {
+    color: #e8e8e8;
+    opacity:0.7;
+}
+
+.quote-message {
+    color: #717171;
+    text-overflow: ellipsis;
+    overflow: hidden; 
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+}
+
+.topic-col .topic-tooltip {
+    background-color: #e8e8e8;
+    color: #333;
+    padding: 0.2rem 1rem;
+    font-size: 0.9rem;
+    max-width: 25%;
+    z-index: 9;
+    transition: opacity 0.3s ease-out;
+}
+
+.before-text {
+    flex-shrink: 0;
+    width: 10px;
+}
+
+.before-text:after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 100%;
+    margin: 0px auto;
+    border-right: 1px solid #4d4b57;
+}
+
+.display-line-2 {
+    -webkit-line-clamp: 2;
+}
+
+.flex-item-center {
+    text-align: center;
+    justify-content: center;
+}
+
+.topic-placeholder {
+    display: inline-block;
+    min-height: 1em;
+    vertical-align: middle;
+    background-color: #717171;
+    opacity: .5;
+    -webkit-mask-image: linear-gradient(130deg,#000 55%,rgba(0,0,0,0.8) 75%,#000 95%);
+    mask-image: linear-gradient(130deg,#000 55%,rgba(0,0,0,0.8) 75%,#000 95%);
+    -webkit-mask-size: 200% 100%;
+    mask-size: 200% 100%;
+    animation: topic-placeholder-wave 1s linear infinite;
+    border-radius: 2px;
+}
+
+@keyframes topic-placeholder-wave {
+    100% {
+        -webkit-mask-position: -200% 0%;
+        mask-position: -200% 0%;
+    }
+}
+
+.topic-header {
+    background-color: #2d2d39;
+    padding: 0;
+    border-bottom: 1px solid #4d4b57;
+    height: 49px;
+    text-align: center;
+}
+
+.topic-header-title {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top:0;
+    min-height:3rem;
+    text-align: center;
+}
+
+.topic-header-title-inner {
+    font-size: 1.4rem;
+    color: #9281bd;
+    font-family: "Arvo";
+    line-height: 3rem;
+}
+
+.flex-display {
+    display: flex;
+    align-items: center;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.height-100 {
+    height: 100%;
+}
+
+.padding-0 {
+    padding: 0;
+}
+
+.padding-right-0 {
+    padding-right: 0;
+}
+
+.position-absolute {
+    position: absolute;
+}
+
+.z-index-1 {
+    z-index: 1;
+}

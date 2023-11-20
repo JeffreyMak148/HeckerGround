@@ -1,0 +1,26 @@
+.terms {
+    padding-top: 16px;
+    padding-left: 16px;
+}
+
+.terms h1 {
+    font-size: 1.5rem;
+}
+
+.terms > ul {
+    list-style: decimal;
+    padding-left: 2rem;
+}
+
+.terms > ul ::marker {
+    font-size: 1.5rem;
+}
+
+.terms > ul > li > ul {
+    list-style: disc;
+    padding-left: 1.5rem;
+}
+
+.terms > ul > li > ul ::marker {
+    font-size: 1rem;
+}

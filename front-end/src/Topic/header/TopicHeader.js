@@ -1,0 +1,96 @@
+import { useEffect, useState } from "react";
+import { FaBars } from "react-icons/fa";
+import { useLocation } from "react-router-dom";
+import { useContent } from "../../Context/ContentProvider";
+import { useMenu } from "../../Context/MenuProvider";
+import { useModal } from "../../Context/ModalProvider";
+import { useTopic } from "../../Context/TopicProvider";
+import "../Topic.css";
+import { CreatePostButton } from "../button/CreatePostButton";
+import { RefreshTopic } from "../button/RefreshTopic";
+
+export const TopicHeader = () => {
+
+    const content = useContent();
+    const topic = useTopic();
+    const modal = useModal();
+    const menu = useMenu();
+    const [title, setTitle] = useState("Chatting");
+    const location = useLocation();
+
+    useEffect(() => {
+        const catId = location.pathname.split("/category/")[1];
+        const profileId = location.pathname.split("/profile")[1];
+        const notification = location.pathname === "/notifications";
+        const bookmark = location.pathname === "/bookmarks";
+        if(!!catId && !!topic.category) {
+            let currentCat = topic.category.find(c => c.catId === parseInt(catId));
+            if(!!currentCat) {
+                setTitle(currentCat.category);
+            } else {
+                const error = {
+                    status: null,
+                    data: {
+                        status: null,
+                        errorMessage: "Category not found"
+                    }
+                }
+                modal.setErrorModal(errorModal => ([...errorModal, {errorId: errorModal.length, error}]));
+                setTitle(catId);
+            }
+        }
+        if(!!profileId && !!topic.profileUser) {
+            setTitle(topic.profileUser.username);
+        }
+        if(notification && topic.notification) {
+            setTitle("Notifications");
+        }
+        if(bookmark && topic.bookmark) {
+            setTitle("Bookmarks");
+        }
+    }, [location, topic.category, topic.profileUser, content.post, topic.notification, topic.bookmark]);
+
+    useEffect(() => {
+        const postCatId = !!content.post ? content.post.catId : null;
+        if(!topic.bookmark && !topic.notification && !topic.profileId && !!postCatId) {
+            if(!!topic.category) {
+                let currentCat = topic.category.find(c => c.catId === parseInt(postCatId));
+                if(currentCat.category !== title) {
+                    setTitle(currentCat.category);
+                }
+            }
+        }
+    }, [content.post]);
+
+    return (
+        <nav className="topic-header">
+            <div className="flex-display height-100">
+                <div className="position-absolute">
+                    <div>
+                        <button className="menu-button" onClick={() => menu.setMenu(true)}>
+                            <FaBars className="height-100"/>
+                        </button>
+                    </div>
+                </div>
+                <div className="flex-1">
+                    {
+                        title ? 
+                            <div className="topic-header-title">
+                                <div className="topic-header-title-inner">
+                                    {title}
+                                </div>
+                            </div>
+                        :
+                            <></>
+                    }
+                </div>
+                <div data-tooltip-id="topic-tooltip" data-tooltip-content="Refresh" data-tooltip-place="top" title="Refresh">
+                    <RefreshTopic/>
+                </div>
+                <div data-tooltip-id="topic-tooltip" data-tooltip-content="Create" data-tooltip-place="top" title="Create">
+                    <CreatePostButton />
+                </div>
+            </div>
+        </nav>
+    );
+};

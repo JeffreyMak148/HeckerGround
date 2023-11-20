@@ -1,0 +1,26 @@
+.reply-comment-button {
+    background-color: #201c2c;
+    border: none;
+    color: #fff;
+    opacity: 0.7;
+}
+
+.reply-comment-button:hover {
+    color: #9179ce;
+    transition: all 0.1s;
+}
+
+.new-comment-button {
+    background-color: #2d2d39;
+    border: none;
+    color: #fff;
+    opacity: 0.7;
+    height: 3rem;
+    width: 2.5rem;
+}
+
+.new-comment-button:hover {
+    background-color: #43434f;
+    transition: all 0.1s;
+    border-radius: 3px;
+}

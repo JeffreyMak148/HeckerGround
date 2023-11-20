@@ -1,0 +1,11 @@
+.error-modal-position {
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+    right: 0;
+    top: 4rem;
+    position: fixed;
+    right: 25vw;
+    width: 0;
+    z-index: 9999;
+}

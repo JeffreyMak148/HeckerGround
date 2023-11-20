@@ -1,0 +1,83 @@
+.resizeable-container {
+    border-radius: 4px 4px 0 0;
+    width: inherit;
+    height: inherit;
+    position: relative;
+}
+
+.resizeable {
+    position: absolute;
+    width: inherit;
+    height: inherit;
+    border-radius: 4px 4px 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 15px;
+    min-height: 15px;
+}
+
+.resizer {
+    position: absolute;
+    border-color: #666;
+    border-radius: 4px 4px 0 0;
+    user-select: none;
+    transition: 0.2s background-color ease-out;
+}
+
+.resizer:hover {
+    background-color: #9281bd;
+    transition-delay: 0.1s;
+}
+
+.resizer:active {
+    background-color: #9281bd;
+}
+
+.resizer-r {
+    cursor: col-resize;
+    height: 100%;
+    right: 0;
+    top: 0;
+    width: 5px;
+}
+
+.resizer-t {
+    cursor: row-resize;
+    height: 5px;
+    left: 0;
+    top: 0;
+    width: 100%;
+}
+
+.resizer-b {
+    cursor: row-resize;
+    height: 5px;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.resizer-l {
+    cursor: col-resize;
+    height: 100%;
+    left: 0;
+    top: 0;
+    width: 5px;
+}
+
+.hide {
+    visibility: hidden;
+}
+
+.enable:after {
+    background-color: #666;
+    border-radius: 2px;
+    content: "";
+    height: 2px;
+    left: 50%;
+    position: absolute;
+    top: 60%;
+    transform: translate(-50%,-50%);
+    width: 3%;
+}

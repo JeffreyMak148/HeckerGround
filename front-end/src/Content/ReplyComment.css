@@ -1,0 +1,45 @@
+.reply-comment-quote {
+    color: #717171;
+    display: inline-block;
+    position: relative;
+    vertical-align: top;
+    width: 100%;
+    padding-left: 1rem;
+    white-space-collapse: preserve;
+}
+
+.reply-comment-link {
+    position: absolute;
+    left: 0;
+    height: 100%;
+    width: 0.9rem;
+    cursor: pointer;
+}
+
+.reply-comment-link:after {
+    content: "";
+    height: 100%;
+    border-radius: 4px;
+    background-color: #717171;
+    transition: background-color .3s ease-out;
+    width: 3px;
+    display: block;
+}
+
+.reply-comment-link:hover:after {
+    /* color: #9179ce; */
+    background-color: #9179ce;
+}
+
+.show-more-button {
+    background-color: #201c2c;
+    border: 1px solid #717171;
+    color: #717171;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+.show-more-button:hover {
+    background-color: #43434f;
+    transition: all 0.4s;
+}

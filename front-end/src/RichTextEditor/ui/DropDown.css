@@ -1,0 +1,117 @@
+.dropdown {
+    z-index: 6005;
+    display: block;
+    position: fixed;
+    box-shadow: 0 2px 28px 0 rgba(0, 0, 0, 1), 0 8px 14px 0 rgba(0, 0, 0, 1);
+    border-radius: 8px;
+    min-height: 40px;
+    max-height: 250px;
+    overflow: auto;
+    background-color: #201c2c;
+    max-width: 300px;
+}
+  
+.dropdown .item {
+    margin: 0 4px 4px 4px;
+    padding: 6px;
+    color: #e8e8e8;
+    cursor: pointer;
+    line-height: 16px;
+    font-size: 15px;
+    display: flex;
+    align-content: center;
+    flex-direction: row;
+    flex-shrink: 0;
+    justify-content: space-between;
+    background-color: #201c2c;
+    border-radius: 8px;
+    border: 0;
+    max-width: 250px;
+    min-width: 100px;
+}
+  
+.dropdown .item.fontsize-item,
+.dropdown .item.fontsize-item .text {
+    min-width: unset;
+}
+  
+.dropdown .item .active {
+    display: flex;
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+}
+  
+.dropdown .item:first-child {
+    margin-top: 8px;
+}
+  
+.dropdown .item:last-child {
+    margin-bottom: 8px;
+}
+  
+.dropdown .item:hover {
+    background-color: rgb(59, 59, 63);
+    color: #9179ce;
+    transition: all 0.1s;
+}
+  
+.dropdown .item .text {
+    display: flex;
+    line-height: 20px;
+    flex-grow: 1;
+    min-width: 150px;
+    font-size: 14px;
+}
+  
+.dropdown .item .icon {
+    display: flex;
+    width: 20px;
+    height: 20px;
+    user-select: none;
+    margin-right: 12px;
+    line-height: 16px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+  
+.dropdown .divider {
+    width: auto;
+    background-color: #eee;
+    margin: 4px 8px;
+    height: 1px;
+}
+
+.dropdown-button-text.text {
+    padding-right: 5px;
+}
+  
+@media screen and (max-width: 1100px) {
+    .dropdown-button-text {
+      display: none !important;
+    }
+  
+    .font-size .dropdown-button-text {
+      display: flex !important;
+    }
+  
+    .code-language .dropdown-button-text {
+      display: flex !important;
+    }
+}
+
+button.item.dropdown-item-active {
+    background-color: rgb(59, 59, 63);    
+    color: #9179ce;
+}
+  
+button.item.dropdown-item-active i {
+    opacity: 1;
+}
+
+.dialog-dropdown {
+    background-color: #eee !important;
+    margin-bottom: 10px;
+    width: 100%;
+}

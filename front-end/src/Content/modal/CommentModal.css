@@ -1,0 +1,149 @@
+.comment-modal-dialog {
+    min-width: 50% !important;
+    margin-top: 0;
+    margin-bottom: 0;
+    transition: opacity 0.2s;
+    max-height: 100vh;
+    overflow: auto;
+}
+
+.comment-modal-content {
+    height: 100vh;
+    border-radius: 1px;
+    border: none;
+}
+
+.comment-modal-body {
+    background-color: #141418;
+    color: #e8e8e8;
+    padding: 0;
+}
+
+.comment-modal-top {
+    background-color: #201c2c;
+    /* border-bottom: 1px solid transparent; */
+}
+
+.comment-modal-mid {
+    background-color: #201c2c;
+    padding: 1rem;
+}
+
+.reply-text, .fin-text {
+    padding: 1rem;
+    color: #9179ce;
+    text-align: center;
+}
+
+.comment-modal-reply {
+    background-color: #201c2c;
+    margin-bottom: 1rem;
+    padding: 1rem;
+}
+
+.comment-modal-reply-number, .comment-modal-comment-number {
+    color: #717171;
+}
+
+.comment-modal-reply-username, .comment-modal-comment-username {
+    padding-left: 8px;
+    color: #9179ce;    
+    cursor: pointer;
+}
+
+.comment-modal-reply-username:before, .comment-modal-comment-username:before {
+    border-left: 0.5px solid #4d4b57;
+    content: "";
+    padding-left: 8px;
+}
+
+.comment-modal-reply-date, .comment-modal-comment-date {
+    padding-left: 8px;
+    color: #717171;
+}
+
+.comment-modal-reply-date:before, .comment-modal-comment-date:before {
+    border-left: 0.5px solid #4d4b57;
+    content: "";
+    padding-left: 8px;
+}
+
+.comment-modal-reply-date:after, .comment-modal-comment-date:after {
+    border-left: 0.5px solid #4d4b57;
+    content: "";
+    margin-left: 8px;
+}
+
+.comment-modal-reply-button, .comment-modal-comment-button {
+    padding-left: 8px;
+}
+
+.comment-modal-share-button {
+    margin-left: auto;
+}
+
+.comment-modal-reply-content, .comment-modal-comment-content {
+    padding-top: 0.5rem;
+    font-size: 1.2rem;
+    padding-right: 1rem;
+    white-space-collapse: preserve;
+}
+
+.margin-bottom-1 {
+    margin-bottom: 1rem;
+}
+
+.comment-modal-comment-count {    
+    margin-left: 0.5rem;
+    padding-top: 1rem;
+}
+
+.comment-modal-vote-div {
+    padding-top: 1rem;
+}
+
+.comment-modal-reply-vote-div {
+    padding-top: 1rem;
+}
+
+.comment-modal-body .comment-modal-tooltip {
+    background-color: #e8e8e8;
+    color: #333;
+    padding: 0.2rem 1rem;
+    font-size: 0.9rem;
+    max-width: 25%;
+    z-index: 5000;
+    transition: opacity 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.fadeIn {
+    animation-name: fadeIn;
+    animation-duration: 0.2s;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+.fadeOut {
+    animation-name: fadeOut;
+    animation-duration: 0.2s;
+    animation-timing-function: ease-in-out;
+}

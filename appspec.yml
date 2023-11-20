@@ -1,0 +1,10 @@
+version: 0.0
+os: linux
+files:
+  - source: .
+    destination: /home/ec2-user/HeckerGround/
+hooks:
+  ApplicationStart:
+   - location: run.sh
+     timeout: 1500
+     runas: root

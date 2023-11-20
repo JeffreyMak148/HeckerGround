@@ -1,0 +1,18 @@
+.bookmark-button {
+    background-color: #2d2d39;
+    border: none;
+    color: #fff;
+    opacity: 0.7;
+    height: 3rem;
+    width: 2.5rem;
+}
+
+.bookmark-button.activated {
+    color: #9179ce;
+}
+
+.bookmark-button:hover {
+    background-color: #43434f;
+    transition: all 0.1s;
+    border-radius: 3px;
+}

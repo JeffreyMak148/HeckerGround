@@ -1,0 +1,75 @@
+.register-button {
+    height: 100%;
+    flex: 1;
+    padding: 0 !important;
+    margin: 0 !important;
+    background-color: #1d1928;
+    color: #e8e8e8;
+    border: 1px solid transparent;
+    border-bottom-right-radius: 5px;
+}
+
+.register-button:hover {
+    background-color: #43434f;
+    transition: all 0.4s;
+}
+
+.register-button:before {
+    border-left: 0.5px solid #4d4b57;
+    bottom: 0.3rem;
+    content: "";
+    left: 50%;
+    position: absolute;
+    top: 0.3rem;
+}
+
+.register-username-input {
+    color: #e8e8e8;
+    background-color:rgb(21, 21, 21);
+    width:100%;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+    border:1px solid transparent;
+    padding: 0px 8px 0px;
+}
+
+.register-username-input:focus {
+    border: 1px solid #635985;
+    box-shadow: 0 0 10px #635985;
+    outline: none;
+}
+
+.register-email-input {
+    color: #e8e8e8;
+    background-color:rgb(21, 21, 21);
+    width:100%;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+    border:1px solid transparent;
+    padding: 0px 8px 0px;
+}
+
+.register-email-input:focus {
+    border: 1px solid #635985;
+    box-shadow: 0 0 10px #635985;
+    outline: none;
+}
+
+.register-password-input {
+    color: #e8e8e8;
+    background-color:rgb(21, 21, 21);
+    width:100%;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+    border:1px solid transparent;
+    padding: 0px 8px 0px;
+}
+
+.register-password-input:focus {
+    border: 1px solid #635985;
+    box-shadow: 0 0 10px #635985;
+    outline: none;
+}

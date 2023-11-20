@@ -1,0 +1,62 @@
+.comment-vote-div {
+    background-color: #2d2d2d;    
+    border-radius: 5px;
+    border: 1px solid transparent;
+}
+
+.comment-upvote-button {
+    background-color: #2d2d2d;
+    border: 0px solid transparent;
+    color: #e8e8e8;
+    padding: 4px 4px 4px 8px;
+    opacity: 0.9;
+    margin: 0;
+}
+
+.comment-downvote-button {
+    background-color: #2d2d2d;
+    border: 0px solid transparent;
+    color: #e8e8e8;
+    padding: 4px 8px 4px 4px;
+    opacity: 0.9;
+    margin: 0 0 0 2px;
+}
+
+.comment-upvote-button.abled:hover {
+    color: #9179ce;
+    transition: all 0.2s;
+}
+
+.comment-downvote-button.abled:hover {
+    color: #9179ce;
+    transition: all 0.2s;
+}
+
+.comment-upvote-count {
+    padding-left: 4px;
+    display: inline;
+    font-size: 0.8em;
+}
+
+.comment-downvote-count {
+    padding-left: 4px;
+    display: inline;
+    font-size: 0.8em;
+}
+
+.comment-upvote-button-selected {
+    background-color: #2d2d2d;
+    border: 0px solid transparent;
+    color: #9179ce;
+    padding: 4px 4px 4px 8px;
+    opacity: 0.9;
+    margin: 0;
+}
+
+.comment-upvote-button.selected {
+    color: #9179ce;
+}
+
+.comment-downvote-button.selected {
+    color: #9179ce;
+}
