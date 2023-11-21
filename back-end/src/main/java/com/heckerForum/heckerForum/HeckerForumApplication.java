@@ -12,7 +12,6 @@ public class HeckerForumApplication {
   public static void main(String[] args) {
     log.debug("Starting main");
     SpringApplication springApplications = new SpringApplication(HeckerForumApplication.class);
-    springApplications.addListeners(new PropertiesLogger());
     springApplications.run(args);
   }
 
