@@ -1,3 +1,7 @@
+cd /home/ec2-user
+sudo scp -r access-refresh-token-keys/ HeckerGround/back-end/
+sudo scp application-prod.properties HeckerGround/back-end/src/main/resources/
+
 cd /home/ec2-user/HeckerGround
 
 aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin 769244290740.dkr.ecr.ap-southeast-2.amazonaws.com
