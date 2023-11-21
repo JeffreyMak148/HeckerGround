@@ -1,7 +1,6 @@
 /certbot
 front-end/.vscode/launch.json
 README-production.md
-run.sh
 back-end/src/main/resources/application-prod.properties
 back-end/log.txt
 back-end/access-refresh-token-keys/refresh-keys/public.key

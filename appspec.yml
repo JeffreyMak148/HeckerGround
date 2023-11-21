@@ -4,6 +4,11 @@ files:
   - source: .
     destination: /home/ec2-user/HeckerGround/
 hooks:
+  AfterInstall:
+    - location: setup.sh
+      timeout: 300
+      runas: root
+
   ApplicationStart:
    - location: run.sh
      timeout: 1500
