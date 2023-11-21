@@ -9,7 +9,7 @@ services:
     ports:
       - 8080:8080
     environment:
-      spring.config.name: application-prod
+      spring.config.name: application-dev
   front-end:
     image: 769244290740.dkr.ecr.ap-southeast-2.amazonaws.com/hecker-ground/front-end:latest
     build:
