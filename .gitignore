@@ -2,8 +2,6 @@
 front-end/.vscode/launch.json
 README-production.md
 run.sh
-docker-compose-prod.yml
-docker-compose-ec2.yml
 back-end/src/main/resources/application-prod.properties
 back-end/log.txt
 back-end/access-refresh-token-keys/refresh-keys/public.key

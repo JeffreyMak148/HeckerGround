@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  back-end:
+    image: 769244290740.dkr.ecr.ap-southeast-2.amazonaws.com/hecker-ground/back-end:latest
+    ports:
+      - 8080:8080
+    environment:
+      spring.config.name: application-prod
+  front-end:
+    image: 769244290740.dkr.ecr.ap-southeast-2.amazonaws.com/hecker-ground/front-end:latest
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - back-end
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:ro
+      - ./certbot/conf/:/etc/letsencrypt/:ro
+  certbot:
+    image: certbot/certbot:v2.6.0
+    depends_on:
+      - front-end
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/conf:/etc/letsencrypt
+    command:
+      # Comment below before getting the SSL certificate for the first time
+      - renew
+      # Comment below after getting the SSL certificate for the first time
+      # - certonly
+      # - --webroot
+      # - -w
+      # - /var/www/certbot/
+      # - --email=heckerground@gmail.com
+      # - --agree-tos
+      # - --no-eff-email
+      # - -d
+      # - heckerground.com
+      # - -v
