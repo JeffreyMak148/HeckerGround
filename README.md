@@ -15,6 +15,9 @@ You can treat this as an anonymous survey site, an online forum with bare minimu
 
 Heckerground is public and open source to reinforce the idea that the website is fully secured and no personal details can be leaked.
 
+## Architecture Diagrams
+[Diagrams shown here](Artifacts/README.md)
+
 ## Hosting local server with docker
 
 ### Prerequisites
