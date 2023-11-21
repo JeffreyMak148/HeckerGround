@@ -9,7 +9,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 
+import lombok.extern.log4j.Log4j2;
+
 @Configuration
+@Log4j2
 @Profile({ "local", "dev", "prod" })
 public class DbConfig {
 
@@ -25,6 +28,8 @@ public class DbConfig {
   @Primary
   @Bean
   public DataSource getDataSource() {
+    log.info(dbUrl);
+    log.info(dbUsername);
     return DataSourceBuilder.create()
         .driverClassName("com.mysql.cj.jdbc.Driver")
         .url(dbUrl)
