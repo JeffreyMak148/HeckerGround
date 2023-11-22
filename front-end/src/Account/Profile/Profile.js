@@ -7,7 +7,7 @@ import { useLoading } from '../../Context/LoadingProvider';
 import { useModal } from '../../Context/ModalProvider';
 import { useUser } from '../../Context/UserProvider';
 import fetchUtil from '../../util/fetchUtil';
-import formatDate from '../../util/formatDate';
+import { formatDateString } from '../../util/formatDate';
 import "./Profile.css";
 
 export const Profile = () => {
@@ -90,7 +90,7 @@ export const Profile = () => {
                                     </li>
                                     <li>
                                         <Link className="profile-item margin-top-8 disable-link">
-                                            Account created: {formatDate(profileUser.createDateTime, true)}
+                                            Account created: {formatDateString(profileUser.createDateTime)}
                                         </Link>
                                     </li>
                                     {
