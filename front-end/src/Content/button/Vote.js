@@ -32,7 +32,7 @@ export const Vote = ({comment}) => {
             }).then(() => {
             })
             .catch(error => {
-                modal.setErrorModal(errorModal => ([...errorModal, {errorId: errorModal.length,  error}]));
+                modal.showErrorPopup(error.status, error.data?.errorMessage);
             })
             .finally(() => {
                 loadingBar.setBackgroundLoading(false);
@@ -60,7 +60,7 @@ export const Vote = ({comment}) => {
                 content.setRefresh(true);
             })
             .catch(error => {
-                modal.setErrorModal(errorModal => ([...errorModal, {errorId: errorModal.length,  error}]));
+                modal.showErrorPopup(error.status, error.data?.errorMessage);
             })
             .finally(() => {
                 loadingBar.setBackgroundLoading(false);

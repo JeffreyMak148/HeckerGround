@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 import { useModal } from '../../Context/ModalProvider';
-import "./ErrorModal.css";
+import "./PopupModal.css";
 
-export const ErrorModal = ({position, id}) => {
+export const PopupModal = ({position, id}) => {
     const modal = useModal();
 
     const [isClosing, setIsClosing] = useState(false);
-    const [error, setError] = useState(null);
+    const [popup, setPopup] = useState(null);
 
     useEffect(() => {
-        setError(modal.errorModal.find(e => e.errorId === id).error);
+        setPopup(modal.popupModal.find(e => e.popupId === id));
     }, []);
 
     useEffect(() => {
@@ -24,8 +24,8 @@ export const ErrorModal = ({position, id}) => {
     useEffect(() => {
         if(isClosing) {{
             const timeoutId = setTimeout(function() {
-                modal.setErrorModal(currentErrors => {
-                        return currentErrors.filter(e => e.errorId !== id);
+                modal.setPopupModal(currentPopups => {
+                        return currentPopups.filter(e => e.popupId !== id);
                 })
             }, 300);
     
@@ -38,29 +38,29 @@ export const ErrorModal = ({position, id}) => {
     return (
         <>
             {
-                !!error ?
-                    <div style={{top: `${position}rem`}} key={id} className={isClosing ? "error-modal slideOut content-overflow" : "error-modal slideIn content-overflow"}>
-                        <div className="error-modal-top flex-display">
-                            <div className="error-modal-title">
+                !!popup ?
+                    <div style={{top: `${position}rem`}} key={id} className={isClosing ? "popup slideOut content-overflow" : "popup slideIn content-overflow"}>
+                        <div className="popup-header flex-display">
+                            <div className="popup-title">
                                 {
-                                    !!error.status ? 
+                                    !!popup.popupHeader ? 
                                         <>
-                                            {error.hideStatusCode ? <>{error.status}</> : <>Status: {error.status}</>}
+                                            {popup.popupType === 'error' ? <>Status: {popup.popupHeader}</> : <>{popup.popupHeader}</>}
                                         </>
                                     :
                                         <>Error</>
 
                                 }
                             </div>
-                            <div className="error-modal-button">
-                                <button className="error-modal-close-button" onClick={() => setIsClosing(true)}><AiOutlineClose/></button>
+                            <div>
+                                <button className="popup-close-button" onClick={() => setIsClosing(true)}><AiOutlineClose/></button>
                             </div>
                         </div>
-                        <div className="error-modal-bottom">
+                        <div className="popup-body">
                             {
-                                !!error.data ?
+                                !!popup.popupBody ?
                                     <>
-                                        {error.data.errorMessage}                                
+                                        {popup.popupBody}                                
                                     </>
                                 :
                                     <>

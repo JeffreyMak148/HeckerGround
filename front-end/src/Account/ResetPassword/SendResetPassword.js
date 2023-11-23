@@ -3,7 +3,6 @@ import { Col, Container, Modal, Row } from 'react-bootstrap';
 import isEmail from 'validator/lib/isEmail';
 import { useLoading } from '../../Context/LoadingProvider';
 import { useModal } from '../../Context/ModalProvider';
-import constructErrorModal from '../../util/constructErrorModal';
 import fetchUtil from '../../util/fetchUtil';
 import "./ResetPassword.css";
 
@@ -26,12 +25,10 @@ export const SendResetPassword = ({modalType, setModalType, show, handleClose, s
         let inputMissing = false;
 
         if(!resetEmail) {
-            const error = constructErrorModal("Reset Password Failed", "Please enter email.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+            modal.showPopup("Reset Password Failed", "Please enter email.");
             inputMissing = true;
         } else if(!isEmail(resetEmail)) {
-            const error = constructErrorModal("Reset Password Failed", "Email is invalid.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+            modal.showPopup("Reset Password Failed", "Email is invalid.");
             inputMissing = true;
         }
 
@@ -53,7 +50,7 @@ export const SendResetPassword = ({modalType, setModalType, show, handleClose, s
             setModalType("verifyResetPassword");
         })
         .catch(error => {
-            modal.setErrorModal(errorModal => ([...errorModal, {errorId: errorModal.length,  error}]));
+            modal.showErrorPopup(error.status, error.data?.errorMessage);
         })
         .finally(() => {
             loadingBar.setBackgroundLoading(false);

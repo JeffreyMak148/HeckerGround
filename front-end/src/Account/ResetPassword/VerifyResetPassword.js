@@ -3,7 +3,6 @@ import { Col, Container, Modal, Row } from 'react-bootstrap';
 import isEmail from 'validator/lib/isEmail';
 import { useLoading } from '../../Context/LoadingProvider';
 import { useModal } from '../../Context/ModalProvider';
-import constructErrorModal from '../../util/constructErrorModal';
 import fetchUtil from '../../util/fetchUtil';
 import "./ResetPassword.css";
 
@@ -21,12 +20,10 @@ export const VerifyResetPassword = ({modalType, setModalType, show, handleClose,
         let inputMissing = false;
 
         if(!tempResetEmail) {
-            const error = constructErrorModal("Send code failed", "Email is empty.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+            modal.showPopup("Send code failed", "Email is empty.");
             inputMissing = true;
         } else if(!isEmail(tempResetEmail)) {
-            const error = constructErrorModal("Send code failed", "Invalid email.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+            modal.showPopup("Send code failed", "Invalid email.");
             inputMissing = true;
         }
 
@@ -44,11 +41,10 @@ export const VerifyResetPassword = ({modalType, setModalType, show, handleClose,
         .then(({status, data}) => {
         })
         .then(() => {
-            const error = constructErrorModal("Notification", "Code sent.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+            modal.showPopup("Notification", "Code sent.");
         })
         .catch(error => {
-            modal.setErrorModal(errorModal => ([...errorModal, {errorId: errorModal.length,  error}]));
+            modal.showErrorPopup(error.status, error.data?.errorMessage);
         })
         .finally(() => {
             loadingBar.setBackgroundLoading(false);
@@ -64,12 +60,10 @@ export const VerifyResetPassword = ({modalType, setModalType, show, handleClose,
         let inputMissing = false;
 
         if(!resetCode) {
-            const error = constructErrorModal("Verify Failed", "Please enter code.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+            modal.showPopup("Verify Failed", "Please enter code.");
             inputMissing = true;
         } else if(!validCode) {
-            const error = constructErrorModal("Verify Failed", "Code is invalid.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+            modal.showPopup("Verify Failed", "Code is invalid.");
             inputMissing = true;
         }
 
@@ -93,7 +87,7 @@ export const VerifyResetPassword = ({modalType, setModalType, show, handleClose,
             setModalType("setResetPassword");
         })
         .catch(error => {
-            modal.setErrorModal(errorModal => ([...errorModal, {errorId: errorModal.length,  error}]));
+            modal.showErrorPopup(error.status, error.data?.errorMessage);
         })
         .finally(() => {
             loadingBar.setBackgroundLoading(false);

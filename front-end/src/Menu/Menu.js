@@ -39,7 +39,7 @@ const Menu = () => {
                 topic.setCategory(data);
             })
             .catch(error => {
-                modal.setErrorModal(errorModal => ([...errorModal, {errorId: errorModal.length,  error}]));
+                modal.showErrorPopup(error.status, error.data?.errorMessage);
             });
         }
 

@@ -22,7 +22,6 @@ import { CAN_USE_DOM } from '../utils/canUseDOM';
 
 import { useLoading } from '../../Context/LoadingProvider';
 import { useModal } from '../../Context/ModalProvider';
-import constructErrorModal from '../../util/constructErrorModal';
 import fetchUtil from '../../util/fetchUtil';
 import {
   $createImageNode,
@@ -79,7 +78,7 @@ export function InsertImageDialog({
       setUploadSrc(filename);
     })
     .catch(error => {
-        modal.setErrorModal(errorModal => ([...errorModal, {errorId: errorModal.length,  error}]));
+      modal.showErrorPopup(error.status, error.data?.errorMessage);
     })
     .finally(() => {
       loading.setBackgroundLoading(false);
@@ -94,8 +93,7 @@ export function InsertImageDialog({
       setUploadSrc(null);
       setValidUploadInput(false);
     } else if(files.length > 0 && !ACCEPTABLE_IMAGE_TYPES.includes(files[0]?.type)) {
-      const error = constructErrorModal("Error", "Accepts only image file types", true);
-      modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+      modal.showPopup("Error", "Accepts only image file types");
       setValidUploadInput(false);
       return false;
     }
@@ -123,8 +121,7 @@ export function InsertImageDialog({
   const onClick = () => {
     // validate input
     if(!(!!tempUrlSrc || validUploadInput)) {
-      const error = constructErrorModal("Error", "Please enter image url or upload image", true);
-      modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+      modal.showPopup("Error", "Please enter image url or upload image");
       return false;
     }
     if(!!imageFile) {

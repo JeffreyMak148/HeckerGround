@@ -1,4 +1,4 @@
-.error-modal {
+.popup {
     background-color: #2d2d39;
     width: 300px;
     min-height: 5rem;
@@ -23,23 +23,23 @@
     }
 }
 
-.error-modal.slideIn {
+.popup.slideIn {
     animation-name: slideIn;
     animation-duration: 0.2s;
     animation-timing-function: ease-in-out;
 }
 
-.error-modal.slideOut {
+.popup.slideOut {
     transform: translateX(150%);
 }
 
-.error-modal-top {
+.popup-header {
     background-color: #2d2d39;
     flex: 1;
     padding-left: 1rem;
 }
 
-.error-modal-bottom {
+.popup-body {
     background-color: #272731;
     flex: 2;
     padding-left: 1rem;
@@ -50,12 +50,12 @@
     word-break: break-word;
 }
 
-.error-modal-title {
+.popup-title {
     flex: 1;
     padding-top: 4px;
 }
 
-.error-modal-close-button {
+.popup-close-button {
     background-color: #2d2d39;
     border: none;
     color: #fff;
@@ -63,7 +63,7 @@
     height: 34px;
 }
 
-.error-modal-close-button:hover {
+.popup-close-button:hover {
     background-color: #43434f;
     transition: all 0.1s;
 }

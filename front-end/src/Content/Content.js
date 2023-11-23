@@ -176,7 +176,7 @@ const Content = ({notFound}) => {
             .then(() => {
             })
             .catch(error => {
-                modal.setErrorModal(errorModal => ([...errorModal, {errorId: errorModal.length,  error}]));
+                modal.showErrorPopup(error.status, error.data?.errorMessage);
             })
             .finally(() => {
                 if(scrollToCommentNumOption || scrollToPageNumOption) {
@@ -232,12 +232,12 @@ const Content = ({notFound}) => {
                     setHasMore((data.comments.length === (pageEnd - pageStart + 1) * pageSize));
                     setTotalPage(getPageNumber(data.post.numOfReplies));
                 }).then(() => {
-                    if(pageStart == 0 && pageEnd == 0) {
+                    if(pageStart === 0 && pageEnd === 0) {
                         setPageNum(2);
                     }
                 })
                 .catch(error => {
-                    modal.setErrorModal(errorModal => ([...errorModal, {errorId: errorModal.length,  error}]));
+                    modal.showErrorPopup(error.status, error.data?.errorMessage);
                 })
                 .finally(() => {
                     loadingBar.setContentLoading(false);

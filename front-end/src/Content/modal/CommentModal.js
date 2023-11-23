@@ -31,7 +31,7 @@ export const CommentModal = () => {
                 modal.setCommentModal(commentModal => ({...commentModal, show: true}));
             })
             .catch(error => {
-                modal.setErrorModal(errorModal => ([...errorModal, {errorId: errorModal.length,  error}]));
+                modal.showErrorPopup(error.status, error.data?.errorMessage);
             })
         }
 

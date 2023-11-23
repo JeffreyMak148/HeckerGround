@@ -4,7 +4,6 @@ import isEmail from 'validator/lib/isEmail';
 import { useLoading } from '../../Context/LoadingProvider';
 import { useModal } from '../../Context/ModalProvider';
 import { useUser } from '../../Context/UserProvider';
-import constructErrorModal from '../../util/constructErrorModal';
 import "./Verify.css";
 
 export const Verify = ({modalType, setModalType, show, handleClose, tempRegUsername, tempRegEmail, tempRegPassword}) => {
@@ -21,24 +20,20 @@ export const Verify = ({modalType, setModalType, show, handleClose, tempRegUsern
         let inputMissing = false;
 
         if(!tempRegUsername) {
-            const error = constructErrorModal("Register Failed", "Please enter register username.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+            modal.showPopup("Register Failed", "Please enter register username.");
             inputMissing = true;
         }
 
         if(!tempRegEmail) {
-            const error = constructErrorModal("Register Failed", "Please enter register email.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+            modal.showPopup("Register Failed", "Please enter register email.");
             inputMissing = true;
         } else if(!isEmail(tempRegEmail)) {
-            const error = constructErrorModal("Register Failed", "Register email is invalid.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+            modal.showPopup("Register Failed", "Register email is invalid.");
             inputMissing = true;
         }
 
         if(!tempRegPassword) {
-            const error = constructErrorModal("Register Failed", "Please enter register password.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+            modal.showPopup("Register Failed", "Please enter register password.");
             inputMissing = true;
         }
 
@@ -73,11 +68,10 @@ export const Verify = ({modalType, setModalType, show, handleClose, tempRegUsern
             }
         })
         .then(([body, headers]) => {
-            const error = constructErrorModal("Notification", "Code sent.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+            modal.showPopup("Notification", "Code sent.");
         })
         .catch((error) => {
-            modal.setErrorModal(errorModal => ([...errorModal, {errorId: errorModal.length, error}]));
+            modal.showErrorPopup(error.status, error.data?.errorMessage);
         })
         .finally(() => {
             loadingBar.setBackgroundLoading(false);
@@ -93,8 +87,7 @@ export const Verify = ({modalType, setModalType, show, handleClose, tempRegUsern
         let inputMissing = false;
 
         if(!verificationCode) {
-            const error = constructErrorModal("Verication Failed", "Please enter verification code.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+            modal.showPopup("Verication Failed", "Please enter verification code.");
             inputMissing = true;
         }
 
@@ -152,14 +145,14 @@ export const Verify = ({modalType, setModalType, show, handleClose, tempRegUsern
                 window.location.href = "";
             })
             .catch((error) => {
-                modal.setErrorModal(errorModal => ([...errorModal, {errorId: errorModal.length, error}]));
+                modal.showErrorPopup(error.status, error.data?.errorMessage);
             })
             .finally(() => {
                 loadingBar.setBackgroundLoading(false)
             });
         })
         .catch((error) => {
-            modal.setErrorModal(errorModal => ([...errorModal, {errorId: errorModal.length, error}]));
+            modal.showErrorPopup(error.status, error.data?.errorMessage);
         })
         .finally(() => {
             loadingBar.setBackgroundLoading(false);

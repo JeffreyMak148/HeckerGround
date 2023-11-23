@@ -24,7 +24,7 @@ export const Profile = () => {
                 modal.setProfileModal(profileModal => ({...profileModal, show: true}));
             })
             .catch(error => {
-                modal.setErrorModal(errorModal => ([...errorModal, {errorId: errorModal.length,  error}]));
+                modal.showErrorPopup(error.status, error.data?.errorMessage);
             })
         }
 
@@ -48,7 +48,7 @@ export const Profile = () => {
             window.location.href = "";
         })
         .catch(error => {
-            modal.setErrorModal(errorModal => ([...errorModal, {errorId: errorModal.length,  error}]));
+            modal.showErrorPopup(error.status, error.data?.errorMessage);
         })
         .finally(() => {
             loadingBar.setBackgroundLoading(false);

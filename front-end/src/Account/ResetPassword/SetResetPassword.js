@@ -3,7 +3,6 @@ import { Col, Container, Modal, Row } from 'react-bootstrap';
 import isEmail from 'validator/lib/isEmail';
 import { useLoading } from '../../Context/LoadingProvider';
 import { useModal } from '../../Context/ModalProvider';
-import constructErrorModal from '../../util/constructErrorModal';
 import fetchUtil from '../../util/fetchUtil';
 import "./ResetPassword.css";
 
@@ -33,32 +32,26 @@ export const SetResetPassword = ({modalType, setModalType, show, handleClose, te
         let inputMissing = false;
 
         if(!tempResetEmail) {
-            const error = constructErrorModal("Reset Password Failed", "Email is invalid.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+            modal.showPopup("Reset Password Failed", "Email is invalid.");
             inputMissing = true;
         } else if(!isEmail(tempResetEmail)) {
-            const error = constructErrorModal("Reset Password Failed", "Email is invalid.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+            modal.showPopup("Reset Password Failed", "Email is invalid.");
             inputMissing = true;
         }
 
         if(!tempResetCode) {
-            const error = constructErrorModal("Reset Password Failed", "Code is invalid.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+            modal.showPopup("Reset Password Failed", "Code is invalid.");
             inputMissing = true;
         }
 
         if(!resetPassword) {
-            const error = constructErrorModal("Reset Password Failed", "Please enter password.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+            modal.showPopup("Reset Password Failed", "Please enter password.");
             inputMissing = true;
         } else if(!confirmResetPassword) {
-            const error = constructErrorModal("Reset Password Failed", "Please confirm password.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+            modal.showPopup("Reset Password Failed", "Please confirm password.");
             inputMissing = true;
         } else if(resetPassword !== confirmResetPassword) {
-            const error = constructErrorModal("Reset Password Failed", "Password didn't match.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+            modal.showPopup("Reset Password Failed", "Password didn't match.");
             inputMissing = true;
         }
 
@@ -83,11 +76,10 @@ export const SetResetPassword = ({modalType, setModalType, show, handleClose, te
         })
         .then(() => {
             setModalType("login");
-            const error = constructErrorModal("Notification", "Password has been reset.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+            modal.showPopup("Notification", "Password has been reset.");
         })
         .catch(error => {
-            modal.setErrorModal(errorModal => ([...errorModal, {errorId: errorModal.length,  error}]));
+            modal.showErrorPopup(error.status, error.data?.errorMessage);
         })
         .finally(() => {
             loadingBar.setBackgroundLoading(false);

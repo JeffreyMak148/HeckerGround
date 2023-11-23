@@ -6,7 +6,7 @@ import AccountModal from '../Account/AccountModal';
 import { Profile } from '../Account/Profile/Profile';
 import Content from '../Content/Content';
 import { CommentModal } from '../Content/modal/CommentModal';
-import { ErrorDisplay } from '../Content/modal/ErrorDisplay';
+import { PopupDisplay } from '../Content/modal/PopupDisplay';
 import { useModal } from '../Context/ModalProvider';
 import { useUser } from '../Context/UserProvider';
 import CreateComment from '../CreateComment/CreateComment';
@@ -31,7 +31,7 @@ const Main = ({notFound}) => {
             }
         })
         .catch(error => {
-            modal.setErrorModal(errorModal => ([...errorModal, {errorId: errorModal.length,  error}]));
+            modal.showErrorPopup(error.status, error.data?.errorMessage);
         });
     }, []);
 
@@ -57,7 +57,7 @@ const Main = ({notFound}) => {
                 <AccountModal />
                 <CreateComment />
                 <CreatePost />
-                <ErrorDisplay />
+                <PopupDisplay />
                 <CommentModal />
                 <Profile />
             </Container>

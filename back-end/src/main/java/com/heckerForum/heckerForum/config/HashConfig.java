@@ -20,6 +20,8 @@ public class HashConfig {
 
   @Bean
   public HmacUtils emailHash() {
+    // TODO: Switch to BCrypt if possible
+    // Override authentication manager to use BCrypt.match(rawPassword, encodedPassword) for authentication
     return new HmacUtils(HmacAlgorithms.HMAC_SHA_256, secretKey);
   }
 

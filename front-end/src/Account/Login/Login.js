@@ -4,7 +4,6 @@ import isEmail from 'validator/lib/isEmail';
 import { useLoading } from '../../Context/LoadingProvider';
 import { useModal } from '../../Context/ModalProvider';
 import { useUser } from '../../Context/UserProvider';
-import constructErrorModal from '../../util/constructErrorModal';
 import "./Login.css";
 
 export const Login = ({modalType, setModalType, show, handleClose}) => {
@@ -32,18 +31,15 @@ export const Login = ({modalType, setModalType, show, handleClose}) => {
         let inputMissing = false;
 
         if(!loginEmail) {
-            const error = constructErrorModal("Login Failed", "Please enter login email.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+            modal.showPopup("Login Failed", "Please enter login email.");
             inputMissing = true;
         } else if(!isEmail(loginEmail)) {
-            const error = constructErrorModal("Login Failed", "Login email is invalid.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+            modal.showPopup("Login Failed", "Login email is invalid.");
             inputMissing = true;
         }
 
-        if(!loginPassword) {
-            const error = constructErrorModal("Login Failed", "Please enter login password.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+        if(!loginPassword) {            
+            modal.showPopup("Login Failed", "Please enter login password.");
             inputMissing = true;
         }
 
@@ -81,7 +77,7 @@ export const Login = ({modalType, setModalType, show, handleClose}) => {
             window.location.href = "";
         })
         .catch((error) => {
-            modal.setErrorModal(errorModal => ([...errorModal, {errorId: errorModal.length, error}]));
+            modal.showErrorPopup(error.status, error.data?.errorMessage);
         })
         .finally(() => {
             loadingBar.setBackgroundLoading(false);

@@ -3,7 +3,6 @@ import { Col, Container, Modal, Row } from 'react-bootstrap';
 import isEmail from 'validator/lib/isEmail';
 import { useLoading } from '../../Context/LoadingProvider';
 import { useModal } from '../../Context/ModalProvider';
-import constructErrorModal from '../../util/constructErrorModal';
 import "./Register.css";
 
 export const Register = ({modalType, setModalType, show, handleClose, setTempRegUsername, setTempRegEmail, setTempRegPassword}) => {
@@ -44,32 +43,26 @@ export const Register = ({modalType, setModalType, show, handleClose, setTempReg
         let inputMissing = false;
 
         if(!registerUsername) {
-            const error = constructErrorModal("Register Failed", "Please enter register username.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+            modal.showPopup("Register Failed", "Please enter register username.");
             inputMissing = true;
         }
 
         if(!registerEmail) {
-            const error = constructErrorModal("Register Failed", "Please enter register email.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+            modal.showPopup("Register Failed", "Please enter register email.");
             inputMissing = true;
         } else if(!isEmail(registerEmail)) {
-            const error = constructErrorModal("Register Failed", "Register email is invalid.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+            modal.showPopup("Register Failed", "Register email is invalid.");
             inputMissing = true;
         }
 
         if(!registerPassword) {
-            const error = constructErrorModal("Register Failed", "Please enter register password.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+            modal.showPopup("Register Failed", "Please enter register password.");
             inputMissing = true;
         } else if(!registerConfirmPassword) {
-            const error = constructErrorModal("Register Failed", "Please confirm password.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+            modal.showPopup("Register Failed", "Please confirm password.");
             inputMissing = true;
         } else if(registerPassword !== registerConfirmPassword) {
-            const error = constructErrorModal("Register Failed", "Password didn't match.", true);
-            modal.setErrorModal(errorModal => [...errorModal, {errorId: errorModal.length, error}]);
+            modal.showPopup("Register Failed", "Password didn't match.");
             inputMissing = true;
         }
 
@@ -110,7 +103,7 @@ export const Register = ({modalType, setModalType, show, handleClose, setTempReg
             setModalType("verification");
         })
         .catch((error) => {
-            modal.setErrorModal(errorModal => ([...errorModal, {errorId: errorModal.length, error}]));
+            modal.showErrorPopup(error.status, error.data?.errorMessage);
         })
         .finally(() => {
             loadingBar.setBackgroundLoading(false);
