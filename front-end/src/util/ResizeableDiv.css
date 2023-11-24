@@ -81,3 +81,12 @@
     transform: translate(-50%,-50%);
     width: 3%;
 }
+
+.enable:hover:after {
+    visibility: hidden;
+    transition-delay: 0.1s;
+}
+
+.enable:active:after {
+    visibility: hidden;
+}

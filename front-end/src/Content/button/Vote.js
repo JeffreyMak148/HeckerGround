@@ -30,9 +30,10 @@ export const Vote = ({comment}) => {
                     user.setShowLogin(true);
                 }
             }).then(() => {
+                content.setRefresh(true);
             })
             .catch(error => {
-                modal.showErrorPopup(error.status, error.data?.errorMessage);
+                modal.showErrorPopup(error.status, error.data?.errorMessage);                
             })
             .finally(() => {
                 loadingBar.setBackgroundLoading(false);
@@ -55,7 +56,6 @@ export const Vote = ({comment}) => {
                     user.setIsLoggedIn(false);
                     user.setShowLogin(true);
                 }
-            }).then(() => {
             }).then(() => {
                 content.setRefresh(true);
             })

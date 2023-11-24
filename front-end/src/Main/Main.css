@@ -35,8 +35,20 @@
     --separator-border: #4d4b57;
 }
 
-.main-split .sash-vertical {
-    z-index: 2;
+.main-split .sash-hover, .main-split .sash-active {
+    margin-left: 2px;
+    width: 5px;
+}
+
+.sash-hover {
+    background-color:#9281bd;
+    transition-delay: 0.1s;
+    transition: 0.2s background-color ease-out;
+}
+
+.sash-active {
+    background-color:#9281bd;
+    transition: 0.2s background-color ease-out;
 }
 
 @media (max-width: 1200px) {
