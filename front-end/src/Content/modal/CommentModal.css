@@ -8,9 +8,10 @@
 }
 
 .comment-modal-content {
-    height: 100vh;
-    border-radius: 1px;
+    max-height: 100vh;
+    border-radius: 6px;
     border: none;
+    background-color: #141418;
 }
 
 .comment-modal-body {
@@ -22,6 +23,23 @@
 .comment-modal-top {
     background-color: #201c2c;
     /* border-bottom: 1px solid transparent; */
+}
+
+.comment-modal-close-button-div {
+    text-align: end;
+    background-color: #141418;
+}
+
+.comment-modal-close-button {
+    padding: 12px 20px;
+    background-color: #141418;
+    color: #fff;
+    border: none;
+}
+
+.comment-modal-close-button:hover {
+    background-color: #43434f;
+    transition: all 0.1s;
 }
 
 .comment-modal-mid {

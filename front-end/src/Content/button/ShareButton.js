@@ -43,7 +43,7 @@ export const ShareButton = ({postId, commentNum, title, commentModal}) => {
                         </ArrowContainer>
                     )}>
                     {
-                        !!commentNum ?                    
+                        !!commentNum ?
                             <button className="content-share-button" onClick={() => {setIsPopoverOpen(!isPopoverOpen); setShareValue()}}><BsShareFill /></button>
                         :
                             <button className="share-button" onClick={() => {setIsPopoverOpen(!isPopoverOpen); setShareValue()}}><BsShareFill /></button>

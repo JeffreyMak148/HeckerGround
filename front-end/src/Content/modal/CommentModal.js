@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
+import { AiOutlineClose } from "react-icons/ai";
 import { Tooltip } from 'react-tooltip';
 import { useModal } from '../../Context/ModalProvider';
 import fetchUtil from '../../util/fetchUtil';
@@ -48,7 +49,9 @@ export const CommentModal = () => {
             <Modal centered dialogClassName="comment-modal-dialog fadeIn" contentClassName="comment-modal-content content-overflow" show={modal.commentModal.show} enforceFocus={false} onHide={handleClose} animation={false}>
                 <Modal.Body className="comment-modal-body">
                     <div className="comment-modal-top">
-
+                    </div>
+                    <div className="comment-modal-close-button-div">
+                        <button className="comment-modal-close-button" onClick={handleClose}><AiOutlineClose size="1.2em" /></button>
                     </div>
                     <div className="comment-modal-mid">
                         {
