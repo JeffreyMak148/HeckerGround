@@ -22,6 +22,7 @@ export const ShareButton = ({postId, commentNum, title, commentModal}) => {
                     containerStyle={commentModal ? {zIndex: "1060"} : {zIndex: "6"}}
                     padding={10}
                     isOpen={isPopoverOpen}
+                    reposition={false}
                     positions={['bottom', 'top', 'left']}
                     onClickOutside={() => setIsPopoverOpen(false)}
                     content={({ position, childRect, popoverRect }) => (
