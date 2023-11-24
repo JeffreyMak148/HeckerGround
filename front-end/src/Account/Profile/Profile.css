@@ -10,10 +10,6 @@
     z-index: 6000;
 }
 
-.profile-modal-dialog {
-    width: 25% !important;
-}
-
 .profile-modal-header {
     background-color: #2d2d39;
     color: #e8e8e8;
