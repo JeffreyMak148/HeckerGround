@@ -17,6 +17,10 @@
     padding-top: 8px;
 }
 
+.content-div.highlighted {
+    background-color: #2d283a;
+}
+
 .content-info {
     padding-bottom: 1rem;
 }
@@ -193,7 +197,7 @@ li {
 }
 
 .content-share-button {
-    background-color: #201c2c;
+    background-color: inherit;
     border: none;
     color: #fff;
     opacity: 0.7;

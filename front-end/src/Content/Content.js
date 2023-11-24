@@ -63,6 +63,7 @@ const Content = ({notFound}) => {
     }
 
     const commentParam = () => {
+        console.log(searchParams.get("comment"));
         return parseInt(searchParams.get("comment")) > 0 ? parseInt(searchParams.get("comment")) : NaN;
     }
 
@@ -325,7 +326,7 @@ const Content = ({notFound}) => {
                                                 }
                                                 <div id={`comment_${data.commentNumber}`} ref={node => {
                                                         scrollRef.current[data.commentNumber] = node;
-                                                    }} className="content-div">
+                                                    }} className={`content-div ${!!commentParam() && commentParam() === data.commentNumber ? "highlighted" : ""}`}>
                                                     <li>
                                                         <div className="content-info flex-display">
                                                             <div className="content-number-div">
