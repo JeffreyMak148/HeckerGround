@@ -35,6 +35,7 @@ const Content = ({notFound}) => {
     const [error, setError] = useState(false);
     const [totalPage, setTotalPage] = useState(null);
     const [renderedPages, setRenderedPages] = useState([]);
+    const contentRef = useRef(null);
     const scrollRef = useRef([]);
     const pageNumRef = useRef([]);
     const location = useLocation();
@@ -256,10 +257,16 @@ const Content = ({notFound}) => {
         }
     }, [loadingBar.contentLoading]);
 
+    const scrollToTop = () => {
+        if(!!contentRef) {
+            contentRef.current.scrollTop = 0;
+        }
+    }
+
     return (
         <>
             <ContentHeader />
-            <div className="content-overflow content-height">
+            <div className="content-overflow content-height" ref={contentRef}>
                 {
                     terms || privacy ?
                          terms ? <Terms/> : <Privacy/>
@@ -411,7 +418,7 @@ const Content = ({notFound}) => {
                                 }
                             </>
                 }
-                <Footer/>
+                <Footer scrollToTop={scrollToTop} />
             </div>
             <Tooltip id="date-tooltip" className="content-tooltip" clickable={true}/>
             <Tooltip id="reply-tooltip" className="content-tooltip" clickable={true}/>

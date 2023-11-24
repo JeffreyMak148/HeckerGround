@@ -3,18 +3,18 @@ import { AiOutlineCopyrightCircle } from "react-icons/ai";
 import { Link } from 'react-router-dom';
 import "./Footer.css";
 
-export const Footer = () => {
+export const Footer = ({scrollToTop}) => {
 
     return (
         <div className="footer">
             <div className="flex-display justify-content">
                 <div className="footer-terms">
-                    <Link to={`/terms-and-conditions`} className="footer-terms-link">
+                    <Link to={`/terms-and-conditions`} className="footer-terms-link" onClick={scrollToTop}>
                         Terms and Conditions
                     </Link>
                 </div>
                 <div className="footer-privacy">
-                    <Link to={`/privacy-policy`} className="footer-privacy-link">
+                    <Link to={`/privacy-policy`} className="footer-privacy-link" onClick={scrollToTop}>
                         Privacy Policy
                     </Link>
                 </div>
