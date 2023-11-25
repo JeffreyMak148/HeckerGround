@@ -151,7 +151,7 @@ public class CommentService {
     // Send notification
     if (comment.getCommentNumber() == 1) {
       Post post = comment.getPost();
-      post.setUpvote(comment.getDownvote());
+      post.setDownvote(comment.getDownvote());
       postRepository.save(post);
       notificationService.createAndSaveDownvotePostNotification(comment.getUser(), comment.getPost());
     } else {
