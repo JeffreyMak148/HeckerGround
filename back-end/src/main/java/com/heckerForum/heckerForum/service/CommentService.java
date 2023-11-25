@@ -43,10 +43,12 @@ public class CommentService {
   private VoteService voteService;
 
   @Transactional
-  public CommentDto save(Long postId, User user, String content, String plainText, Long replyCommentId,
+  public CommentDto save(Post post, User user, String content, String plainText, Long replyCommentId,
       List<String> imageSrcs) throws Exception {
     Comment comment = new Comment();
-    Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException());
+    if(post == null) {
+      throw new PostNotFoundException();
+    }
     Comment replyComment = null;
     if (replyCommentId != null) {
       replyComment = commentRepository.findById(replyCommentId).orElse(null);
@@ -71,6 +73,7 @@ public class CommentService {
     comment.setImageSrcs(imageSrcs);
 
     comment = commentRepository.save(comment);
+
     if (replyCommentId == null || replyComment.getCommentNumber() == 1) {
       // Replying to post
       // Send notification to post owner
@@ -94,6 +97,13 @@ public class CommentService {
   }
 
   @Transactional
+  public CommentDto save(Long postId, User user, String content, String plainText, Long replyCommentId,
+      List<String> imageSrcs) throws Exception {
+    Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException());
+    return save(post, user, content, plainText, replyCommentId, imageSrcs);
+  }
+
+  @Transactional
   public CommentDto saveUpvote(Long commentId, User user) throws Exception {
     if (user.getVotedComments().stream().anyMatch(v -> v.getComment().getId().equals(commentId))) {
       // Already voted comment;
@@ -112,6 +122,9 @@ public class CommentService {
     vote = voteService.save(vote);
     // Send notification
     if (comment.getCommentNumber() == 1) {
+      Post post = comment.getPost();
+      post.setUpvote(comment.getUpvote());
+      postRepository.save(post);
       notificationService.createAndSaveUpvotePostNotification(comment.getUser(), comment.getPost());
     } else {
       notificationService.createAndSaveUpvoteCommentNotification(comment.getUser(), comment);
@@ -137,6 +150,9 @@ public class CommentService {
     vote = voteService.save(vote);
     // Send notification
     if (comment.getCommentNumber() == 1) {
+      Post post = comment.getPost();
+      post.setUpvote(comment.getDownvote());
+      postRepository.save(post);
       notificationService.createAndSaveDownvotePostNotification(comment.getUser(), comment.getPost());
     } else {
       notificationService.createAndSaveDownvoteCommentNotification(comment.getUser(), comment);

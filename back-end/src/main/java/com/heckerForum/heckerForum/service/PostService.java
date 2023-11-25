@@ -47,7 +47,7 @@ public class PostService {
     // Create post
     Post createdPost = postRepository.save(post);
     // Create first comment
-    PostDto postDto = commentService.save(createdPost.getId(), user, content, plainText, null, imageSrcs).getPost();
+    PostDto postDto = commentService.save(createdPost, user, content, plainText, null, imageSrcs).getPost();
 
     return postDto;
   }

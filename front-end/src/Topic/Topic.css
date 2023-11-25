@@ -9,7 +9,7 @@
 
 .post-topic-div {
     text-align: center;
-    min-height: 75px;
+    min-height: 80px;
     display: flex;
     flex-wrap: wrap;
     width: 100%;
@@ -20,6 +20,7 @@
     flex-direction: column;
     overflow: hidden;
     width: 100%;
+    min-height: inherit;
     padding: 1rem 1.5rem;
     position: relative;
 }
@@ -28,7 +29,7 @@
     content: '';
     display: block;
     height: 1px;
-    width: 85%;
+    width: 90%;
     margin: 0px auto;
     border-top: 1px solid #4d4b57;
 }
@@ -83,13 +84,11 @@ li {
     font-size: 0.8rem;
     line-height: 1rem;
     text-align: left;
-    /* text-overflow: ellipsis; */
-    /* white-space: nowrap; */
-    /* overflow: hidden;  */
+    display: flex;
 }
 
 .post-topic-bottom-half {
-    font-size: 0.9rem;
+    font-size: 1rem;
     line-height: 1.3rem;
     text-align: left;
     text-overflow: ellipsis;
@@ -138,8 +137,17 @@ span {
     padding-right: 4px;
 }
 
-.date-color, .read {
+.date-color, .read, .post-vote, .post-num-replies {
     color: #717171;
+}
+
+.metadata-icon {
+    padding-right: 2px;
+}
+
+.post-num-replies {
+    padding-left: 0.5rem;
+    text-align: end;
 }
 
 .title-read {
@@ -261,4 +269,8 @@ span {
 
 .z-index-1 {
     z-index: 1;
+}
+
+.margin-left-auto {
+    margin-left: auto;
 }

@@ -26,7 +26,7 @@ public class UserController extends BaseController {
   }
 
   @GetMapping("{userId}")
-  public ResponseEntity<?> getProfileById(@PathVariable Long userId,
+  public ResponseEntity<?> getProfileByIdAndPagination(@PathVariable Long userId,
       @RequestParam(name = "page", defaultValue = "0") Integer page,
       @RequestParam(name = "size", defaultValue = "10") Integer size) throws Exception {
     return generateResponseEntity(userService.findPostsByUserIdAndPagination(userId, page, size, "id"));

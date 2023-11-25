@@ -22,6 +22,9 @@ public class Post {
   private LocalDateTime createDateTime;
   private String title;
   private Integer catId;
+  // Store first comment if more metadata is needed in the future
+  private Long upvote = Long.valueOf(0);
+  private Long downvote = Long.valueOf(0);
   private Integer numOfReplies;
 
 }

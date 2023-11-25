@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Placeholder } from 'react-bootstrap';
+import { BiSolidDownvote, BiSolidUpvote } from 'react-icons/bi';
+import { FaCommentDots } from 'react-icons/fa';
 import { Link, useLocation } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip';
 import { useContent } from '../Context/ContentProvider';
@@ -359,6 +361,10 @@ const Topic = () => {
             setNotificationRead(notification);
         }
     }
+
+    const calculateVote = (upvote, downvote) => {
+        return upvote - downvote;
+    }
     
 
     return (
@@ -411,7 +417,14 @@ const Topic = () => {
                                                     <div ref={datas.length === index + 1 ? lastDataRef : null} className="post-topic-div" title={data.title}>
                                                         <div className="post-topic-div-inner">                                                
                                                             <div className="post-topic-top-half">
-                                                                <span className="username-color">{data.user.username}</span> <span className="date-color">{formatDate(data.createDateTime)}</span>
+                                                                <span className="username-color">{data.user.username}</span>
+                                                                <span className="date-color">{formatDate(data.createDateTime)}</span>
+                                                                <div className="post-vote margin-left-auto flex-display">
+                                                                    <span className="metadata-icon flex-display">{data.upvote-data.downvote >= 0 ? <BiSolidUpvote size="0.9em"/> : <BiSolidDownvote size="0.9em"/>}</span>{data.upvote-data.downvote}
+                                                                </div>
+                                                                <div className="post-num-replies flex-display">
+                                                                    <span className="metadata-icon flex-display"><FaCommentDots size="0.9em"/></span>{data.numOfReplies}
+                                                                </div>
                                                             </div>
                                                             <div className="post-topic-bottom-half">
                                                                 <div className="data-title">{data.title}</div>

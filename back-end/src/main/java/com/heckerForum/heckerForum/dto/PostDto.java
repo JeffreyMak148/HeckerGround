@@ -22,6 +22,8 @@ public class PostDto extends ResponseData implements Serializable {
   private LocalDateTime createDateTime;
   private String title;
   private Integer catId;
+  private Long upvote;
+  private Long downvote;
   private Integer numOfReplies;
   private Boolean bookmarked = false;
 
@@ -31,6 +33,8 @@ public class PostDto extends ResponseData implements Serializable {
     this.createDateTime = post.getCreateDateTime();
     this.title = post.getTitle();
     this.catId = post.getCatId();
+    this.upvote = post.getUpvote();
+    this.downvote = post.getDownvote();
     this.numOfReplies = post.getNumOfReplies();
   }
 
