@@ -15,7 +15,6 @@ import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Base64;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -71,13 +70,11 @@ public class KeyUtil {
         X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(publicKeyBytes);
         PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);
         
-        log.info(Base64.getEncoder().encodeToString(publicKeySpec.getEncoded()));
 
         byte[] privateKeyBytes = Files.readAllBytes(privateKeyFile.toPath());
         PKCS8EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
         PrivateKey privateKey = keyFactory.generatePrivate(privateKeySpec);
         
-        log.info(Base64.getEncoder().encodeToString(privateKeySpec.getEncoded()));
 
         keyPair = new KeyPair(publicKey, privateKey);
 
@@ -104,13 +101,11 @@ public class KeyUtil {
         keyPair = keyPairGenerator.generateKeyPair();
         try (FileOutputStream fos = new FileOutputStream(publicKeyPath)) {
             X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyPair.getPublic().getEncoded());
-            log.info(Base64.getEncoder().encodeToString(keySpec.getEncoded()));
             fos.write(keySpec.getEncoded());
         }
 
         try (FileOutputStream fos = new FileOutputStream(privateKeyPath)) {
             PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyPair.getPrivate().getEncoded());
-            log.info(Base64.getEncoder().encodeToString(keySpec.getEncoded()));
             fos.write(keySpec.getEncoded());
         }
     } catch (NoSuchAlgorithmException | IOException e) {
