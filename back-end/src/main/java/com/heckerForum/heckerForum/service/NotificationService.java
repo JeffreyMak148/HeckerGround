@@ -182,7 +182,6 @@ public class NotificationService {
   }
 
   // TODO: Automatically delete notification after certain period?
-  // TODO: Use cache to queue notifications, then send notifications after certain
-  // period?
+  // TODO: Use cache to queue notifications, then send notifications after certain period?
 
 }

@@ -6,31 +6,34 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    transition: transform 0.3s ease-out;
+    transition: all 0.3s ease-out;
     z-index: 9999;
     margin-bottom: 2rem;
     will-change: transform;
     border-radius: 5px;
 }
 
-@keyframes slideIn {
+@keyframes slideFadeIn {
     from {
         transform: translateX(100%);
+        opacity: 0;
     }
 
     to {
         transform: translateX(0%);
+        opacity: 1;
     }
 }
 
 .popup.slideIn {
-    animation-name: slideIn;
+    animation-name: slideFadeIn;
     animation-duration: 0.2s;
     animation-timing-function: ease-in-out;
 }
 
 .popup.slideOut {
     transform: translateX(150%);
+    opacity: 0;
 }
 
 .popup-header {
