@@ -150,10 +150,18 @@ li {
     background-color: #43434f;
     border-radius: 5px;
     box-shadow: 0 0px 24px 3px rgba(0,0,0,1);
+    max-width: 450px;
+    margin-top: 6px;
 }
 
-.popover-arrow {
-    margin-top: -8px;
+.share-popover > .popover-arrow:after {
+    border-bottom-color: #43434f !important;
+}
+
+.share-popover-body {
+    color: #e8e8e8;
+    display: flex;
+    padding: 8px;
 }
 
 .popover-arrow-container {
