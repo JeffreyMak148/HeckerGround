@@ -423,7 +423,7 @@ const Topic = () => {
                                                             <div className={`post-topic-bottom-half${data.read ? ' read' : ''}`}>
                                                                 {data.type.includes("COMMENT") ? <div className="before-text"></div> : <></> }
                                                                 <div className="quote-message display-line-2">{data.message}</div>
-                                                                <Link to={`/posts/${data.post.id}?page=1`} className={`post-topic-link${data.id === topic.notificationId && content.postId === data.post.id ? ' selected-post-color' : ''}`} onClick={() => chooseNotification(data)}/>
+                                                                <Link to={`/posts/${data.post.id}?comment=${data.comment.commentNumber}`} className={`post-topic-link${data.id === topic.notificationId && content.postId === data.post.id ? ' selected-post-color' : ''}`} onClick={() => chooseNotification(data)}/>
                                                             </div>
                                                         </div>
                                                     </div>
