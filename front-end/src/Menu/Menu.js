@@ -44,7 +44,7 @@ const Menu = () => {
             });
         }
 
-    }, [topic]);
+    }, [topic.category]);
 
     useEffect(() => {
         if(user.showLogin || user.showProfile) {

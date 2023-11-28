@@ -80,16 +80,9 @@ const CreatePost = () => {
     }
 
     useEffect(() => {
-        fetchUtil("/api/posts/category", null, "GET")
-        .then(({status, data, currentUser}) => {
-            user.setCurrentUser(currentUser);
-            setCategoryDropdown(data);
-        })
-        .catch(error => {
-            modal.showErrorPopup(error.status, error.data?.errorMessage);
-        });
+        setCategoryDropdown(topic.category);
 
-    }, []);
+    }, [topic.category]);
 
     useEffect(() => {
         setCategoryInput(!!topic.selectedCatId ? topic.selectedCatId : categoryInput);
