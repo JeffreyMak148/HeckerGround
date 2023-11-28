@@ -65,7 +65,7 @@ public class NotificationService {
   @Transactional
   public void deleteByUser(User user) throws Exception {
     notificationRepository.deleteByUser(user);
-    user.setUnreadNotification(user.getUnreadNotification()-1);
+    user.setUnreadNotification(Long.valueOf(0));
     userRepository.save(user);
   }
   
@@ -73,6 +73,7 @@ public class NotificationService {
   public void delete(Long notificationId, User user) throws Exception {
     notificationRepository.deleteByUserAndId(user.getId(), notificationId);
     user.setUnreadNotification(Long.valueOf(0));
+    user.setUnreadNotification(user.getUnreadNotification()-1);
     userRepository.save(user);
   }
 
