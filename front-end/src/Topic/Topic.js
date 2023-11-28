@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Placeholder } from 'react-bootstrap';
 import { BiSolidDownvote, BiSolidUpvote } from 'react-icons/bi';
 import { FaCommentDots } from 'react-icons/fa';
+import { RxCross1 } from "react-icons/rx";
 import { Link, useLocation } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip';
 import { useContent } from '../Context/ContentProvider';
@@ -13,6 +14,7 @@ import fetchUtil from '../util/fetchUtil';
 import formatDate from '../util/formatDate';
 import sortUtil from '../util/sortUtil';
 import "./Topic.css";
+
 import { CreatePostButton } from './button/CreatePostButton';
 import { TopicHeader } from './header/TopicHeader';
 
@@ -244,7 +246,7 @@ const Topic = () => {
     function setNotificationRead(notification) {
         if(!loadingBar.topicLoading && !!notification) {
             loadingBar.setTopicLoading(true);
-            fetchUtil(`/api/notifications/${notification.id}/read`, null, "POST")
+            fetchUtil(`/api/notifications/read/${notification.id}`, null, "POST")
             .then(({status, data, currentUser}) => {
                 setDatas(currentTopic => {
                     let temp = [...currentTopic];
@@ -254,6 +256,27 @@ const Topic = () => {
                 if(!!currentUser) {
                     user.setUserProfile(currentUser);
                 }
+            })
+            .catch(error => {
+                modal.showErrorPopup(error.status, error.data?.errorMessage);
+            })
+            .finally(() => {
+                loadingBar.setTopicLoading(false)
+            });
+        }
+    }
+
+    function deleteNotification(notification) {
+        if(!loadingBar.topicLoading && !!notification) {
+            loadingBar.setTopicLoading(true);
+            fetchUtil(`/api/notifications/delete/${notification.id}`, null, "POST")
+            .then(({status, data, currentUser}) => {
+                if(!!currentUser) {
+                    user.setUserProfile(currentUser);
+                }
+                setDatas(notifications => {
+                    return datas.filter(n => n !== notification);
+                })
             })
             .catch(error => {
                 modal.showErrorPopup(error.status, error.data?.errorMessage);
@@ -360,12 +383,7 @@ const Topic = () => {
             topic.setNotificationId(notification.id);
             setNotificationRead(notification);
         }
-    }
-
-    const calculateVote = (upvote, downvote) => {
-        return upvote - downvote;
-    }
-    
+    }    
 
     return (
         <>
@@ -402,7 +420,13 @@ const Topic = () => {
                                                     <div ref={datas.length === index + 1 ? lastDataRef : null} className="post-topic-div" title={data.title}>
                                                         <div className="post-topic-div-inner">
                                                             <div className="post-topic-top-half">
-                                                                <span className={`notification-color${data.read ? ' title-read' : ''}`}>{data.title}</span> <span className="date-color">{formatDate(data.createDateTime)}</span>
+                                                                <span className={`notification-color${data.read ? ' title-read' : ''}`}>{data.title}</span>
+                                                                <span className="date-color">{formatDate(data.createDateTime)}</span>
+                                                                <div className="margin-left-auto flex-display">
+                                                                    <span onClick={() => deleteNotification(data)} data-tooltip-id="topic-tooltip" data-tooltip-content="Delete" data-tooltip-place="top" title="Delete" className="topic-delete-icon flex-display">
+                                                                        <RxCross1 />
+                                                                    </span>
+                                                                </div>
                                                             </div>
                                                             <div className={`post-topic-bottom-half${data.read ? ' read' : ''}`}>
                                                                 {data.type.includes("COMMENT") ? <div className="before-text"></div> : <></> }

@@ -8,6 +8,7 @@ import { useTopic } from "../../Context/TopicProvider";
 import "../Topic.css";
 import { CreatePostButton } from "../button/CreatePostButton";
 import { RefreshTopic } from "../button/RefreshTopic";
+import { TopicMoreButton } from "../button/TopicMoreButton";
 
 export const TopicHeader = () => {
 
@@ -90,6 +91,14 @@ export const TopicHeader = () => {
                 <div data-tooltip-id="topic-tooltip" data-tooltip-content="Create" data-tooltip-place="top" title="Create">
                     <CreatePostButton />
                 </div>
+                {
+                    title === "Notification" ?
+                        <div data-tooltip-id="topic-tooltip" data-tooltip-content="More" data-tooltip-place="top" title="More">
+                            <TopicMoreButton />
+                        </div>
+                    :
+                        <></>
+                }
             </div>
         </nav>
     );

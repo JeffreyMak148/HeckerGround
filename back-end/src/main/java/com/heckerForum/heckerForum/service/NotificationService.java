@@ -22,6 +22,8 @@ import com.heckerForum.heckerForum.models.User;
 import com.heckerForum.heckerForum.repository.NotificationRepository;
 import com.heckerForum.heckerForum.repository.UserRepository;
 
+import jakarta.transaction.Transactional;
+
 /* 
  * Notify when
  * 1. Users received comments on their post
@@ -51,6 +53,20 @@ public class NotificationService {
     notification.getUser().setUnreadNotification(notification.getUser().getUnreadNotification() - 1);
     userRepository.save(notification.getUser());
     return new NotificationDto(notification);
+  }
+  
+  @Transactional
+  public void deleteByUser(User user) throws Exception {
+    notificationRepository.deleteByUser(user);
+    user.setUnreadNotification(user.getUnreadNotification()-1);
+    userRepository.save(user);
+  }
+  
+  @Transactional
+  public void delete(Long notificationId, User user) throws Exception {
+    notificationRepository.deleteByUserAndId(user.getId(), notificationId);
+    user.setUnreadNotification(Long.valueOf(0));
+    userRepository.save(user);
   }
 
   public List<NotificationDto> findByUserId(Long userId) throws Exception {

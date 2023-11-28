@@ -21,9 +21,10 @@ public class CurrentUserDto extends ResponseData implements Serializable {
   private String username;
   private boolean enabled;
   private boolean locked;
+  private boolean authenticated;
   private Long unreadNotification;
   private Set<Authority> authorities;
-
+  
   public CurrentUserDto(User user) {
     this.id = user.getId();
     this.createDateTime = user.getCreateDateTime();

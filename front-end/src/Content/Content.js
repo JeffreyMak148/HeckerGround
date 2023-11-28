@@ -63,7 +63,6 @@ const Content = ({notFound}) => {
     }
 
     const commentParam = () => {
-        console.log(searchParams.get("comment"));
         return parseInt(searchParams.get("comment")) > 0 ? parseInt(searchParams.get("comment")) : NaN;
     }
 

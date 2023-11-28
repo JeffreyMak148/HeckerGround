@@ -42,12 +42,12 @@ const Main = ({notFound}) => {
                 <Menu />
                 <Row className="main-row">
                     <Allotment verticle={true} className="main-split">
-                        <Allotment.Pane minSize="100" preferredSize="25%">
+                        <Allotment.Pane minSize="100" preferredSize="28%">
                             <Col className="topic-col">
                                 <Topic />
                             </Col>
                         </Allotment.Pane>
-                        <Allotment.Pane minSize="200" preferredSize="75%">
+                        <Allotment.Pane minSize="200" preferredSize="72%">
                             <Col className="content-col">
                                 <Content notFound={notFound}/>
                             </Col>

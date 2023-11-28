@@ -37,7 +37,7 @@ public class NotificationController extends BaseController {
     return generateResponseEntity(response);
   }
 
-  @PostMapping("/{notificationId}/read")
+  @PostMapping("/read/{notificationId}")
   public ResponseEntity<?> setNotificationRead(@PathVariable Long notificationId,
       @AuthenticationPrincipal User loggedInUser) throws Exception {
     if (loggedInUser == null || notificationId == null) {
@@ -45,6 +45,29 @@ public class NotificationController extends BaseController {
     }
 
     return generateResponseEntity(notificationService.saveRead(notificationId));
+  }
+  
+  @PostMapping("/delete/all")
+  public ResponseEntity<?> deleteAllNotification(@AuthenticationPrincipal User loggedInUser) throws Exception {
+    if (loggedInUser == null) {
+      return generateResponseEntity(null);
+    }
+    
+    notificationService.deleteByUser(loggedInUser);
+
+    return generateResponseEntity(null);
+  }
+  
+  @PostMapping("/delete/{notificationId}")
+  public ResponseEntity<?> deleteNotification(@PathVariable Long notificationId,
+      @AuthenticationPrincipal User loggedInUser) throws Exception {
+    if (loggedInUser == null || notificationId == null) {
+      return generateResponseEntity(null);
+    }
+    
+    notificationService.delete(notificationId, loggedInUser);
+
+    return generateResponseEntity(null);
   }
 
 }

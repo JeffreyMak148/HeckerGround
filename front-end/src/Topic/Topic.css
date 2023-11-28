@@ -141,6 +141,16 @@ span {
     color: #717171;
 }
 
+.topic-delete-icon {
+    color: #717171;
+    z-index: 1;
+}
+
+.topic-delete-icon:hover {
+    color: #e8e8e8;
+    cursor: pointer;
+}
+
 .metadata-icon {
     padding-right: 2px;
 }
