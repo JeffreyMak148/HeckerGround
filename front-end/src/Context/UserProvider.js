@@ -7,7 +7,17 @@ const UserProvider = ({children}) => {
     const [showLogin, setShowLogin] = useState(false);
     const [userProfile, setUserProfile] = useState(null);
     const [showProfile, setShowProfile] = useState(false);
-    const value = {isLoggedIn, setIsLoggedIn, showLogin, setShowLogin, userProfile, setUserProfile, showProfile, setShowProfile};
+
+    const setCurrentUser = (currentUser) => {
+        if(!!currentUser && currentUser.authenticated) {
+            setIsLoggedIn(true);
+            setUserProfile(currentUser);
+        } else {
+            setIsLoggedIn(false);
+            setUserProfile(null);
+        }
+    }
+    const value = {isLoggedIn, setIsLoggedIn, showLogin, setShowLogin, userProfile, setUserProfile, showProfile, setShowProfile, setCurrentUser};
     return <UserContext.Provider value={value}>{children}</UserContext.Provider>
 };
 
@@ -20,3 +30,4 @@ function useUser() {
 }
 
 export { UserProvider, useUser };
+

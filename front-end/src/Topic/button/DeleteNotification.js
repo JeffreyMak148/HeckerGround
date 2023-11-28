@@ -12,9 +12,7 @@ export const DeleteNotification = ({notificationId}) => {
     const deleteNotification = () => {
         fetchUtil(`/api/notifications/delete/${notificationId}`, null, "POST")
             .then(({status, data, currentUser}) => {
-                if(!!currentUser) {
-                    user.setUserProfile(currentUser);
-                }
+                user.setCurrentUser(currentUser);
             })
             .catch(error => {
                 modal.showErrorPopup(error.status, error.data?.errorMessage);

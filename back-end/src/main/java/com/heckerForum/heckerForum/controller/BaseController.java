@@ -55,6 +55,7 @@ public class BaseController {
       userDto.setUnreadNotification(user.getUnreadNotification());
       userDto.setEnabled(user.isEnabled());
       userDto.setLocked(user.isLocked());
+      userDto.setAuthenticated(SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
       if (!(data instanceof ResponseData)) {
         return ResponseEntity.ok(new GenericWrapper(userDto, data));
       }

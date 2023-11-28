@@ -3,11 +3,13 @@ import { Col, Container, Modal, Row } from 'react-bootstrap';
 import isEmail from 'validator/lib/isEmail';
 import { useLoading } from '../../Context/LoadingProvider';
 import { useModal } from '../../Context/ModalProvider';
+import { useUser } from '../../Context/UserProvider';
 import fetchUtil from '../../util/fetchUtil';
 import "./ResetPassword.css";
 
 export const VerifyResetPassword = ({modalType, setModalType, show, handleClose, tempResetEmail, setTempResetCode}) => {
     const modal = useModal();
+    const user = useUser();
     const loadingBar = useLoading();
     const [resetCode, setResetCode] = useState("");
     const [validCode, setValidCode] = useState(true);
@@ -38,7 +40,8 @@ export const VerifyResetPassword = ({modalType, setModalType, show, handleClose,
         loadingBar.setBackgroundLoading(true);
 
         fetchUtil(`/api/auth/reset-password/send`, reqBody, "POST")
-        .then(({status, data}) => {
+        .then(({status, data, currentUser}) => {
+            user.setCurrentUser(currentUser);
         })
         .then(() => {
             modal.showPopup("Notification", "Code sent.");
@@ -80,7 +83,8 @@ export const VerifyResetPassword = ({modalType, setModalType, show, handleClose,
         loadingBar.setBackgroundLoading(true);
 
         fetchUtil(`/api/auth/reset-password/verify`, reqBody, "POST")
-        .then(({status, data}) => {
+        .then(({status, data, currentUser}) => {
+            user.setCurrentUser(currentUser);
         })
         .then(() => {
             setTempResetCode(resetCode);

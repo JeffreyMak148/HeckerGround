@@ -30,9 +30,7 @@ export const TopicMoreButton = () => {
             setShow(false);
             fetchUtil(`/api/notifications/delete/all`, null, "POST")
             .then(({status, data, currentUser}) => {
-                if(!!currentUser) {
-                    user.setUserProfile(currentUser);
-                }
+                user.setCurrentUser(currentUser);
             })
             .then(() => {
                 topic.setRefresh(true);
@@ -57,9 +55,7 @@ export const TopicMoreButton = () => {
             setShow(false);
             fetchUtil(`/api/notifications/read/all`, null, "POST")
             .then(({status, data, currentUser}) => {
-                if(!!currentUser) {
-                    user.setUserProfile(currentUser);
-                }
+                user.setCurrentUser(currentUser);
             })
             .then(() => {
                 topic.setRefresh(true);

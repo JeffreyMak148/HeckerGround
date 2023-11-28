@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 
 import { useLoading } from '../../Context/LoadingProvider';
 import { useModal } from '../../Context/ModalProvider';
+import { useUser } from '../../Context/UserProvider';
 import fetchUtil from '../../util/fetchUtil';
 import { INSERT_IMAGE_COMMAND } from './ImagePlugin';
 
@@ -21,6 +22,7 @@ export default function DragDropPaste() {
   const [editor] = useLexicalComposerContext();
   const loading = useLoading();
   const modal = useModal();
+  const user = useUser();
 
   useEffect(() => {
     return editor.registerCommand(
@@ -38,6 +40,7 @@ export default function DragDropPaste() {
               loading.setBackgroundLoading(true);
               fetchUtil(`/api/file`, formData, "POST", true)
               .then(({status, currentUser, data}) => {
+                user.setCurrentUser(currentUser);
                 const filename = data;
                 editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
                   altText: file.name,

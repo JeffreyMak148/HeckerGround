@@ -3,6 +3,7 @@ import { Modal } from 'react-bootstrap';
 import { AiOutlineClose } from "react-icons/ai";
 import { Tooltip } from 'react-tooltip';
 import { useModal } from '../../Context/ModalProvider';
+import { useUser } from '../../Context/UserProvider';
 import fetchUtil from '../../util/fetchUtil';
 import formatDate, { formatFullDate } from '../../util/formatDate';
 import renderHtml from '../../util/renderHtml';
@@ -18,6 +19,7 @@ export const CommentModal = () => {
     const [comment, setComment] = useState(null);
     const [replyComments, setReplyComments] = useState(null);
     const modal = useModal();
+    const user = useUser();
 
     const handleClose = () => {
         modal.setCommentModal(commentModal => ({commentId: null, show: false}))
@@ -26,7 +28,8 @@ export const CommentModal = () => {
     useEffect(() => {
         if(!!modal.commentModal.commentId) {
             fetchUtil(`/api/comments/${modal.commentModal.commentId}`, null, "GET")
-            .then(({status, data}) => {
+            .then(({status, data, currentUser}) => {
+                user.setCurrentUser(currentUser);
                 setComment(data.comment);
                 setReplyComments(data.replyComments);
                 modal.setCommentModal(commentModal => ({...commentModal, show: true}));

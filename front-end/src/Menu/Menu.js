@@ -35,6 +35,7 @@ const Menu = () => {
         if(!topic.category) {
             fetchUtil("/api/posts/category", null, "GET")
             .then(({status, currentUser, data}) => {
+                user.setCurrentUser(currentUser);
                 setMenuData(data);
                 topic.setCategory(data);
             })

@@ -22,6 +22,7 @@ import { CAN_USE_DOM } from '../utils/canUseDOM';
 
 import { useLoading } from '../../Context/LoadingProvider';
 import { useModal } from '../../Context/ModalProvider';
+import { useUser } from '../../Context/UserProvider';
 import fetchUtil from '../../util/fetchUtil';
 import {
   $createImageNode,
@@ -63,6 +64,7 @@ export function InsertImageDialog({
   const [show, setShow] = useState(true);
   const loading = useLoading();
   const modal = useModal();
+  const user = useUser();
 
   function uploadImage(imageFile) {
     let formData = new FormData();
@@ -71,6 +73,7 @@ export function InsertImageDialog({
     loading.setBackgroundLoading(true);
     fetchUtil(`/api/file`, formData, "POST", true)
     .then(({status, currentUser, data}) => {
+      user.setCurrentUser(currentUser);
       if(!!imageBlobUrl) {
         URL.revokeObjectURL(imageBlobUrl);
       }

@@ -55,7 +55,8 @@ const CreateComment = () => {
         if(!loadingBar.backgroundLoading) {
             loadingBar.setBackgroundLoading(true);
             fetchUtil(`/api/comments/${postId}`, reqBody, "POST")
-            .then(({status, data}) => {
+            .then(({status, data, currentUser}) => {
+                user.setCurrentUser(currentUser);
                 if(status === 200) {
                     handleHideCreateComment();
                     content.setRefresh(true);

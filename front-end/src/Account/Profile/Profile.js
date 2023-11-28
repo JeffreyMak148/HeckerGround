@@ -19,7 +19,8 @@ export const Profile = () => {
     useEffect(() => {
         if(!!modal.profileModal.profileId) {
             fetchUtil(`/api/profile/user/${modal.profileModal.profileId}`, null, "GET")
-            .then(({status, data}) => {
+            .then(({status, currentUser, data}) => {
+                user.setCurrentUser(currentUser);
                 setProfileUser(data.user);
                 modal.setProfileModal(profileModal => ({...profileModal, show: true}));
             })
@@ -39,9 +40,8 @@ export const Profile = () => {
     function sendLogoutRequest() {
         loadingBar.setBackgroundLoading(true);
         fetchUtil("/api/auth/signout", null, "POST")
-        .then(({status, data}) => {
-            user.setIsLoggedIn(false);
-            window.location.href = "";
+        .then(({status, data, currentUser}) => {
+            user.setCurrentUser(currentUser);
         })
         .then(() => {
             handleClose();

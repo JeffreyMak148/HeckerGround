@@ -115,9 +115,7 @@ const Topic = () => {
                 } else {
                     setDatas(currentTopics => ([...currentTopics, ...data.topics]));
                 }
-                if(!!currentUser) {
-                    user.setUserProfile(currentUser);
-                }
+                user.setCurrentUser(currentUser);
             })
             .then(() => {
             })
@@ -153,9 +151,7 @@ const Topic = () => {
                 } else {
                     setDatas(currentTopics => ([...currentTopics, ...data.posts]));
                 }
-                if(!!currentUser) {
-                    user.setUserProfile(currentUser);
-                }
+                user.setCurrentUser(currentUser);
             })
             .then(() => {
             })
@@ -190,9 +186,7 @@ const Topic = () => {
                 } else {
                     setDatas(currentTopics => ([...currentTopics, ...data.notifications]));
                 }
-                if(!!currentUser) {
-                    user.setUserProfile(currentUser);
-                }
+                user.setCurrentUser(currentUser);
             })
             .then(() => {
             })
@@ -228,9 +222,7 @@ const Topic = () => {
                 } else {
                     setDatas(currentTopics => ([...currentTopics, ...data.topics]));
                 }
-                if(!!currentUser) {
-                    user.setUserProfile(currentUser);
-                }
+                user.setCurrentUser(currentUser);
             })
             .then(() => {
             })
@@ -253,9 +245,7 @@ const Topic = () => {
                     Object.assign(temp.find(item => data.id === item.id), data);
                     return temp;
                 });
-                if(!!currentUser) {
-                    user.setUserProfile(currentUser);
-                }
+                user.setCurrentUser(currentUser);
             })
             .catch(error => {
                 modal.showErrorPopup(error.status, error.data?.errorMessage);
@@ -271,9 +261,7 @@ const Topic = () => {
             loadingBar.setTopicLoading(true);
             fetchUtil(`/api/notifications/delete/${notification.id}`, null, "POST")
             .then(({status, data, currentUser}) => {
-                if(!!currentUser) {
-                    user.setUserProfile(currentUser);
-                }
+                user.setCurrentUser(currentUser);
                 setDatas(notifications => {
                     return datas.filter(n => n !== notification);
                 })

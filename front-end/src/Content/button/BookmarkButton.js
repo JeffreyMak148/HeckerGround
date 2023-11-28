@@ -22,6 +22,7 @@ export const BookmarkButton = () => {
             loadingBar.setBackgroundLoading(true);
             fetchUtil(`/api/bookmarks/${content.postId}`, null, "POST")
             .then(({status, data, currentUser}) => {
+                user.setCurrentUser(currentUser);
                 if(status === 200) {
                 } else if(status === 401) {
                     user.setIsLoggedIn(false);
@@ -29,9 +30,6 @@ export const BookmarkButton = () => {
                 }
                 if(!!data) {
                     content.setPost(data.post);
-                }
-                if(!!currentUser) {
-                    user.setUserProfile(currentUser);
                 }
             }).then(() => {
             })

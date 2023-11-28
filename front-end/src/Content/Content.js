@@ -5,6 +5,7 @@ import { Tooltip } from 'react-tooltip';
 import { useContent } from '../Context/ContentProvider';
 import { useLoading } from '../Context/LoadingProvider';
 import { useModal } from '../Context/ModalProvider';
+import { useUser } from '../Context/UserProvider';
 import fetchUtil from '../util/fetchUtil';
 import formatDate, { formatFullDate } from '../util/formatDate';
 import renderHtml from '../util/renderHtml';
@@ -41,6 +42,7 @@ const Content = ({notFound}) => {
     const location = useLocation();
     const content = useContent();
     const modal = useModal();
+    const user = useUser();
     const loadingBar = useLoading();
     const pageSize = 20;
 
@@ -152,7 +154,8 @@ const Content = ({notFound}) => {
                 setComments([]);
             }
             fetchUtil(`/api/posts/${postIdOption}?page=${pageNumOption-1}&size=${pageSizeOption}`, null, "GET")
-            .then(({status, data}) => {
+            .then(({status, data, currentUser}) => {
+                user.setCurrentUser(currentUser);
                 if(!data.comments && !data.post) {
                     setError(true);
                 }
@@ -229,6 +232,7 @@ const Content = ({notFound}) => {
                 loadingBar.setContentLoading(true);
                 fetchUtil(`/api/posts/${content.postId}/range?pageStart=${pageStart-1}&pageEnd=${pageEnd-1}&size=${pageSize}`, null, "GET")
                 .then(({status, data, currentUser}) => {
+                    user.setCurrentUser(currentUser);
                     setComments(currentComments => ([...data.comments]));
                     setHasMore((data.comments.length === (pageEnd - pageStart + 1) * pageSize));
                     setTotalPage(getPageNumber(data.post.numOfReplies));

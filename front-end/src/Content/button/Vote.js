@@ -22,7 +22,8 @@ export const Vote = ({comment}) => {
             }
             loadingBar.setBackgroundLoading(true);
             fetchUtil(`/api/comments/upvote/${id}`, null, "POST")
-            .then(({status, data}) => {
+            .then(({status, data, currentUser}) => {
+                user.setCurrentUser(currentUser);
                 if(status === 200) {
                     content.setRefresh(true);
                 } else if(status === 401) {
@@ -49,7 +50,8 @@ export const Vote = ({comment}) => {
             }
             loadingBar.setBackgroundLoading(true);
             fetchUtil(`/api/comments/downvote/${id}`, null, "POST")
-            .then(({status, data}) => {
+            .then(({status, data, currentUser}) => {
+                user.setCurrentUser(currentUser);
                 if(status === 200) {
                     content.setRefresh(true);
                 } else if(status === 401) {

@@ -56,7 +56,8 @@ const CreatePost = () => {
                 imageSrcs: imageSrcs
             }
             fetchUtil("/api/posts", reqBody, "POST")
-            .then(({status, data}) => {
+            .then(({status, data, currentUser}) => {
+                user.setCurrentUser(currentUser);
                 if(status === 200) {
                     setHTML("");
                     setText("");
@@ -80,7 +81,8 @@ const CreatePost = () => {
 
     useEffect(() => {
         fetchUtil("/api/posts/category", null, "GET")
-        .then(({status, data}) => {
+        .then(({status, data, currentUser}) => {
+            user.setCurrentUser(currentUser);
             setCategoryDropdown(data);
         })
         .catch(error => {
