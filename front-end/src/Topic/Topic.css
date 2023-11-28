@@ -252,6 +252,13 @@ span {
     line-height: 3rem;
 }
 
+.empty-text {
+    text-align: center;
+    font-size: 1.3rem;
+    padding-top: 1rem;
+    color:#717171;
+}
+
 .flex-display {
     display: flex;
     align-items: center;

@@ -44,7 +44,8 @@ public class NotificationService {
   public NotificationDto save(Notification notification) throws Exception {
     return new NotificationDto(notificationRepository.save(notification));
   }
-
+  
+  @Transactional
   public NotificationDto saveRead(Long notificationId) throws Exception {
     Notification notification = notificationRepository.findById(notificationId)
         .orElseThrow(() -> new NotificationNotFoundException());
@@ -53,6 +54,12 @@ public class NotificationService {
     notification.getUser().setUnreadNotification(notification.getUser().getUnreadNotification() - 1);
     userRepository.save(notification.getUser());
     return new NotificationDto(notification);
+  }
+  
+  @Transactional
+  public void saveReadAll(User user) throws Exception {
+    notificationRepository.updateNotificationReadByUserId(user.getId());
+    userRepository.resetUnreadNotificationByUserId(user.getId());
   }
   
   @Transactional

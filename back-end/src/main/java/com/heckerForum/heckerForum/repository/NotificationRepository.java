@@ -22,4 +22,10 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
   @Query(value = "DELETE FROM notification n WHERE n.user_id = ?1 AND n.id = ?2",
       nativeQuery = true)
   void deleteByUserAndId(Long userId, Long notificationId);
+  
+  @Modifying
+  @Query(value = "UPDATE notification n SET n.is_read = 1 WHERE n.user_id = ?1",
+      nativeQuery = true)
+  void updateNotificationReadByUserId(Long userId);
+
 }

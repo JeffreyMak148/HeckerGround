@@ -47,6 +47,15 @@ public class NotificationController extends BaseController {
     return generateResponseEntity(notificationService.saveRead(notificationId));
   }
   
+  @PostMapping("/read/all")
+  public ResponseEntity<?> setAllNotificationRead(@AuthenticationPrincipal User loggedInUser) throws Exception {
+    if (loggedInUser == null) {
+      return generateResponseEntity(null);
+    }
+    notificationService.saveReadAll(loggedInUser);
+    return generateResponseEntity(null);
+  }
+  
   @PostMapping("/delete/all")
   public ResponseEntity<?> deleteAllNotification(@AuthenticationPrincipal User loggedInUser) throws Exception {
     if (loggedInUser == null) {

@@ -17,6 +17,7 @@
     color: #e8e8e8;
     display: flex;
     padding: 8px 4px;
+    flex-direction: column;
 }
 
 .topic-more-popover > .popover-arrow:after {
@@ -35,7 +36,7 @@
     padding-left: 8px;
 }
 
-.delete-notifications-button {
+.read-notifications-button, .delete-notifications-button {
     background-color: #2d2d39;
     border: none;
     color: #fff;
@@ -43,7 +44,7 @@
     height: 3rem;
 }
 
-.delete-notifications-button:hover {
+.read-notifications-button:hover, .delete-notifications-button:hover {
     background-color: #43434f;
     transition: all 0.1s;
     border-radius: 3px;

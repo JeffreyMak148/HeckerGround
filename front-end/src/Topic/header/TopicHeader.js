@@ -92,7 +92,7 @@ export const TopicHeader = () => {
                     <CreatePostButton />
                 </div>
                 {
-                    title === "Notification" ?
+                    title === "Notifications" ?
                         <div data-tooltip-id="topic-tooltip" data-tooltip-content="More" data-tooltip-place="top" title="More">
                             <TopicMoreButton />
                         </div>

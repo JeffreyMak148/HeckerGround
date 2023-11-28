@@ -409,6 +409,10 @@ const Topic = () => {
                                 )
                             }
                         </ul>
+                    :   !!datas && datas.length === 0 && topic.notification ?
+                            <div className="empty-text">
+                                No notifications
+                            </div>
                     :
                         <ul>
                             {

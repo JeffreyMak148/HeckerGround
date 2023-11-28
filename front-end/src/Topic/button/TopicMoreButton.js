@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
-import { MdDeleteForever, MdMoreVert } from "react-icons/md";
+import { MdChecklistRtl, MdDeleteForever, MdMoreVert } from "react-icons/md";
+
 
 import { Overlay, Popover } from 'react-bootstrap';
 import { useLoading } from '../../Context/LoadingProvider';
@@ -45,18 +46,52 @@ export const TopicMoreButton = () => {
         }
     };
 
+    const readAllNotificationOption = () => {
+        if(!user.isLoggedIn) {
+            user.setShowLogin(true);
+            return;
+        }
+
+        if(!loadingBar.topicLoading) {
+            loadingBar.setTopicLoading(true);
+            setShow(false);
+            fetchUtil(`/api/notifications/read/all`, null, "POST")
+            .then(({status, data, currentUser}) => {
+                if(!!currentUser) {
+                    user.setUserProfile(currentUser);
+                }
+            })
+            .then(() => {
+                topic.setRefresh(true);
+            })
+            .catch(error => {
+                modal.showErrorPopup(error.status, error.data?.errorMessage);
+            })
+            .finally(() => {
+                loadingBar.setTopicLoading(false)
+            });
+        }
+    };
+
     return (
         <>
             <div ref={target} className="topic-more-button-div">
                 <button className="topic-more-button" onClick={() => setShow(!show)}><MdMoreVert/></button>
             </div>
-            <Overlay target={target.current} show={show} placement="bottom-end">
+            <Overlay rootClose target={target.current} show={show} onHide={() => setShow(false)} placement="bottom-end">
                 {({
                     ...props
                 }) => (
                     <Popover {...props} className="topic-more-popover">
                         <Popover.Body className="topic-more-popover-body">
-                            <button onClick={deleteAllNotificationOption} className="flex-display delete-notifications-button"><MdDeleteForever size="1.2em" /><span className="popover-text">Delete all notifications</span></button>
+                            <button onClick={readAllNotificationOption} className="flex-display read-notifications-button">
+                                <MdChecklistRtl size="1.2em" />
+                                <span className="popover-text">Mark all notifications as read</span>
+                            </button>
+                            <button onClick={deleteAllNotificationOption} className="flex-display delete-notifications-button">
+                                <MdDeleteForever size="1.2em" />
+                                <span className="popover-text">Delete all notifications</span>
+                            </button>
                         </Popover.Body>
                     </Popover>
                 )}
