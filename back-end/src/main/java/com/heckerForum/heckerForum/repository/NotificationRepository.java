@@ -16,12 +16,9 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 
   Page<Notification> findByUser(User user, Pageable pageable);
   
-  void deleteByUser(User user);
+  Notification findByUserAndId(User user, Long notificationId);
   
-  @Modifying
-  @Query(value = "DELETE FROM notification n WHERE n.user_id = ?1 AND n.id = ?2",
-      nativeQuery = true)
-  void deleteByUserAndId(Long userId, Long notificationId);
+  void deleteByUser(User user);
   
   @Modifying
   @Query(value = "UPDATE notification n SET n.is_read = 1 WHERE n.user_id = ?1",
