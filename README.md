@@ -1,19 +1,22 @@
 
 # HeckerGround
 Heckerground is an Australia online anonymous forum built using Spring Boot and React.
-This site is developed with an intention to provide people in Australia a platform to ask any questions, comment on current issues or just complain on trivial matters in daily life.
+This platform is developed with an intention to provide people in Australia a platform to ask any questions, comment on current issues or just complain on trivial matters in daily life.
 
-Heckerground is fully anonymous, every users are equals. Fame, wealth, title does not grant anyone priviledge.
-Quantity is the only thing matters in Heckerground, "*Best Restaurant in Melbourne CBD is xxx*" "*Pizza or sushi?*" "*React.js or Angular?*" Just smash that upvote/downvote button!
+Heckerground is fully anonymous, every users are equal. Fame, wealth, title does not grant anyone priviledge.
+State your most insane take, start a full blown argument against someone at the most unhinged place in the internet! "*Best Restaurant in Melbourne CBD is xxx*" "*Pizza or sushi?*" "*React or Angular?*"
 
-No reason needed, no inbetween option, just a simple yes or no, the only thing meaningful here is the number of people agreeing/disagreeing , to know the majority stands.
+Agree or disagree by smashing the upvote/downvote button!
+No inbetween option, just a simple yes or no, the only thing meaningful here is the number of people agreeing/disagreeing , to know where the majority stands.
+
+No more [deleted] comments like you see in reddit, Heckerground prevent this by disabling the ability to delete any comments, don't let this discourage you from posting comment, who cares if you make a typo in the comment or left a regretful comment. After all, it is all anonymous.
 
 > Note: User can not delete, edit or undo post/comment/vote, unless the content violates the terms
 > and conditions.
 
-You can treat this as an anonymous survey site, an online forum with bare minimum moderation, just keep in mind that everything is fully anonymous and please do not dox yourself.
+You can treat this as an anonymous survey site or an online forum with bare minimum moderation, just keep in mind that everything is fully anonymous and please do not dox yourself.
 
-Heckerground is public and open source to reinforce the idea that the website is fully secured and no personal details can be leaked.
+Source code for Heckerground is publicly available to reinforce the idea that the website is fully secured and no personal details can be leaked.
 
 ## Architecture Diagrams
 [Diagrams shown here](Artifacts/README.md)
@@ -27,7 +30,8 @@ Heckerground is public and open source to reinforce the idea that the website is
 
 ### Generate RSA key pair for both access tokens and refresh tokens
 
-These key pairs will be used for Jwt signature, you can uncomment line 86-113 in KeyUtil.java for the application to generate the key pairs and store them, if you don't wish to generate the key pairs yourself.
+These key pairs will be used for Jwt signature, name the keys as ```public.key``` and ```private.key``` then place them in ```\back-end\access-refresh-token-keys\access-keys```
+The application will generate random key pairs and store them if no keys are found in the above file path.
 
 ### Start the application
 
@@ -50,7 +54,8 @@ This will host a local server at localhost
 
 ### Generate RSA key pair for both access tokens and refresh tokens
 
-These key pairs will be used for Jwt signature, you can uncomment line 86-113 in KeyUtil.java for the application to generate the key pairs and store them, if you don't wish to generate the key pairs yourself.
+These key pairs will be used for Jwt signature, name the keys as ```public.key``` and ```private.key``` then place them in ```\back-end\access-refresh-token-keys\access-keys```
+The application will generate random key pairs and store them if no keys are found in the above file path.
 
 ### Create an MySQL database
 Create a MySQL database `forumdb` with a username and password, configure the application-local.properties file to match the MySQL database connection details.
