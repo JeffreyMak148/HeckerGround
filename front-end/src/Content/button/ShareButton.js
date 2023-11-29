@@ -29,7 +29,7 @@ export const ShareButton = ({postId, commentNum, title, commentModal}) => {
     );
 
     return (
-            !!postId ? 
+            !!postId &&
                     <OverlayTrigger
                         trigger="click"
                         rootClose
@@ -45,7 +45,5 @@ export const ShareButton = ({postId, commentNum, title, commentModal}) => {
                             }
                         </span>
                     </OverlayTrigger>
-                :
-                    <></>
     );
 };

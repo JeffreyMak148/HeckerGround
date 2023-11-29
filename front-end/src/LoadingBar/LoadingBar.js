@@ -9,12 +9,10 @@ const LoadingBar = () => {
     return (
         <>
             {
-                loading.backgroundLoading || loading.topicLoading || loading.contentLoading ?
+                (loading.backgroundLoading || loading.topicLoading || loading.contentLoading) &&
                     <div>
                         <div className="loading-bar"/>
                     </div>
-                :
-                <></>
             }
         </>
     );

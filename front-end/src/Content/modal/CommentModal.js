@@ -58,7 +58,7 @@ export const CommentModal = () => {
                     </div>
                     <div className="comment-modal-mid">
                         {
-                            comment ? 
+                            comment &&
                                 <div key={comment.id}>
                                     <div className="flex-display margin-bottom-1">
                                         <div className="comment-modal-comment-number">
@@ -88,14 +88,12 @@ export const CommentModal = () => {
                                         </div>
                                     </div>
                                 </div>
-                            :
-                            <></>
                         }
                     </div>
                     <div className="reply-text">Replied</div>
                     <div className="comment-modal-bottom">                        
                         {
-                            replyComments ? replyComments.map((data, index) => {
+                            replyComments && replyComments.map((data, index) => {
                                 return <div className="comment-modal-reply" key={data.id}>
                                     <div className="flex-display">
                                         <div className="comment-modal-reply-number">
@@ -123,18 +121,14 @@ export const CommentModal = () => {
                                             <Vote comment={data} />
                                         </div>
                                         {
-                                            data.numberOfReply > 0 ?
+                                            data.numberOfReply > 0 &&
                                             <div className="comment-modal-comment-count">
                                                 <CommentCount count={data.numberOfReply} commentId={data.id}/>
                                             </div>
-                                            :
-                                            <></>
                                         }
                                     </div>
                                 </div>
                             })
-                            :
-                            <></>
                         }
                     </div>
                     <div className="fin-text">Fin</div>

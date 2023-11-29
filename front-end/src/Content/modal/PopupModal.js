@@ -38,7 +38,7 @@ export const PopupModal = ({position, id}) => {
     return (
         <>
             {
-                !!popup ?
+                !!popup &&
                     <div style={{top: `${position}rem`}} key={id} className={isClosing ? "popup slideOut content-overflow" : "popup slideIn content-overflow"}>
                         <div className="popup-header flex-display">
                             <div className="popup-title">
@@ -69,8 +69,6 @@ export const PopupModal = ({position, id}) => {
                             }
                         </div>
                     </div>
-                :
-                <></>
             }
         </>
     );

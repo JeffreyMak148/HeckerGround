@@ -111,7 +111,6 @@ const CreateComment = () => {
                                 </div>
                             }
                             <RichTextEditor setHTML={setHTML} setText={setText} setImageSrcs={setImageSrcs} setEmpty={setEmpty} />
-                            {/* <textarea className="create-comment-input" wrap="soft" id="postComment" placeholder="Comment" value={inputComment} onChange={(e) => setInputComment(e.target.value)} /> */}
                         </div>
                     </ResizeableDiv>
                 </div>

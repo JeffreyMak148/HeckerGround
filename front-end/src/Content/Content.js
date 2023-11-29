@@ -304,19 +304,17 @@ const Content = ({notFound}) => {
                         :
                             <>
                                 {
-                                    !!comments && !!content.postId && renderedPages.length > 0 && !renderedPages.includes(1) ? 
+                                    !!comments && !!content.postId && renderedPages.length > 0 && !renderedPages.includes(1) &&
                                         <div>
                                             <LoadPreviousPage fetchData={fetchPreviousPage} />
                                         </div>
-                                    :
-                                        <></>
                                 }
                                 <ul>
                                     {
-                                    comments ? comments.map((data, index) => {
+                                    comments && comments.map((data, index) => {
                                             return <React.Fragment key={data.id}>
                                                 {
-                                                    data.commentNumber === 1 || (data.commentNumber-1) % pageSize === 0 ?
+                                                    data.commentNumber === 1 || (data.commentNumber-1) % pageSize === 0 &&
                                                         <div id={`page_${getPageNumber(data.commentNumber)}`} ref={node => pageNumRef.current[getPageNumber(data.commentNumber)] = node}>
                                                             <PageNumber
                                                                 pageRange={pageRange(1, totalPage)} 
@@ -324,8 +322,6 @@ const Content = ({notFound}) => {
                                                                 setDisplayPageNum={setDisplayPageNum}
                                                                 scrollTo={scrollTo}/>
                                                         </div>
-                                                    :
-                                                        <></>
                                                 }
                                                 <div id={`comment_${data.commentNumber}`} ref={node => {
                                                         scrollRef.current[data.commentNumber] = node;
@@ -358,20 +354,16 @@ const Content = ({notFound}) => {
                                                                 <Vote comment={data} />
                                                             </div>
                                                             {
-                                                                data.numberOfReply > 0
-                                                                ?
+                                                                data.numberOfReply > 0 &&
                                                                 <div className="content-comment-count">
                                                                     <CommentCount count={data.numberOfReply} commentId={data.id}/>
                                                                 </div>
-                                                                :
-                                                                <></>
                                                             }
                                                         </div>
                                                     </li>
                                                 </div>
                                             </React.Fragment>
                                         })
-                                    : <></>
                                     }
                                     {
                                         loadingBar.contentLoading && hasMore && Array(3).fill().map((data, index) => 
@@ -394,31 +386,25 @@ const Content = ({notFound}) => {
                                         )
                                     }
                                 </ul>
-                                { !!comments && !!content.postId && renderedPages.length > 0 ? 
+                                { !!comments && !!content.postId && renderedPages.length > 0 &&
                                         <>
                                             <PageButton pageRange={pageRange(1, totalPage)} pageNumber={displayPageNum} scrollTo={scrollTo} />
                                             <div ref={node => lastDataRef(node)}>
                                                 <RefreshContent />
                                             </div>
                                         </>
-                                    :
-                                        <></>
                                 }
                                 {
-                                    error ?
+                                    error &&
                                         <div className="post-not-available-div">
                                             Post is not available
                                         </div>
-                                    :
-                                        <></>
                                 }
                                 {
-                                    notFound ?
+                                    notFound &&
                                         <div className="not-found-div">
                                             Page Not Found
                                         </div>
-                                    :
-                                        <></>
                                 }
                             </>
                 }

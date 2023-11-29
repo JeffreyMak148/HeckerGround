@@ -27,10 +27,7 @@ export const ReplyComment = ({replyComment, showCount}) => {
                                 :
                                     <>
                                         {
-                                            showMore ?
-                                                <></>
-                                            :
-                                                <button className="show-more-button" onClick={() => {setShowMore(true)}}>Show More</button>
+                                            !showMore && <button className="show-more-button" onClick={() => {setShowMore(true)}}>Show More</button>
                                         }
                                     </>
                                     
@@ -40,12 +37,7 @@ export const ReplyComment = ({replyComment, showCount}) => {
                 :
                 <>
                     {
-                        showMore ?
-                            <>
-                                <ReplyComment replyComment={replyComment} showCount={3}/>
-                            </>
-                        :
-                            <></>
+                        showMore && <><ReplyComment replyComment={replyComment} showCount={3}/></>
                     }
                 </>
             }

@@ -102,7 +102,6 @@ export const SetResetPassword = ({modalType, setModalType, show, handleClose, te
                                     </div>
                                     <div className="header-logo">
                                         <img src={'/static/images/logo_fade.png'} alt="Logo" />
-                                        {/* <Logo /> */}
                                     </div>
                                 </div>
                             </Col>

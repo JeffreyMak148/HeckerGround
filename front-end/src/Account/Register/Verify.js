@@ -172,7 +172,6 @@ export const Verify = ({modalType, setModalType, show, handleClose, tempRegUsern
                                     </div>
                                     <div className="header-logo">
                                         <img src={'/static/images/logo_fade.png'} />
-                                        {/* <Logo /> */}
                                     </div>
                                 </div>
                             </Col>

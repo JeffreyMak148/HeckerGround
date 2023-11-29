@@ -25,9 +25,7 @@ export const CreateCommentButton = ({reply}) => {
                 !!reply ?
                     <button className="reply-comment-button" onClick={handleShowCreateComment}><BsChatRightDots/></button>
                 :
-                    <>
-                        <button className="new-comment-button" onClick={handleShowCreateComment}><BsChatRightDots/></button>
-                    </>
+                    <button className="new-comment-button" onClick={handleShowCreateComment}><BsChatRightDots/></button>
             }
         </>
     );

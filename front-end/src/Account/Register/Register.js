@@ -123,7 +123,6 @@ export const Register = ({modalType, setModalType, show, handleClose, setTempReg
                                     </div>
                                     <div className="header-logo">
                                         <img src={'/static/images/logo_fade.png'} alt="Logo"/>
-                                        {/* <Logo /> */}
                                     </div>
                                 </div>
                             </Col>

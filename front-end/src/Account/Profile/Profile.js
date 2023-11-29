@@ -70,8 +70,7 @@ export const Profile = () => {
                     <div className="content-overflow">
                         <ul>
                             {
-                                !!profileUser
-                                ?
+                                !!profileUser &&
                                 <>
                                     <li>
                                         <Link to={`/profile/${profileUser.id}`} className="profile-item margin-top-8" onClick={handleClose}>
@@ -94,18 +93,14 @@ export const Profile = () => {
                                         </Link>
                                     </li>
                                     {
-                                        user.isLoggedIn && profileUser.id ===  user.userProfile.id ?
+                                        user.isLoggedIn && profileUser.id === user.userProfile.id &&
                                             <li>
                                                 <Link className="profile-item center-text logout-text-color" onClick={() => sendLogoutRequest()}>
                                                     Logout
                                                 </Link>
                                             </li>
-                                        :
-                                        <></>
                                     }
                                 </>
-                                :
-                                <></>
                             }
                         </ul>
                     </div>

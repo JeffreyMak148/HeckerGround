@@ -404,7 +404,7 @@ const Topic = () => {
                     :
                         <ul>
                             {
-                                datas ? datas.map((data, index) => {
+                                datas && datas.map((data, index) => {
                                     return <React.Fragment key={data.id}>
                                         {
                                             topic.notification && !!data.post ?
@@ -452,7 +452,6 @@ const Topic = () => {
                                         }
                                     </React.Fragment>
                                 })
-                                    : <></>
                             }
                             {
                                 loadingBar.topicLoading && hasMore && Array(3).fill().map((data, index) => 

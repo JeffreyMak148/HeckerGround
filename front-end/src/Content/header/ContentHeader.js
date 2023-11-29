@@ -42,7 +42,7 @@ export const ContentHeader = () => {
                 </div>
                 <div>
                     {
-                        !!content.post && !infoPage ? 
+                        !!content.post && !infoPage &&
                             <>
                                 <div className="flex-display">
                                     <div data-tooltip-id={`share-tooltip`} data-tooltip-content="Share" data-tooltip-place="top" title="Share">
@@ -54,8 +54,6 @@ export const ContentHeader = () => {
                                     </div>
                                 </div>
                             </>
-                        :
-                            <></>
                     }
                 </div>
             </div>

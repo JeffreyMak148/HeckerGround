@@ -8,7 +8,7 @@ export const PageButton = ({pageRange, pageNumber, scrollTo}) => {
     }, [pageRange]);
 
     return (
-            !!pageNumber ?
+            !!pageNumber &&
                 <div className="page-button-div">
                     <div className="page-button-inner-div">
                         <select className="page-button-select" value={pageNumber} onChange={(e) => {scrollTo(parseInt(e.target.value))}}>
@@ -23,6 +23,5 @@ export const PageButton = ({pageRange, pageNumber, scrollTo}) => {
                         {pageNumber}
                     </div>
                 </div>
-            : <></>
     );
 };

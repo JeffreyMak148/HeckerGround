@@ -113,7 +113,7 @@ const CreatePost = () => {
                                 <select className="create-category-dropdown" name="postCategory" id="postCategory" value={categoryInput} onChange={(e) => setCategoryInput(parseInt(e.target.value))}>
                                     {categoryDropdown.map(categoryDropdown =>
                                         <option defaultValue={categoryDropdown.catId === categoryInput ? "selected" : ""} key={categoryDropdown.catId} value={categoryDropdown.catId}>{categoryDropdown.category}</option>
-                                    ) }
+                                    )}
                                 </select>
                             </div>
                             <RichTextEditor setHTML={setHTML} setText={setText} setEmpty={setEmpty} setImageSrcs={setImageSrcs}/>
