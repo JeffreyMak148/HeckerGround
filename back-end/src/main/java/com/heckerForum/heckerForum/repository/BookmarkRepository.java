@@ -16,6 +16,8 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, BookmarkKey>
   List<Bookmark> findByUser(User user);
 
   Page<Bookmark> findByUser(User user, Pageable pageable);
+  
+  void deleteByUser(User user);
 
   @Query(value = "SELECT * FROM bookmark b WHERE b.user_id = ?1 AND b.post_id = ?2 ", 
           nativeQuery = true)

@@ -64,14 +64,14 @@ public class PostController extends BaseController {
   }
 
   @GetMapping("/category")
-  public ResponseEntity<?> getPostCategory() {
+  public ResponseEntity<?> getPostCategory() throws Exception {
     return generateResponseEntity(PostCategoryEnum.values());
   }
 
   @GetMapping("/category/{catId}")
   public ResponseEntity<?> getPostByCategoryAndPagination(@PathVariable Integer catId,
       @RequestParam(name = "page", defaultValue = "0") Integer page,
-      @RequestParam(name = "size", defaultValue = "10") Integer size) {
+      @RequestParam(name = "size", defaultValue = "10") Integer size) throws Exception {
     return generateResponseEntity(new TopicResponse(postService.findByCategoryAndPagination(catId, page, size, "id")));
   }
 

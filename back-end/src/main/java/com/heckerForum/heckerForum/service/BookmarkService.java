@@ -18,6 +18,8 @@ import com.heckerForum.heckerForum.models.User;
 import com.heckerForum.heckerForum.repository.BookmarkRepository;
 import com.heckerForum.heckerForum.repository.PostRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class BookmarkService {
 
@@ -41,6 +43,7 @@ public class BookmarkService {
         : new ArrayList<PostDto>();
   }
 
+  @Transactional
   public PostDto toggleBookmark(User user, Long postId) throws Exception {
     Bookmark bookmark = user.getBookmarkedPosts()
                             .stream()
@@ -62,6 +65,12 @@ public class BookmarkService {
       user.getBookmarkedPosts().remove(bookmark);
       return new PostDto(bookmark.getPost());
     }
+  }
+  
+  @Transactional
+  public void deleteByUser(User user) throws Exception {
+    bookmarkRepository.deleteByUser(user);
+    user.getBookmarkedPosts().clear();
   }
 
 }

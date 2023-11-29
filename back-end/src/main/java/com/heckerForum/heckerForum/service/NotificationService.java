@@ -41,6 +41,7 @@ public class NotificationService {
   @Autowired
   private NotificationRepository notificationRepository;
 
+  @Transactional
   public NotificationDto save(Notification notification) throws Exception {
     return new NotificationDto(notificationRepository.save(notification));
   }
@@ -117,6 +118,7 @@ public class NotificationService {
     notificationRepository.deleteById(notificationId);
   }
 
+  @Transactional
   public NotificationDto createAndSaveReplyPostNotification(User user, Post post, Comment comment) {
     String title = "Post received reply";
     String message = post.getTitle();
@@ -133,6 +135,7 @@ public class NotificationService {
     return new NotificationDto(notificationRepository.save(notification));
   }
 
+  @Transactional
   public NotificationDto createAndSaveReplyCommentNotification(User user, Post post, Comment comment) {
     String title = "Comment received reply";
     String message = comment.getPlainText();
@@ -149,6 +152,7 @@ public class NotificationService {
     return new NotificationDto(notificationRepository.save(notification));
   }
 
+  @Transactional
   public NotificationDto createAndSaveUpvotePostNotification(User user, Post post) {
     String title = "Post received upvote";
     String message = post.getTitle();
@@ -164,6 +168,7 @@ public class NotificationService {
     return new NotificationDto(notificationRepository.save(notification));
   }
 
+  @Transactional
   public NotificationDto createAndSaveUpvoteCommentNotification(User user, Comment comment) {
     String title = "Comment received upvote";
     String message = comment.getPlainText();
@@ -180,6 +185,7 @@ public class NotificationService {
     return new NotificationDto(notificationRepository.save(notification));
   }
 
+  @Transactional
   public NotificationDto createAndSaveDownvotePostNotification(User user, Post post) {
     String title = "Post received downvote";
     String message = post.getTitle();
@@ -195,6 +201,7 @@ public class NotificationService {
     return new NotificationDto(notificationRepository.save(notification));
   }
 
+  @Transactional
   public NotificationDto createAndSaveDownvoteCommentNotification(User user, Comment comment) {
     String title = "Comment received downvote";
     String message = comment.getPlainText();

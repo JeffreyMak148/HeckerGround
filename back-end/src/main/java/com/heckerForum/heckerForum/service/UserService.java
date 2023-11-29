@@ -13,6 +13,8 @@ import com.heckerForum.heckerForum.exception.UserNotFoundException;
 import com.heckerForum.heckerForum.models.User;
 import com.heckerForum.heckerForum.repository.UserRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class UserService {
 
@@ -45,6 +47,7 @@ public class UserService {
         .orElseThrow(() -> new UserNotFoundException(ErrorMessageConstant.USER_NOT_FOUND_EXCEPTION));
   }
 
+  @Transactional
   public User saveUser(User user) throws Exception {
     return userRepository.save(user);
   }

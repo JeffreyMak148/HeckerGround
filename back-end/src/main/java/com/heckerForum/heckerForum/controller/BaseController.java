@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.heckerForum.heckerForum.dto.CurrentUserDto;
 import com.heckerForum.heckerForum.dto.ExceptionMessage;
@@ -18,7 +19,9 @@ import com.heckerForum.heckerForum.exception.UserNotFoundException;
 import com.heckerForum.heckerForum.exception.UserNotVerifiedException;
 import com.heckerForum.heckerForum.models.User;
 
+@RestController
 public class BaseController {
+  
   @ExceptionHandler({ LoginInvalidException.class, EmailNotFoundException.class, OtpIncorrectException.class,
       UserNotFoundException.class })
   protected ResponseEntity<?> handleCustomException(Exception e) {
@@ -49,7 +52,7 @@ public class BaseController {
     return new ResponseEntity<>(message, message.getStatus());
   }
 
-  protected ResponseEntity<?> generateResponseEntity(Object data) {
+  protected ResponseEntity<?> generateResponseEntity(Object data) throws Exception {
     if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof User user) {
       CurrentUserDto userDto = new CurrentUserDto(user);
       userDto.setUnreadNotification(user.getUnreadNotification());

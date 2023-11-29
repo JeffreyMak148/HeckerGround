@@ -73,7 +73,7 @@ public class AuthController extends BaseController {
   private JwtAuthenticationProvider refreshTokenAuthProvider;
 
   @GetMapping("/loggedin")
-  public ResponseEntity<?> getIsLoggedIn(Principal principal) {
+  public ResponseEntity<?> getIsLoggedIn(Principal principal) throws Exception {
     if (principal != null) {
       return generateResponseEntity(SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
     }

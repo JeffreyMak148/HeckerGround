@@ -53,5 +53,16 @@ public class BookmarkController extends BaseController {
 
     return generateResponseEntity(new BookmarkResponse(bookmarkService.toggleBookmark(loggedInUser, postId)));
   }
+  
+  @PostMapping("/delete/all")
+  public ResponseEntity<?> deleteAllBookmarks(@AuthenticationPrincipal User loggedInUser) throws Exception {
+    if (loggedInUser == null) {
+      return generateResponseEntity(null);
+    }
+    
+    bookmarkService.deleteByUser(loggedInUser);
+
+    return generateResponseEntity(null);
+  }
 
 }

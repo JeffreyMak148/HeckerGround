@@ -37,7 +37,7 @@ public class CommentController extends BaseController {
   }
 
   @GetMapping("{commentId}")
-  public ResponseEntity<?> getCommentById(@PathVariable Long commentId, @AuthenticationPrincipal User loggedInUser) {
+  public ResponseEntity<?> getCommentById(@PathVariable Long commentId, @AuthenticationPrincipal User loggedInUser) throws Exception {
     CommentResponse commentResponse = commentService.findByCommentId(commentId, loggedInUser);
     return generateResponseEntity(commentResponse);
   }
