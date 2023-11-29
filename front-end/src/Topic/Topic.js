@@ -401,8 +401,11 @@ const Topic = () => {
                             <div className="empty-text">
                                 No notifications
                             </div>
-                    :
-                        <ul>
+                    :   !!datas && datas.length === 0 && topic.bookmark ? 
+                            <div className="empty-text">
+                                No bookmarks
+                            </div>
+                    :   <ul>
                             {
                                 datas && datas.map((data, index) => {
                                     return <React.Fragment key={data.id}>
