@@ -5,6 +5,7 @@ import { useContent } from "../../Context/ContentProvider";
 import { useMenu } from "../../Context/MenuProvider";
 import { useModal } from "../../Context/ModalProvider";
 import { useTopic } from "../../Context/TopicProvider";
+import { CategoryConstant } from "../../constant";
 import "../Topic.css";
 import { CreatePostButton } from "../button/CreatePostButton";
 import { RefreshTopic } from "../button/RefreshTopic";
@@ -44,10 +45,10 @@ export const TopicHeader = () => {
             setTitle(topic.profileUser.username);
         }
         if(notification && topic.notification) {
-            setTitle("Notifications");
+            setTitle(CategoryConstant.CATEGORY_TITLE_NOTIFICATIONS);
         }
         if(bookmark && topic.bookmark) {
-            setTitle("Bookmarks");
+            setTitle(CategoryConstant.CATEGORY_TITLE_BOOKMARKS);
         }
     }, [location, topic.category, topic.profileUser, content.post, topic.notification, topic.bookmark]);
 
@@ -91,14 +92,9 @@ export const TopicHeader = () => {
                 <div data-tooltip-id="topic-tooltip" data-tooltip-content="Create" data-tooltip-place="top" title="Create">
                     <CreatePostButton />
                 </div>
-                {
-                    title === "Notifications" ?
-                        <div data-tooltip-id="topic-tooltip" data-tooltip-content="More" data-tooltip-place="top" title="More">
-                            <TopicMoreButton />
-                        </div>
-                    :
-                        <></>
-                }
+                <div data-tooltip-id="topic-tooltip" data-tooltip-content="More" data-tooltip-place="top" title="More">
+                    <TopicMoreButton currentTopic={title} />
+                </div>
             </div>
         </nav>
     );

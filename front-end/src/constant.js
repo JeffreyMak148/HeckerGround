@@ -1,0 +1,16 @@
+export const CategoryConstant = {
+    CATEGORY_TITLE_1: 'Chatting',
+    CATEGORY_TITLE_2: 'News',
+    CATEGORY_TITLE_3: 'Entertainment',
+    CATEGORY_TITLE_4: 'Lifestyle',
+    CATEGORY_TITLE_5: 'Sports',
+    CATEGORY_TITLE_6: 'Education',
+    CATEGORY_TITLE_7: 'Jobs',
+    CATEGORY_TITLE_8: 'Finance',
+    CATEGORY_TITLE_9: 'Hardware',
+    CATEGORY_TITLE_10: 'Software',
+    CATEGORY_TITLE_11: 'Real Estate',
+    CATEGORY_TITLE_12: 'World',
+    CATEGORY_TITLE_NOTIFICATIONS: 'Notifications',
+    CATEGORY_TITLE_BOOKMARKS: 'Bookmarks',
+};

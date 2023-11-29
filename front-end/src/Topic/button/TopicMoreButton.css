@@ -36,7 +36,7 @@
     padding-left: 8px;
 }
 
-.read-notifications-button, .delete-notifications-button {
+.read-notifications-button, .delete-notifications-button, .delete-bookmarks-button{
     background-color: #2d2d39;
     border: none;
     color: #fff;
@@ -44,7 +44,7 @@
     height: 3rem;
 }
 
-.read-notifications-button:hover, .delete-notifications-button:hover {
+.read-notifications-button:hover, .delete-notifications-button:hover, .delete-bookmarks-button:hover {
     background-color: #43434f;
     transition: all 0.1s;
     border-radius: 3px;
