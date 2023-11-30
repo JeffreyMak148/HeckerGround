@@ -30,7 +30,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "set \"GENERATE_SOURCEMAP=false\" && react-scripts build && gzipper compress --verbose ./build",
+    "build": "react-scripts build && gzipper compress --verbose ./build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
