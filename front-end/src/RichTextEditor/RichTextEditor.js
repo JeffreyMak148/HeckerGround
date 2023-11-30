@@ -128,11 +128,11 @@ function RichTextEditor({
             const root = $getRoot();
             setText(root.__cachedText.replace(/(\r\n|\n|\r)/gm, " "));
       });
-      setEmpty($isRootTextContentEmpty());
       const rawHTML = $generateHtmlFromNodes(editor, null);
       setHTML(rawHTML);
-
+      
       setImageSrcs(extractImageNodeSrc($nodesOfType(ImageNode)));
+      setEmpty($isRootTextContentEmpty() && extractImageNodeSrc($nodesOfType(ImageNode))?.length <= 0);
     });
   }
 
