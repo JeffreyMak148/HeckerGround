@@ -288,6 +288,7 @@ function onDragStart(event) {
         height: node.__height,
         key: node.getKey(),
         maxWidth: node.__maxWidth,
+        maxHeight: node.__maxHeight,
         showCaption: node.__showCaption,
         src: node.__src,
         width: node.__width,

@@ -60,6 +60,7 @@ function LazyImage({
   width,
   height,
   maxWidth,
+  maxHeight
 }) {
   useSuspenseImage(src);
   return (
@@ -71,6 +72,7 @@ function LazyImage({
       style={{
         height,
         maxWidth,
+        maxHeight,
         width,
       }}
       draggable="false"
@@ -85,6 +87,7 @@ export default function ImageComponent({
   width,
   height,
   maxWidth,
+  maxHeight,
   resizable,
   showCaption = false,
   caption,
@@ -335,6 +338,7 @@ export default function ImageComponent({
             width={width}
             height={height}
             maxWidth={maxWidth}
+            maxHeight={maxHeight}
           />
         </div>
         {showCaption && (
@@ -365,6 +369,7 @@ export default function ImageComponent({
             buttonRef={buttonRef}
             imageRef={imageRef}
             maxWidth={maxWidth}
+            maxHeight={maxHeight}
             onResizeStart={onResizeStart}
             onResizeEnd={onResizeEnd}
             captionsEnabled={false}

@@ -19,6 +19,7 @@ export default function ImageResizer({
   buttonRef,
   imageRef,
   maxWidth,
+  maxHeight,
   editor,
   showCaption,
   setShowCaption,
@@ -47,10 +48,11 @@ export default function ImageResizer({
     : editorRootElement !== null
     ? editorRootElement.getBoundingClientRect().width - 20
     : 100;
-  const maxHeightContainer =
-    editorRootElement !== null
-      ? editorRootElement.getBoundingClientRect().height - 20
-      : 100;
+  const maxHeightContainer = maxHeight
+    ? maxHeight
+    : editorRootElement !== null
+    ? editorRootElement.getBoundingClientRect().height - 20
+    : 100;
 
   const minWidth = 100;
   const minHeight = 100;

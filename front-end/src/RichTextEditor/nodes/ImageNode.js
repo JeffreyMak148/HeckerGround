@@ -22,6 +22,7 @@ export class ImageNode extends DecoratorNode {
   __width;
   __height;
   __maxWidth;
+  __maxHeight;
   __showCaption;
   __caption;
   // Captions cannot yet be used within editor cells
@@ -36,6 +37,7 @@ export class ImageNode extends DecoratorNode {
       node.__src,
       node.__altText,
       node.__maxWidth,
+      node.__maxHeight,
       node.__width,
       node.__height,
       node.__showCaption,
@@ -46,12 +48,13 @@ export class ImageNode extends DecoratorNode {
   }
 
   static importJSON(serializedNode) {
-    const {altText, height, width, maxWidth, caption, src, showCaption} =
+    const {altText, height, width, maxWidth, maxHeight, caption, src, showCaption} =
       serializedNode;
     const node = $createImageNode({
       altText,
       height,
       maxWidth,
+      maxHeight,
       showCaption,
       src,
       width,
@@ -70,6 +73,8 @@ export class ImageNode extends DecoratorNode {
     element.setAttribute('alt', this.__altText);
     element.setAttribute('width', this.__width.toString());
     element.setAttribute('height', this.__height.toString());
+    element.style.maxWidth = this.__maxWidth.toString()+"px";
+    element.style.maxHeight = this.__maxHeight.toString()+"px";
     return {element};
   }
 
@@ -86,6 +91,7 @@ export class ImageNode extends DecoratorNode {
     src,
     altText,
     maxWidth,
+    maxHeight,
     width,
     height,
     showCaption,
@@ -97,6 +103,7 @@ export class ImageNode extends DecoratorNode {
     this.__src = src;
     this.__altText = altText;
     this.__maxWidth = maxWidth;
+    this.__maxHeight = maxHeight;
     this.__width = width || 'inherit';
     this.__height = height || 'inherit';
     this.__showCaption = showCaption || false;
@@ -110,6 +117,7 @@ export class ImageNode extends DecoratorNode {
       caption: this.__caption.toJSON(),
       height: this.__height === 'inherit' ? 0 : this.__height,
       maxWidth: this.__maxWidth,
+      maxHeight: this.__maxHeight,
       showCaption: this.__showCaption,
       src: this.getSrc(),
       type: 'image',
@@ -170,6 +178,7 @@ export class ImageNode extends DecoratorNode {
           width={this.__width}
           height={this.__height}
           maxWidth={this.__maxWidth}
+          maxHeight={this.__maxHeight}
           nodeKey={this.getKey()}
           showCaption={this.__showCaption}
           caption={this.__caption}
@@ -184,7 +193,8 @@ export class ImageNode extends DecoratorNode {
 export function $createImageNode({
   altText,
   height,
-  maxWidth = 500,
+  maxWidth = 400,
+  maxHeight = 800,
   captionsEnabled,
   src,
   width,
@@ -197,6 +207,7 @@ export function $createImageNode({
       src,
       altText,
       maxWidth,
+      maxHeight,
       width,
       height,
       showCaption,
