@@ -92,7 +92,7 @@ const Menu = () => {
                             <div className="menu-icon" onClick={goToNotification}>
                                 <a className="notification-icon"><IoNotificationsCircle size="2em"/></a>
                                 {
-                                    !!user.userProfile?.unreadNotification && user.userProfile.unreadNotification > 0 &&
+                                    (!!user.userProfile?.unreadNotification && user.userProfile.unreadNotification > 0) &&
                                         <div className="notification-count">{user.userProfile.unreadNotification < 99 ? user.userProfile.unreadNotification : "99+"}</div> 
                                 }
                             </div>

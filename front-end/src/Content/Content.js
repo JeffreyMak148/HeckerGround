@@ -304,7 +304,7 @@ const Content = ({notFound}) => {
                         :
                             <>
                                 {
-                                    !!comments && !!content.postId && renderedPages.length > 0 && !renderedPages.includes(1) &&
+                                    (!!comments && !!content.postId && renderedPages.length > 0 && !renderedPages.includes(1)) &&
                                         <div>
                                             <LoadPreviousPage fetchData={fetchPreviousPage} />
                                         </div>
@@ -314,7 +314,7 @@ const Content = ({notFound}) => {
                                     comments && comments.map((data, index) => {
                                             return <React.Fragment key={data.id}>
                                                 {
-                                                    data.commentNumber === 1 || (data.commentNumber-1) % pageSize === 0 &&
+                                                    (data.commentNumber === 1 || (data.commentNumber-1) % pageSize === 0) &&
                                                         <div id={`page_${getPageNumber(data.commentNumber)}`} ref={node => pageNumRef.current[getPageNumber(data.commentNumber)] = node}>
                                                             <PageNumber
                                                                 pageRange={pageRange(1, totalPage)} 
@@ -386,7 +386,7 @@ const Content = ({notFound}) => {
                                         )
                                     }
                                 </ul>
-                                { !!comments && !!content.postId && renderedPages.length > 0 &&
+                                { (!!comments && !!content.postId && renderedPages.length > 0) &&
                                         <>
                                             <PageButton pageRange={pageRange(1, totalPage)} pageNumber={displayPageNum} scrollTo={scrollTo} />
                                             <div ref={node => lastDataRef(node)}>
