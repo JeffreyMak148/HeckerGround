@@ -9,6 +9,7 @@
     left: -12px;
     transition: 250ms;
     z-index: -1;
+    will-change: left, width;
 }
 
 .nav-menu.active {
@@ -39,7 +40,6 @@
 }
 
 .menu-text a:hover {
-    /* color: rgb(133, 76, 186); */
     color: #9179ce;
 }
 
@@ -53,13 +53,11 @@
     left: 0;
     width: 100%;
     height: 100%;
-    /* opacity: 0; */
     z-index: -1;
     transition: 250ms;
 }
 
 .overlay.active {
-    /* opacity: 1; */
     background: rgba(0, 0, 0, 0.5);
     z-index: 5999;
     transition: 250ms;
@@ -80,7 +78,6 @@
 }
 
 .selected-category-color {
-    /* color: rgb(133, 76, 186); */
     color : #9179ce;
 }
 
@@ -110,7 +107,6 @@
 }
 
 .user-icon:hover, .notification-icon:hover, .bookmark-icon:hover {
-    /* color: rgb(133, 76, 186); */
     color: #9179ce;
 }
 
