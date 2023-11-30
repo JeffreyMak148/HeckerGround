@@ -36,8 +36,10 @@ public class FileService {
   public void save(String bucketName, 
                    String fileName, 
                    InputStream inputStream,
+                   String contentType,
                    Optional<Map<String, String>> optionalMetadata) {
     ObjectMetadata metadata = new ObjectMetadata();
+    metadata.setContentType(contentType);
     optionalMetadata.ifPresent(map -> {
       if (!map.isEmpty()) {
         map.forEach(metadata::addUserMetadata);
@@ -70,7 +72,7 @@ public class FileService {
     String fileSrc = String.format("%s/%s", cloudfrontUrlSrc, filename);
 
     try {
-      save(imageBucketName, filename, file.getInputStream(), Optional.of(metadata));
+      save(imageBucketName, filename, file.getInputStream(), file.getContentType(), Optional.of(metadata));
       return fileSrc;
     } catch (IOException e) {
       throw new IllegalStateException(e);
