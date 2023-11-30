@@ -125,7 +125,7 @@ public class CommentService {
       Post post = comment.getPost();
       post.setUpvote(comment.getUpvote());
       postRepository.save(post);
-      notificationService.createAndSaveUpvotePostNotification(comment.getUser(), comment.getPost());
+      notificationService.createAndSaveUpvotePostNotification(comment.getUser(), comment.getPost(), comment);
     } else {
       notificationService.createAndSaveUpvoteCommentNotification(comment.getUser(), comment);
     }
@@ -153,7 +153,7 @@ public class CommentService {
       Post post = comment.getPost();
       post.setDownvote(comment.getDownvote());
       postRepository.save(post);
-      notificationService.createAndSaveDownvotePostNotification(comment.getUser(), comment.getPost());
+      notificationService.createAndSaveDownvotePostNotification(comment.getUser(), comment.getPost(), comment);
     } else {
       notificationService.createAndSaveDownvoteCommentNotification(comment.getUser(), comment);
     }

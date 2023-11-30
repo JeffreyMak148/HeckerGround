@@ -153,7 +153,7 @@ public class NotificationService {
   }
 
   @Transactional
-  public NotificationDto createAndSaveUpvotePostNotification(User user, Post post) {
+  public NotificationDto createAndSaveUpvotePostNotification(User user, Post post, Comment comment) {
     String title = "Post received upvote";
     String message = post.getTitle();
     Notification notification = new Notification();
@@ -161,6 +161,7 @@ public class NotificationService {
     user = userRepository.save(user);
     notification.setUser(user);
     notification.setPost(post);
+    notification.setComment(comment);
     notification.setCreateDateTime(LocalDateTime.now());
     notification.setType(NotificationType.UPVOTE_POST);
     notification.setTitle(title);
@@ -186,7 +187,7 @@ public class NotificationService {
   }
 
   @Transactional
-  public NotificationDto createAndSaveDownvotePostNotification(User user, Post post) {
+  public NotificationDto createAndSaveDownvotePostNotification(User user, Post post, Comment comment) {
     String title = "Post received downvote";
     String message = post.getTitle();
     Notification notification = new Notification();
@@ -194,6 +195,7 @@ public class NotificationService {
     user = userRepository.save(user);
     notification.setUser(user);
     notification.setPost(post);
+    notification.setComment(comment);
     notification.setCreateDateTime(LocalDateTime.now());
     notification.setType(NotificationType.DOWNVOTE_POST);
     notification.setTitle(title);
