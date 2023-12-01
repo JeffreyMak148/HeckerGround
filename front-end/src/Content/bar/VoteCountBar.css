@@ -1,0 +1,26 @@
+.vote-count-bar {
+    height: 2px;
+    background-color: #717171;
+    position: relative;
+    display: flex;
+    width:100%;
+}
+
+.upvote-count-bar {
+    background-color: #e8e8e8;
+    transition: width 0.5s;
+}
+
+.downvote-count-bar {
+    background-color: #717171;
+    text-align: right;
+    transition: all 0.5s;
+}
+
+.upvote-count-bar.voted {
+    background-color: #9179ce;
+}
+
+.downvote-count-bar.voted {
+    background-color: #9179ce;
+}

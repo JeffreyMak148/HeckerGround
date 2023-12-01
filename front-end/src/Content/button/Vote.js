@@ -5,6 +5,7 @@ import { useLoading } from '../../Context/LoadingProvider';
 import { useModal } from '../../Context/ModalProvider';
 import { useUser } from '../../Context/UserProvider';
 import fetchUtil from '../../util/fetchUtil';
+import { VoteCountBar } from '../bar/VoteCountBar';
 import "./Vote.css";
 
 export const Vote = ({comment}) => {
@@ -79,6 +80,7 @@ export const Vote = ({comment}) => {
         <div className="comment-vote-div">
             <button className={`comment-upvote-button${isDisabled(comment) ? ' disabled' : ' abled'}${comment.upvoted ? ' selected' : ''}`} disabled={isDisabled(comment)} onClick={() => upvoteComment(comment.id)}><BiSolidUpvote size="0.8em"/><div className="comment-upvote-count">{comment.upvote}</div></button>
             <button className={`comment-downvote-button${isDisabled(comment) ? ' disabled' : ' abled'}${comment.downvoted ? ' selected' : ''}`} disabled={isDisabled(comment)} onClick={() => downvoteComment(comment.id)}><BiSolidDownvote size="0.8em"/><div className="comment-downvote-count">{comment.downvote}</div></button>
+            <VoteCountBar upvoteCount={comment.upvote} downvoteCount={comment.downvote} upvoted={comment.upvoted} downvoted={comment.downvoted} />
         </div>
     );
 };
