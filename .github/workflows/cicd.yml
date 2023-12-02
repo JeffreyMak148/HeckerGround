@@ -82,20 +82,20 @@ jobs:
             --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
 
       # Step 7
-      - name: Update github deployment status (success)
-        if: success()
-        uses: chrnorm/deployment-status@v2
-        with:
-          token: '${{ github.token }}'
-          environment-url: https://heckerground.com
-          state: 'success'
-          deployment-id: ${{ steps.github-deployment.outputs.deployment_id }}
-
-      - name: Update github deployment status (failure)
-        if: failure()
-        uses: chrnorm/deployment-status@v2
-        with:
-          token: '${{ github.token }}'
-          environment-url: https://heckerground.com
-          state: 'failure'
-          deployment-id: ${{ steps.github-deployment.outputs.deployment_id }}
+      # - name: Update github deployment status (success)
+      #   if: success()
+      #   uses: chrnorm/deployment-status@v2
+      #   with:
+      #     token: '${{ github.token }}'
+      #     environment-url: https://heckerground.com
+      #     state: 'success'
+      #     deployment-id: ${{ steps.github-deployment.outputs.deployment_id }}
+      #
+      # - name: Update github deployment status (failure)
+      #   if: failure()
+      #   uses: chrnorm/deployment-status@v2
+      #   with:
+      #     token: '${{ github.token }}'
+      #     environment-url: https://heckerground.com
+      #     state: 'failure'
+      #     deployment-id: ${{ steps.github-deployment.outputs.deployment_id }}
