@@ -81,7 +81,7 @@ jobs:
             --deployment-config-name CodeDeployDefault.OneAtATime \
             --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
 
-      Step 7
+      # Step 7
       - name: Update github deployment status (success)
         if: success()
         uses: chrnorm/deployment-status@v2
