@@ -37,7 +37,7 @@ jobs:
     steps:
       # Step 1
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       # Step 2
       - name: Create GitHub deployment
@@ -46,7 +46,7 @@ jobs:
         with:
           token: '${{ github.token }}'
           environment-url: https://heckerground.com
-          environment: production
+          environment: Production
 
       # Step 3
       - name: Configure AWS credentials
@@ -81,21 +81,21 @@ jobs:
             --deployment-config-name CodeDeployDefault.OneAtATime \
             --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
 
-      # Step 7
-      # - name: Update github deployment status (success)
-      #   if: success()
-      #   uses: chrnorm/deployment-status@v2
-      #   with:
-      #     token: '${{ github.token }}'
-      #     environment-url: https://heckerground.com
-      #     state: 'success'
-      #     deployment-id: ${{ steps.github-deployment.outputs.deployment_id }}
-      #
-      # - name: Update github deployment status (failure)
-      #   if: failure()
-      #   uses: chrnorm/deployment-status@v2
-      #   with:
-      #     token: '${{ github.token }}'
-      #     environment-url: https://heckerground.com
-      #     state: 'failure'
-      #     deployment-id: ${{ steps.github-deployment.outputs.deployment_id }}
+      Step 7
+      - name: Update github deployment status (success)
+        if: success()
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: '${{ github.token }}'
+          environment-url: https://heckerground.com
+          state: 'success'
+          deployment-id: ${{ steps.github-deployment.outputs.deployment_id }}
+
+      - name: Update github deployment status (failure)
+        if: failure()
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: '${{ github.token }}'
+          environment-url: https://heckerground.com
+          state: 'failure'
+          deployment-id: ${{ steps.github-deployment.outputs.deployment_id }}
