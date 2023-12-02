@@ -18,6 +18,8 @@ You can treat this as an anonymous survey site or an online forum with bare mini
 
 Source code for Heckerground is publicly available to reinforce the idea that the website is fully secured and no personal details can be leaked.
 
+### Live at [heckerground.com](https://heckerground.com)
+
 ## Architecture Diagrams
 [Diagrams shown here](Artifacts/README.md)
 
