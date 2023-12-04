@@ -334,7 +334,6 @@ const Content = ({notFound}) => {
                                                     }} className={`content-div ${!!commentParam() && commentParam() === data.commentNumber ? "highlighted" : ""}`}>
                                                     <li>
                                                         <div className="content-info flex-display">
-                                                            {data.commentDisplayNum}
                                                             <div className="content-number-div">
                                                                 #{data.commentNumber}
                                                             </div>
