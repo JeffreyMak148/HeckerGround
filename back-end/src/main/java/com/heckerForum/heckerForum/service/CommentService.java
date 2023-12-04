@@ -182,24 +182,24 @@ public class CommentService {
     return new CommentResponse(new CommentDto(comment), replyComments);
   }
 
-  public List<CommentDto> findByPostIdAndPagination(Long postId, Integer pageNo, Integer pageSize, String sortBy,
+  public List<CommentDto> findByPostIdAndPagination(Long postId, Integer pageNo, Integer pageSize, Sort sortBy,
       User loggedInUser) {
     Post post = postRepository.findById(postId).orElse(null);
     if (post == null) {
       return null;
     }
-    Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+    Pageable paging = PageRequest.of(pageNo, pageSize, sortBy);
     Page<Comment> result = commentRepository.findByPost(post, paging);
     return result.hasContent() ? result.getContent().stream().map(comment -> new CommentDto(comment)).toList()
         : new ArrayList<CommentDto>();
   }
 
-  public List<CommentDto> findByPostAndPagination(Post post, Integer pageNo, Integer pageSize, String sortBy,
+  public List<CommentDto> findByPostAndPagination(Post post, Integer pageNo, Integer pageSize, Sort sortBy,
       User loggedInUser) {
     if (post == null) {
       return null;
     }
-    Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+    Pageable paging = PageRequest.of(pageNo, pageSize, sortBy);
     Page<Comment> result = commentRepository.findByPost(post, paging);
     return result.hasContent() ? result.getContent().stream().map(comment -> new CommentDto(comment)).toList()
         : new ArrayList<CommentDto>();

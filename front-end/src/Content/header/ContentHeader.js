@@ -6,6 +6,7 @@ import "../Content.css";
 import { BookmarkButton } from "../button/BookmarkButton";
 import { CreateCommentButton } from "../button/CreateCommentButton";
 import { ShareButton } from "../button/ShareButton";
+import { SortButton } from "../button/SortButton";
 
 export const ContentHeader = () => {
 
@@ -45,11 +46,16 @@ export const ContentHeader = () => {
                         !!content.post && !infoPage &&
                             <>
                                 <div className="flex-display">
-                                    <div data-tooltip-id={`share-tooltip`} data-tooltip-content="Share" data-tooltip-place="top" title="Share">
+                                    <div data-tooltip-id={`share-tooltip`} data-tooltip-content="Share" data-tooltip-place="bottom" title="Share">
                                         <ShareButton postId={content.postId} title={contentTitle} />
+                                    </div>                                    
+                                    <div data-tooltip-id={`bookmark-tooltip`} data-tooltip-content="Bookmark" data-tooltip-place="bottom" title="Bookmark">
+                                        <BookmarkButton />
                                     </div>
-                                    <BookmarkButton />
-                                    <div data-tooltip-id={`reply-tooltip`} data-tooltip-content="Reply" data-tooltip-place="top" title="Reply">
+                                    <div data-tooltip-id={`sort-tooltip`} data-tooltip-content="Sort" data-tooltip-place="bottom" title="Sort">
+                                        <SortButton />
+                                    </div>
+                                    <div data-tooltip-id={`reply-tooltip`} data-tooltip-content="Reply" data-tooltip-place="bottom" title="Reply">
                                         <CreateCommentButton />
                                     </div>
                                 </div>

@@ -87,11 +87,11 @@ public class PostService {
   }
 
   public PostResponse getPostResponseByIdAndPagination(Long postId, Integer pageStart, Integer pageEnd, Integer size,
-      User loggedInUser) {
+      Sort sortBy, User loggedInUser) {
     Post post = postRepository.findById(postId).orElse(null);
     // Comments from page 0 to pageEnd
     Integer allPageSize = (pageEnd + 1) * size;
-    List<CommentDto> comments = commentService.findByPostAndPagination(post, 0, allPageSize, "id", loggedInUser);
+    List<CommentDto> comments = commentService.findByPostAndPagination(post, 0, allPageSize, sortBy, loggedInUser);
     // Filter comments from page 0 to pageStart
     Integer rangeEnd = pageStart * size;
     comments = comments.stream().filter(comment -> comment.getCommentNumber() > rangeEnd).toList();

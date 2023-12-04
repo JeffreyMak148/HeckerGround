@@ -2,7 +2,10 @@ package com.heckerForum.heckerForum.controller;
 
 import java.util.List;
 
+import org.apache.commons.codec.binary.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,11 +47,27 @@ public class PostController extends BaseController {
   @GetMapping("{encodedPostId}")
   public ResponseEntity<?> getPostByIdAndPagination(@PathVariable String encodedPostId,
       @RequestParam(name = "page", defaultValue = "0") Integer page,
-      @RequestParam(name = "size", defaultValue = "20") Integer size, @AuthenticationPrincipal User loggedInUser)
+      @RequestParam(name = "size", defaultValue = "20") Integer size,
+      @RequestParam(name = "sortBy", defaultValue = "id") String sortBy,
+      @RequestParam(name = "sortOrder", defaultValue = "asc") String sortOrder,
+      @AuthenticationPrincipal User loggedInUser)
       throws Exception {
     Long postId = postService.decodePostId(encodedPostId);
     PostDto postDto = postService.findById(postId).orElse(null);
-    List<CommentDto> comments = commentService.findByPostIdAndPagination(postId, page, size, "id", loggedInUser);
+    Sort sort = Sort.by(Direction.fromString(sortOrder), sortBy);
+    if(StringUtils.equals("vote", sortBy)) {
+      Direction direction = Direction.fromString(sortOrder);
+      if(direction.isDescending()) {
+        sort = Sort.by(
+              Sort.Order.desc("upvote"),
+              Sort.Order.asc("downvote"));
+      } else {
+        sort = Sort.by(
+              Sort.Order.desc("downvote"),
+              Sort.Order.asc("upvote"));
+      }
+    }
+    List<CommentDto> comments = commentService.findByPostIdAndPagination(postId, page, size, sort, loggedInUser);
     return generateResponseEntity(new PostResponse(postDto, comments));
   }
 
@@ -56,11 +75,27 @@ public class PostController extends BaseController {
   public ResponseEntity<?> getPostByIdAndPaginationRange(@PathVariable String encodedPostId,
       @RequestParam(name = "pageStart", defaultValue = "0") Integer pageStart,
       @RequestParam(name = "pageEnd", defaultValue = "0") Integer pageEnd,
-      @RequestParam(name = "size", defaultValue = "20") Integer size, @AuthenticationPrincipal User loggedInUser)
+      @RequestParam(name = "size", defaultValue = "20") Integer size, 
+      @RequestParam(name = "sortBy", defaultValue = "id") String sortBy,
+      @RequestParam(name = "sortOrder", defaultValue = "asc") String sortOrder,
+      @AuthenticationPrincipal User loggedInUser)
       throws Exception {
     Long postId = postService.decodePostId(encodedPostId);
+    Sort sort = Sort.by(Direction.fromString(sortOrder), sortBy);
+    if(StringUtils.equals("vote", sortBy)) {
+      Direction direction = Direction.fromString(sortOrder);
+      if(direction.isDescending()) {
+        sort = Sort.by(
+              Sort.Order.desc("upvote"),
+              Sort.Order.asc("downvote"));
+      } else {
+        sort = Sort.by(
+              Sort.Order.desc("downvote"),
+              Sort.Order.asc("upvote"));
+      }
+    }
     return generateResponseEntity(
-        postService.getPostResponseByIdAndPagination(postId, pageStart, pageEnd, size, loggedInUser));
+        postService.getPostResponseByIdAndPagination(postId, pageStart, pageEnd, size, sort, loggedInUser));
   }
 
   @GetMapping("/category")

@@ -17,4 +17,8 @@ function sortUtil(property) {
     }
 }
 
+export const flipSortOrder = (order) => {
+    return order === "asc" ? "desc" : "asc";
+}
+
 export default sortUtil;

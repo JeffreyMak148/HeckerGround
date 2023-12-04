@@ -48,10 +48,12 @@ const Content = ({notFound}) => {
 
     useEffect(() => {
         if(!!displayPageNum) {
+            const url = new URL(window.location.toString());
+            url.searchParams.set('page', displayPageNum);
             window.history.replaceState(
                 null,
                 "",
-                `?page=${displayPageNum}`
+                url
             )
         }
     }, [displayPageNum]);
@@ -72,7 +74,7 @@ const Content = ({notFound}) => {
         if(!loadingBar.contentLoading && pageNumRef.current.length && !!pageNumRef.current[pageNum]) {
             pageNumRef.current[pageNum].scrollIntoView();
         } else {
-            fetchCommentsByPostIdAndPagination(content.postId, pageNum, pageSize, false, false, false, true);
+            fetchCommentsByPostIdAndPagination(content.postId, pageNum, pageSize, content.sort, false, false, false, true);
         }
     }
 
@@ -80,7 +82,7 @@ const Content = ({notFound}) => {
         if(!loadingBar.contentLoading && scrollRef.current.length && !!scrollRef.current[commentNum]) {
             scrollRef.current[commentNum].scrollIntoView();
         } else {
-            fetchCommentsByPostIdAndPagination(content.postId, getPageNumber(commentNum), pageSize, false, false, commentNum, true);
+            fetchCommentsByPostIdAndPagination(content.postId, getPageNumber(commentNum), pageSize, content.sort, false, false, commentNum, true);
         }
     }
 
@@ -98,6 +100,10 @@ const Content = ({notFound}) => {
         if(!!profileId) {
             modal.setProfileModal(profileModal => ({...profileModal, profileId: profileId}));
         }
+    }
+
+    const populateCommentDisplayNum = (comments, pageNum) => {
+        return comments.map((comment, i) => ({...comment, commentDisplayNum: pageNum*pageSize + i + 1}));
     }
     
     useEffect(() => {
@@ -136,15 +142,15 @@ const Content = ({notFound}) => {
         setRenderedPages([]);
         if(!!commentParam()) {
             setPageNum(getPageNumber(commentParam()));
-            fetchCommentsByPostIdAndPagination(content.postId, getPageNumber(commentParam()), pageSize, false, false, commentParam());
+            fetchCommentsByPostIdAndPagination(content.postId, getPageNumber(commentParam()), pageSize, content.sort, false, false, commentParam());
         } else {
             setPageNum(pageParam());
-            fetchCommentsByPostIdAndPagination(content.postId, pageParam(), pageSize);
+            fetchCommentsByPostIdAndPagination(content.postId, pageParam(), pageSize, content.sort);
         }
         
-    }, [content.postId]);
+    }, [content.postId, content.sort]);
 
-    function fetchCommentsByPostIdAndPagination(postIdOption, pageNumOption, pageSizeOption, previousPageOption, scrollToPageNumOption, scrollToCommentNumOption, resetOption) {
+    function fetchCommentsByPostIdAndPagination(postIdOption, pageNumOption, pageSizeOption, sortByOption, previousPageOption, scrollToPageNumOption, scrollToCommentNumOption, resetOption) {
         if(!!postIdOption && !loadingBar.contentLoading) {
             loadingBar.setContentLoading(true);
             if(resetOption) {
@@ -153,7 +159,7 @@ const Content = ({notFound}) => {
                 setHasMore(true);
                 setComments([]);
             }
-            fetchUtil(`/api/posts/${postIdOption}?page=${pageNumOption-1}&size=${pageSizeOption}`, null, "GET")
+            fetchUtil(`/api/posts/${postIdOption}?page=${pageNumOption-1}&size=${pageSizeOption}&sortBy=${sortByOption.sortBy}&sortOrder=${sortByOption.sortOrder}`, null, "GET")
             .then(({status, data, currentUser}) => {
                 user.setCurrentUser(currentUser);
                 if(!data.comments && !data.post) {
@@ -169,11 +175,11 @@ const Content = ({notFound}) => {
                 }
                 content.setPost(data.post);
                 if(resetOption) {
-                    setComments(currentComments => [...data.comments]);
+                    setComments(currentComments => [...populateCommentDisplayNum(data.comments, pageNumOption-1)]);
                 } else if(!previousPageOption) {
-                    setComments(currentComments => ([...currentComments, ...data.comments]));
+                    setComments(currentComments => ([...currentComments, ...populateCommentDisplayNum(data.comments, pageNumOption-1)]));
                 } else {
-                    setComments(currentComments => ([...data.comments, ...currentComments]));
+                    setComments(currentComments => ([...populateCommentDisplayNum(data.comments, pageNumOption-1), ...currentComments]));
                 }
                 setTotalPage(getPageNumber(data.post.numOfReplies));
             })
@@ -207,7 +213,7 @@ const Content = ({notFound}) => {
         if(!!renderedPages && renderedPages.length > 0) {
             const previousPage = renderedPages.at(0)-1;
             const currentPage = renderedPages.at(0);
-            fetchCommentsByPostIdAndPagination(content.postId, previousPage, pageSize, true, currentPage);
+            fetchCommentsByPostIdAndPagination(content.postId, previousPage, pageSize, content.sort, true, currentPage);
         }
     }
 
@@ -217,7 +223,7 @@ const Content = ({notFound}) => {
         if(lastDataObserver.current) lastDataObserver.current.disconnect();
         lastDataObserver.current = new IntersectionObserver(entries => {
             if(entries[0].isIntersecting && hasMore && comments.length >= pageSize) {
-                fetchCommentsByPostIdAndPagination(content.postId, pageNum, pageSize);
+                fetchCommentsByPostIdAndPagination(content.postId, pageNum, pageSize, content.sort);
             }
         });
 
@@ -230,10 +236,10 @@ const Content = ({notFound}) => {
             const pageEnd = renderedPages.length > 0 ? renderedPages.at(-1) : 0;
             if(!loadingBar.contentLoading) {
                 loadingBar.setContentLoading(true);
-                fetchUtil(`/api/posts/${content.postId}/range?pageStart=${pageStart-1}&pageEnd=${pageEnd-1}&size=${pageSize}`, null, "GET")
+                fetchUtil(`/api/posts/${content.postId}/range?pageStart=${pageStart-1}&pageEnd=${pageEnd-1}&size=${pageSize}&sortBy=${content.sort.sortBy}&sortOrder=${content.sort.sortOrder}`, null, "GET")
                 .then(({status, data, currentUser}) => {
                     user.setCurrentUser(currentUser);
-                    setComments(currentComments => ([...data.comments]));
+                    setComments(currentComments => ([...populateCommentDisplayNum(data.comments, pageStart-1)]));
                     setHasMore((data.comments.length === (pageEnd - pageStart + 1) * pageSize));
                     setTotalPage(getPageNumber(data.post.numOfReplies));
                 }).then(() => {
@@ -256,7 +262,7 @@ const Content = ({notFound}) => {
     useEffect(() => {
         if(!loadingBar.contentLoading && !!comments && comments.length > 0) {
             setRenderedPages(prevRenderedPages => {
-                return pageRange(getPageNumber(comments.at(0).commentNumber), getPageNumber(comments.at(-1).commentNumber));
+                return pageRange(getPageNumber(comments.at(0).commentDisplayNum), getPageNumber(comments.at(-1).commentDisplayNum));
             });
         }
     }, [loadingBar.contentLoading]);
@@ -314,11 +320,11 @@ const Content = ({notFound}) => {
                                     comments && comments.map((data, index) => {
                                             return <React.Fragment key={data.id}>
                                                 {
-                                                    (data.commentNumber === 1 || (data.commentNumber-1) % pageSize === 0) &&
-                                                        <div id={`page_${getPageNumber(data.commentNumber)}`} ref={node => pageNumRef.current[getPageNumber(data.commentNumber)] = node}>
+                                                    (data.commentDisplayNum === 1 || (data.commentDisplayNum-1) % pageSize === 0) &&
+                                                        <div id={`page_${getPageNumber(data.commentDisplayNum)}`} ref={node => pageNumRef.current[getPageNumber(data.commentDisplayNum)] = node}>
                                                             <PageNumber
                                                                 pageRange={pageRange(1, totalPage)} 
-                                                                pageNum={getPageNumber(data.commentNumber)}
+                                                                pageNum={getPageNumber(data.commentDisplayNum)}
                                                                 setDisplayPageNum={setDisplayPageNum}
                                                                 scrollTo={scrollTo}/>
                                                         </div>
@@ -328,6 +334,7 @@ const Content = ({notFound}) => {
                                                     }} className={`content-div ${!!commentParam() && commentParam() === data.commentNumber ? "highlighted" : ""}`}>
                                                     <li>
                                                         <div className="content-info flex-display">
+                                                            {data.commentDisplayNum}
                                                             <div className="content-number-div">
                                                                 #{data.commentNumber}
                                                             </div>
@@ -414,6 +421,7 @@ const Content = ({notFound}) => {
             <Tooltip id="reply-tooltip" className="content-tooltip" clickable={true}/>
             <Tooltip id="bookmark-tooltip" className="content-tooltip" clickable={true}/>
             <Tooltip id="share-tooltip" className="content-tooltip" clickable={true}/>
+            <Tooltip id="sort-tooltip" className="content-tooltip" clickable={true}/>
         </>
     );
 };

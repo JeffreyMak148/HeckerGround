@@ -1,0 +1,55 @@
+.show-sort-button {
+    background-color: #2d2d39;
+    border: none;
+    color: #fff;
+    opacity: 0.7;
+    height: 3rem;
+    width: 2.5rem;
+}
+
+.show-sort-button.activated {
+    color: #9179ce;
+}
+
+.show-sort-button:hover {
+    background-color: #43434f;
+    transition: all 0.1s;
+    border-radius: 3px;
+}
+
+.sort-button-popover-body {
+    color: #e8e8e8;
+    display: flex;
+    padding: 8px 4px;
+    flex-direction: column;
+}
+
+.sort-button-popover > .popover-arrow:after {
+    border-bottom-color: #2d2d39 !important;
+}
+
+.sort-button-popover {
+    color: #e8e8e8;
+    background-color: #2d2d39;
+    border-radius: 5px;
+    box-shadow: 0 0px 24px 3px rgba(0,0,0,1);
+    max-width: 450px;
+}
+
+.sort-button {
+    background-color: #2d2d39;
+    border: none;
+    color: #fff;
+    opacity: 0.7;
+    height: 3rem;
+}
+
+.sort-button.active {
+    color: #9179ce;
+}
+
+.sort-button:hover {
+    background-color: #43434f;
+    transition: all 0.1s;
+    border-radius: 3px;
+}

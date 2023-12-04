@@ -6,7 +6,8 @@ const ContentProvider = ({children}) => {
     const [postId, setPostId] = useState(null);
     const [post, setPost] = useState(null);
     const [refresh, setRefresh] = useState(false);
-    const value = {postId, setPostId, post, setPost, refresh, setRefresh};
+    const [sort, setSort] = useState({sortBy: "id", sortOrder: "asc"});
+    const value = {postId, setPostId, post, setPost, refresh, setRefresh, sort, setSort};
     return <ContentContext.Provider value={value}>{children}</ContentContext.Provider>
 };
 
@@ -19,3 +20,4 @@ function useContent() {
 }
 
 export { ContentProvider, useContent };
+

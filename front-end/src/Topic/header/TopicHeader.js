@@ -86,13 +86,13 @@ export const TopicHeader = () => {
                             <></>
                     }
                 </div>
-                <div data-tooltip-id="topic-tooltip" data-tooltip-content="Refresh" data-tooltip-place="top" title="Refresh">
+                <div data-tooltip-id="topic-tooltip" data-tooltip-content="Refresh" data-tooltip-place="bottom" title="Refresh">
                     <RefreshTopic/>
                 </div>
-                <div data-tooltip-id="topic-tooltip" data-tooltip-content="Create" data-tooltip-place="top" title="Create">
+                <div data-tooltip-id="topic-tooltip" data-tooltip-content="Create" data-tooltip-place="bottom" title="Create">
                     <CreatePostButton />
                 </div>
-                <div data-tooltip-id="topic-tooltip" data-tooltip-content="More" data-tooltip-place="top" title="More">
+                <div data-tooltip-id="topic-tooltip" data-tooltip-content="More" data-tooltip-place="bottom" title="More">
                     <TopicMoreButton currentTopic={title} />
                 </div>
             </div>

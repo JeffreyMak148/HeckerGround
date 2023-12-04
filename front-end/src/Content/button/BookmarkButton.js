@@ -43,8 +43,6 @@ export const BookmarkButton = () => {
     }
 
     return (
-        <div data-tooltip-id={`bookmark-tooltip`} data-tooltip-content="Bookmark" data-tooltip-place="top" title="Bookmark">
-            <button className={`${content.post.bookmarked ? 'activated ' : ''}bookmark-button`} onClick={toggleBookmarkPost}><BsBookmark /></button>
-        </div>
+        <button className={`${content.post.bookmarked ? 'activated ' : ''}bookmark-button`} onClick={toggleBookmarkPost}><BsBookmark /></button>
     );
 };
