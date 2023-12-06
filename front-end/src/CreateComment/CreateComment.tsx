@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 import { HiReply } from "react-icons/hi";
 import { useContent } from '../Context/ContentProvider';
@@ -6,6 +6,7 @@ import { useLoading } from '../Context/LoadingProvider';
 import { useModal } from '../Context/ModalProvider';
 import { useTopic } from '../Context/TopicProvider';
 import { useUser } from '../Context/UserProvider';
+import { CategoryData } from '../Menu/Menu';
 import RichTextEditor from '../RichTextEditor/RichTextEditor';
 import ResizeableDiv from '../util/ResizeableDiv';
 import fetchUtil from '../util/fetchUtil';
@@ -14,12 +15,11 @@ import "./CreateComment.css";
 
 const CreateComment = () => {
 
-    // const [inputComment, setInputComment] = useState("");
-    const [html, setHTML] = useState("");
-    const [text, setText] = useState("");
-    const [imageSrcs, setImageSrcs] = useState([]);
-    const [empty, setEmpty] = useState(true);
-    const [curHeight, setCurHeight] = useState(480);
+    const [html, setHTML] = useState<string>("");
+    const [text, setText] = useState<string>("");
+    const [imageSrcs, setImageSrcs] = useState<string[]>([]);
+    const [empty, setEmpty] = useState<boolean>(true);
+    const [curHeight, setCurHeight] = useState<number>(480);
     const user = useUser();
     const modal = useModal();
     const content = useContent();
@@ -35,7 +35,7 @@ const CreateComment = () => {
         setEmpty(true);
     }
 
-    function createComment () {
+    const createComment = () => {
         if(!user.isLoggedIn) {
             user.setShowLogin(true);
         }
@@ -54,7 +54,7 @@ const CreateComment = () => {
 
         if(!loadingBar.backgroundLoading) {
             loadingBar.setBackgroundLoading(true);
-            fetchUtil(`/api/comments/${postId}`, reqBody, "POST")
+            fetchUtil(`/api/comments/${postId}`, "POST", reqBody)
             .then(({status, data, currentUser}) => {
                 user.setCurrentUser(currentUser);
                 if(status === 200) {
@@ -84,10 +84,10 @@ const CreateComment = () => {
                         <div className="create-new-comment-container-inner">
                             <div className="create-comment-top">
                                 <div className="flex-1">
-                                    <span className="create-comment-category-text">{!!topic.category ? topic.category.find(c => c.catId === parseInt(content.post.catId)).category : ""}</span> - Create New Comment
+                                    <span className="create-comment-category-text">{!!topic.category ? topic.category.find((c: CategoryData) => c.catId === parseInt(content.post.catId)).category : ""}</span> - Create New Comment
                                 </div>
                                 <div className="flex-display">
-                                    <button className="create-comment-button" id="submit" type="button" onClick={() => createComment()}>
+                                    <button className="create-comment-button" id="submit" type="button" onClick={createComment}>
                                         <HiReply size="1.5em"/>
                                     </button>
                                 </div>

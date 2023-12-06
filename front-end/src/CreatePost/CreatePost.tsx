@@ -5,6 +5,7 @@ import { useLoading } from '../Context/LoadingProvider';
 import { useModal } from '../Context/ModalProvider';
 import { useTopic } from '../Context/TopicProvider';
 import { useUser } from '../Context/UserProvider';
+import { CategoryData } from '../Menu/Menu';
 import RichTextEditor from '../RichTextEditor/RichTextEditor';
 import ResizeableDiv from '../util/ResizeableDiv';
 import fetchUtil from '../util/fetchUtil';
@@ -12,17 +13,17 @@ import "./CreatePost.css";
 
 const CreatePost = () => {
 
-    const [topicInput, setTopicInput] = useState("");
-    const [categoryInput, setCategoryInput] = useState(1);
-    const [categoryDropdown, setCategoryDropdown] = useState(null);
-    const [curHeight, setCurHeight] = useState(480);
+    const [topicInput, setTopicInput] = useState<string>("");
+    const [categoryInput, setCategoryInput] = useState<number>(1);
+    const [categoryDropdown, setCategoryDropdown] = useState<CategoryData[] | null>(null);
+    const [curHeight, setCurHeight] = useState<number>(480);
     const user = useUser();
     const modal = useModal();
     const topic = useTopic();
-    const [html, setHTML] = useState("");
-    const [text, setText] = useState("");
-    const [imageSrcs, setImageSrcs] = useState([]);
-    const [empty, setEmpty] = useState(true);
+    const [html, setHTML] = useState<string>("");
+    const [text, setText] = useState<string>("");
+    const [imageSrcs, setImageSrcs] = useState<string[]>([]);
+    const [empty, setEmpty] = useState<boolean>(true);
     const loadingBar = useLoading();
 
     const handleHideCreatePost = () => {
@@ -97,7 +98,7 @@ const CreatePost = () => {
                         <div className="create-new-post-container-inner">
                             <div className="create-post-top">
                                 <div className="flex-1">
-                                    <span className="create-topic-category-text">{categoryDropdown && categoryDropdown.find(c => c.catId === categoryInput).category}</span> - Create New Post
+                                    <span className="create-topic-category-text">{categoryDropdown && categoryDropdown.find(c => c.catId === categoryInput)?.category}</span> - Create New Post
                                 </div>
                                 <div className="flex-display">
                                     <button className="create-post-button" id="submit" type="button" onClick={() => createPost()}>                                
@@ -111,7 +112,7 @@ const CreatePost = () => {
                             <div className="flex-display">
                                 <input className="create-topic-input" type="text" id="postTopic" placeholder="Topic" value={topicInput} onChange={(e) => setTopicInput(e.target.value)} />
                                 <select className="create-category-dropdown" name="postCategory" id="postCategory" value={categoryInput} onChange={(e) => setCategoryInput(parseInt(e.target.value))}>
-                                    {categoryDropdown.map(categoryDropdown =>
+                                    {categoryDropdown && categoryDropdown.map(categoryDropdown =>
                                         <option defaultValue={categoryDropdown.catId === categoryInput ? "selected" : ""} key={categoryDropdown.catId} value={categoryDropdown.catId}>{categoryDropdown.category}</option>
                                     )}
                                 </select>
