@@ -1,6 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import './Input.css';
 
+type Props = Readonly<{
+  'data-test-id'?: string;
+  accept?: string;
+  label: string;
+  onChange: (files: FileList | null) => void;
+  labelClassName?: string
+  inputClassName?: string
+  inputImage?: string | null
+}>;
+
 export default function FileInput({
   accept,
   label,
@@ -9,44 +19,48 @@ export default function FileInput({
   labelClassName,
   inputClassName,
   inputImage
-}) {
+}: Props): JSX.Element {
 
-  const inputRef = useRef(null);
-  const dragAreaRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const dragAreaRef = useRef<HTMLDivElement>(null);
   const [dragging, setDragging] = useState(false);
 
   const showInput = () => {
     if(!!inputRef) {
-      inputRef.current.click();
+      inputRef.current?.click();
     }
   }
-  const onDragOver = useCallback((event) => {
+  const onDragOver = useCallback((event: DragEvent) => {
     event.preventDefault();
     setDragging(true);
   }, []);
 
-  const onDragLeave = useCallback((event) => {
+  const onDragLeave = useCallback((event: DragEvent) => {
     event.preventDefault();
     setDragging(false);
   }, []);
 
-  const onDragDrop = useCallback((event) => {
+  const onDragDrop = useCallback((event: DragEvent) => {
     event.preventDefault();
     setDragging(false);
-    onChange(event.dataTransfer.files);
+    if(event.dataTransfer !== null) {
+      onChange(event.dataTransfer.files);
+    }
   }, []);
 
   // const 
 
   useEffect(() => {
     const dragArea = dragAreaRef.current;
-    dragArea.addEventListener("dragover", onDragOver);
-    dragArea.addEventListener("dragleave", onDragLeave);
-    dragArea.addEventListener("drop", onDragDrop);
-    return () => {
-      dragArea.removeEventListener("dragover", onDragOver);
-      dragArea.removeEventListener("dragleave", onDragLeave);
-      dragArea.removeEventListener("drop", onDragDrop);
+    if(dragArea !== null) {
+      dragArea.addEventListener("dragover", onDragOver);
+      dragArea.addEventListener("dragleave", onDragLeave);
+      dragArea.addEventListener("drop", onDragDrop);
+      return () => {
+        dragArea.removeEventListener("dragover", onDragOver);
+        dragArea.removeEventListener("dragleave", onDragLeave);
+        dragArea.removeEventListener("drop", onDragDrop);
+      }
     }
   }, [onDragOver, onDragLeave, onDragDrop]);
 

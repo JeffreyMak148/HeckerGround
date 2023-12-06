@@ -12,7 +12,15 @@ export default function Button({
   disabled,
   small,
   title,
-}) {
+}: {
+  'data-test-id'?: string;
+  children: React.ReactNode;
+  className?: string;
+  onClick: () => void;
+  disabled?: boolean;
+  small?: boolean;
+  title?: string;
+}): JSX.Element {
   return (
     <button
       disabled={disabled}

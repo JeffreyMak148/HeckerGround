@@ -9,8 +9,13 @@ function PortalImpl({
   children,
   title,
   closeOnClickOutside,
+}: {
+  children: React.ReactNode;
+  closeOnClickOutside: boolean;
+  onClose: () => void;
+  title: string;
 }) {
-  const modalRef = useRef(null);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (modalRef.current !== null) {
@@ -19,17 +24,17 @@ function PortalImpl({
   }, []);
 
   useEffect(() => {
-    let modalOverlayElement = null;
-    const handler = (event) => {
+    let modalOverlayElement: HTMLElement | null = null;
+    const handler = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose();
       }
     };
-    const clickOutsideHandler = (event) => {
+    const clickOutsideHandler = (event: MouseEvent) => {
       const target = event.target;
       if (
         modalRef.current !== null &&
-        !modalRef.current.contains(target) &&
+        !modalRef.current.contains(target as Node) &&
         closeOnClickOutside
       ) {
         onClose();
@@ -75,7 +80,12 @@ export default function Modal({
   children,
   title,
   closeOnClickOutside = false,
-}) {
+}: {
+  children: React.ReactNode;
+  closeOnClickOutside?: boolean;
+  onClose: () => void;
+  title: string;
+}): JSX.Element {
   return createPortal(
     <PortalImpl
       onClose={onClose}

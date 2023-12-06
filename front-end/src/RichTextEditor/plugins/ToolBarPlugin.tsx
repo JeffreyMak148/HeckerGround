@@ -1,7 +1,7 @@
 import {
     $createCodeNode
 } from "@lexical/code";
-import { $isLinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link";
+import { $isLinkNode } from "@lexical/link";
 import {
     $isListNode,
     INSERT_ORDERED_LIST_COMMAND,
@@ -28,13 +28,17 @@ import {
     CAN_REDO_COMMAND,
     CAN_UNDO_COMMAND,
     DEPRECATED_$isGridSelection,
+    ElementNode,
     FORMAT_ELEMENT_COMMAND,
     FORMAT_TEXT_COMMAND,
+    LexicalEditor,
     REDO_COMMAND,
+    RangeSelection,
     SELECTION_CHANGE_COMMAND,
+    TextNode,
     UNDO_COMMAND
 } from 'lexical';
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { AiOutlineAlignCenter, AiOutlineAlignLeft, AiOutlineAlignRight, AiOutlineBold, AiOutlineItalic, AiOutlineOrderedList, AiOutlineRedo, AiOutlineStrikethrough, AiOutlineUnderline, AiOutlineUndo, AiOutlineUnorderedList } from 'react-icons/ai';
 import { BsCodeSlash } from 'react-icons/bs';
 import { GoQuote } from 'react-icons/go';
@@ -64,11 +68,16 @@ function FontDropDown({
     value,
     style,
     disabled = false,
-  }) {
+  }: {
+    editor: LexicalEditor;
+    value: string;
+    style: string;
+    disabled?: boolean;
+  }): JSX.Element {
     const handleClick = useCallback(
-      (option) => {
+      (option: string) => {
         editor.update(() => {
-          const selection = $getSelection();
+          const selection = $getSelection() as RangeSelection;
           if (
             $isRangeSelection(selection) ||
             DEPRECATED_$isGridSelection(selection)
@@ -105,26 +114,26 @@ function FontDropDown({
     );
 }
 
-function dropDownActiveClass(active) {
+function dropDownActiveClass(active: boolean) {
     if (active) return 'active dropdown-item-active';
     else return '';
 }
 
-const ToolBarPlugin = () => {
+const ToolBarPlugin = (): JSX.Element => {
 
     const LowPriority = 1;
 
     const [editor] = useLexicalComposerContext();
-    const [canUndo, setCanUndo] = useState(false);
-    const [canRedo, setCanRedo] = useState(false);
-    const [fontSize, setFontSize] = useState("16px");
-    const [fontColor, setFontColor] = useState("#e8e8e8");
-    const [isBold, setIsBold] = useState(false);
-    const [isItalic, setIsItalic] = useState(false);
-    const [isUnderline, setIsUnderline] = useState(false);
-    const [isStrikethrough, setIsStrikethrough] = useState(false);
-    const [isLink, setIsLink] = useState(false);
-    const [blockType, setBlockType] = useState("paragraph");
+    const [canUndo, setCanUndo] = useState<boolean>(false);
+    const [canRedo, setCanRedo] = useState<boolean>(false);
+    const [fontSize, setFontSize] = useState<string>("16px");
+    const [fontColor, setFontColor] = useState<string>("#e8e8e8");
+    const [isBold, setIsBold] = useState<boolean>(false);
+    const [isItalic, setIsItalic] = useState<boolean>(false);
+    const [isUnderline, setIsUnderline] = useState<boolean>(false);
+    const [isStrikethrough, setIsStrikethrough] = useState<boolean>(false);
+    const [isLink, setIsLink] = useState<boolean>(false);
+    const [blockType, setBlockType] = useState<string>("paragraph");
 
     const updateToolbar = useCallback(() => {
         const selection = $getSelection();
@@ -170,7 +179,9 @@ const ToolBarPlugin = () => {
         }
     }, [editor]);
 
-    function getSelectedNode(selection) {
+    function getSelectedNode(
+        selection: RangeSelection,
+    ): TextNode | ElementNode {
         const anchor = selection.anchor;
         const focus = selection.focus;
         const anchorNode = selection.anchor.getNode();
@@ -187,9 +198,9 @@ const ToolBarPlugin = () => {
     }
 
     const applyStyleText = useCallback(
-        (styles) => {
+        (styles: Record<string, string>) => {
           editor.update(() => {
-            const selection = $getSelection();
+            const selection = $getSelection() as RangeSelection;
             if (
               $isRangeSelection(selection) ||
               DEPRECATED_$isGridSelection(selection)
@@ -202,7 +213,7 @@ const ToolBarPlugin = () => {
     );
 
     const onFontColorSelect = useCallback(
-        (value) => {
+        (value: string) => {
           applyStyleText({color: value});
         },
         [applyStyleText],
@@ -222,17 +233,17 @@ const ToolBarPlugin = () => {
 
     const formatOrderedList = () => {
         if(blockType !== "ol") {
-            editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND);
+            editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined);
         } else {
-            editor.dispatchCommand(REMOVE_LIST_COMMAND);
+            editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
         }
     }
 
     const formatUnorderedList = () => {
         if(blockType !== "ul") {
-            editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND);
+            editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined);
         } else {
-            editor.dispatchCommand(REMOVE_LIST_COMMAND);
+            editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
         }
     }
 
@@ -264,14 +275,6 @@ const ToolBarPlugin = () => {
         }
     };
 
-    const insertLink = useCallback(() => {
-        if(!isLink) {
-            editor.dispatchCommand(TOGGLE_LINK_COMMAND, "https://");
-        } else {
-            editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
-        }
-    }, [editor, isLink]);
-
     useEffect(() => {
         return mergeRegister(
             editor.registerUpdateListener(({ editorState }) => {
@@ -287,7 +290,7 @@ const ToolBarPlugin = () => {
                 },
                 LowPriority
             ),
-            editor.registerCommand(
+            editor.registerCommand<boolean>(
                 CAN_UNDO_COMMAND,
                 (payload) => {
                     setCanUndo(payload);
@@ -295,7 +298,7 @@ const ToolBarPlugin = () => {
                 },
                 LowPriority
             ),
-            editor.registerCommand(
+            editor.registerCommand<boolean>(
                 CAN_REDO_COMMAND,
                 (payload) => {
                     setCanRedo(payload);
@@ -316,7 +319,7 @@ const ToolBarPlugin = () => {
                     title="Undo" 
                     className={`toolbar-item single ${!canUndo ? 'disabled' : ''}`} 
                     disabled={!canUndo} 
-                    onClick={() => editor.dispatchCommand(UNDO_COMMAND)}>
+                    onClick={() => editor.dispatchCommand(UNDO_COMMAND, undefined)}>
                     <AiOutlineUndo />
                 </button>
                 <button 
@@ -326,7 +329,7 @@ const ToolBarPlugin = () => {
                     title="Redo" 
                     className={`toolbar-item single ${!canRedo ? 'disabled' : ''}`} 
                     disabled={!canRedo} 
-                    onClick={() => editor.dispatchCommand(REDO_COMMAND)}>
+                    onClick={() => editor.dispatchCommand(REDO_COMMAND, undefined)}>
                     <AiOutlineRedo />
                 </button>
                 <FontDropDown
@@ -384,7 +387,7 @@ const ToolBarPlugin = () => {
                     buttonIconClassName="icon insert-image"
                     dropDownWrapperClassName="insert-image-dropdown"
                     stopCloseOnClickSelf={true}>
-                    <InsertImageDialog activeEditor={editor}/>
+                    <InsertImageDialog activeEditor={editor} handleClose={() => console.log("close")}/>
                     {/* <InsertImageUploadedDialogBody /> */}
                     {/* <DropDownItem
                         onClick={() => {

@@ -10,7 +10,11 @@ import { createPortal } from 'react-dom';
 import { AiOutlineFontColors } from 'react-icons/ai';
 import { BiSolidDownArrow, BiSolidImageAdd } from 'react-icons/bi';
 
-const DropDownContext = React.createContext(null);
+type DropDownContextType = {
+  registerItem: (ref: React.RefObject<HTMLButtonElement>) => void;
+};
+
+const DropDownContext = React.createContext<DropDownContextType | null>(null);
 
 const dropDownPadding = 4;
 
@@ -18,9 +22,14 @@ export function DropDownItem({
   children,
   className,
   onClick,
-  title
+  title,
+}: {
+  children: React.ReactNode;
+  className: string;
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  title?: string;
 }) {
-  const ref = useRef(null);
+  const ref = useRef<HTMLButtonElement>(null);
 
   const dropDownContext = React.useContext(DropDownContext);
 
@@ -54,18 +63,24 @@ function DropDownItems({
   onClose,
   dropDownWrapperClassName,
   handleClose
+}: {
+  children: React.ReactNode;
+  dropDownRef: React.Ref<HTMLDivElement>;
+  onClose: () => void;
+  dropDownWrapperClassName?: string;
+  handleClose: () => void;
 }) {
-  const [items, setItems] = useState();
-  const [highlightedItem, setHighlightedItem] = useState();
+  const [items, setItems] = useState<React.RefObject<HTMLButtonElement>[]>();
+  const [highlightedItem, setHighlightedItem] = useState<React.RefObject<HTMLButtonElement>>();
 
   const registerItem = useCallback(
-    (itemRef) => {
+    (itemRef: React.RefObject<HTMLButtonElement>) => {
       setItems((prev) => (prev ? [...prev, itemRef] : [itemRef]));
     },
     [setItems],
   );
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (!items) return;
 
     const key = event.key;
@@ -117,7 +132,7 @@ function DropDownItems({
             </>
           :
             <>
-              {cloneElement(children, {handleClose: handleClose})}
+              {cloneElement(children as React.ReactElement, {handleClose: handleClose})}
             </>
         }
       </div>
@@ -134,9 +149,18 @@ export default function DropDown({
   dropDownWrapperClassName,
   children,
   stopCloseOnClickSelf,
-}) {
-  const dropDownRef = useRef(null);
-  const buttonRef = useRef(null);
+}: {
+  disabled?: boolean;
+  buttonAriaLabel?: string;
+  buttonClassName: string;
+  buttonIconClassName?: string;
+  buttonLabel?: string;
+  dropDownWrapperClassName?: string;
+  children: React.ReactNode;
+  stopCloseOnClickSelf?: boolean;
+}): JSX.Element {
+  const dropDownRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const [showDropDown, setShowDropDown] = useState(false);
 
   const handleClose = () => {
@@ -164,16 +188,16 @@ export default function DropDown({
     const button = buttonRef.current;
 
     if (button !== null && showDropDown) {
-      const handle = (event) => {
+      const handle = (event: MouseEvent) => {
         const target = event.target;
         if (stopCloseOnClickSelf) {
           if (
             dropDownRef.current &&
-            dropDownRef.current.contains(target)
+            dropDownRef.current.contains(target as Node)
           )
             return;
         }
-        if (!button.contains(target)) {
+        if (!button.contains(target as Node)) {
           setShowDropDown(false);
         }
       };
@@ -227,8 +251,8 @@ export default function DropDown({
               <BiSolidDownArrow size="0.7em" />
             </>
           )}
-          {buttonIconClassName.includes("insert-image") && (<BiSolidImageAdd style={{paddingTop: "1px"}} size="1.1em"/>)}
-          {buttonIconClassName.includes("font-color") && (<><AiOutlineFontColors style={{paddingTop: "1px"}} size="1.1em"/><BiSolidDownArrow size="0.7em" /></>)}
+          {buttonIconClassName?.includes("insert-image") && (<BiSolidImageAdd style={{paddingTop: "1px"}} size="1.1em"/>)}
+          {buttonIconClassName?.includes("font-color") && (<><AiOutlineFontColors style={{paddingTop: "1px"}} size="1.1em"/><BiSolidDownArrow size="0.7em" /></>)}
         </button>
       </div>
 

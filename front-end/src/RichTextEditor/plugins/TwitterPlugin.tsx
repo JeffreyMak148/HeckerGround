@@ -1,19 +1,19 @@
 import { $isLinkNode, AutoLinkNode, LinkNode } from '@lexical/link';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { $insertNodeToNearestRoot, mergeRegister } from '@lexical/utils';
-import { $getNodeByKey, $getSelection, COMMAND_PRIORITY_EDITOR, createCommand } from 'lexical';
+import { $getNodeByKey, $getSelection, COMMAND_PRIORITY_EDITOR, LexicalCommand, MutationListener, NodeKey, createCommand } from 'lexical';
 import { useCallback, useEffect } from 'react';
 
 import { $createTweetNode, TweetNode } from '../nodes/TweetNode';
 
-export const INSERT_TWEET_COMMAND = createCommand(
+export const INSERT_TWEET_COMMAND: LexicalCommand<string> = createCommand(
   'INSERT_TWEET_COMMAND',
 );
 
-export default function TwitterPlugin() {
+export default function TwitterPlugin(): JSX.Element | null {
   const [editor] = useLexicalComposerContext();
 
-  const parse = (text) => {
+  const parse = (text: string) => {
     const match =
       /^https:\/\/(twitter|x)\.com\/(#!\/)?(\w+)\/status(es)*\/(\d+)/.exec(
         text,
@@ -34,7 +34,7 @@ export default function TwitterPlugin() {
       throw new Error('TwitterPlugin: TweetNode not registered on editor');
     }
 
-    return editor.registerCommand(
+    return editor.registerCommand<string>(
       INSERT_TWEET_COMMAND,
       (payload) => {
         const tweetNode = $createTweetNode(payload);
@@ -46,7 +46,7 @@ export default function TwitterPlugin() {
     );
   }, [editor]);
 
-  const embedIfLinkNodeIsTwitterLink = useCallback(key => {
+  const embedIfLinkNodeIsTwitterLink = useCallback((key: NodeKey) => {
     editor.getEditorState().read(async () => {
       const linkNode = $getNodeByKey(key);
 
@@ -66,7 +66,7 @@ export default function TwitterPlugin() {
   }, [editor]);
 
   useEffect(() => {
-    const listener = (nodeMutations, {
+    const listener: MutationListener = (nodeMutations, {
       updateTags,
       dirtyLeaves
     }) => {

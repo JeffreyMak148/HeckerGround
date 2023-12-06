@@ -12,7 +12,7 @@ export const MATCHERS = [
     }),
 ]
   
-export function AutoLinkPlugin() {
+export function AutoLinkPlugin(): JSX.Element {
 
     return <LexicalAutoLinkPlugin matchers={MATCHERS} />
 }

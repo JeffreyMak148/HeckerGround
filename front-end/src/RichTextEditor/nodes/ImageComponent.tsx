@@ -14,6 +14,7 @@ import {
   $isNodeSelection,
   $isRangeSelection,
   $setSelection,
+  BaseSelection,
   CLICK_COMMAND,
   COMMAND_PRIORITY_LOW,
   createCommand,
@@ -22,9 +23,11 @@ import {
   KEY_DELETE_COMMAND,
   KEY_ENTER_COMMAND,
   KEY_ESCAPE_COMMAND,
+  LexicalCommand,
+  LexicalEditor,
+  NodeKey,
   SELECTION_CHANGE_COMMAND,
 } from 'lexical';
-import * as React from 'react';
 import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 
 import { useSharedHistoryContext } from '../context/SharedHistoryContext';
@@ -36,10 +39,10 @@ import { $isImageNode } from './ImageNode';
 
 const imageCache = new Set();
 
-export const RIGHT_CLICK_IMAGE_COMMAND =
+export const RIGHT_CLICK_IMAGE_COMMAND: LexicalCommand<MouseEvent> =
   createCommand('RIGHT_CLICK_IMAGE_COMMAND');
 
-function useSuspenseImage(src) {
+function useSuspenseImage(src: string) {
   if (!imageCache.has(src)) {
     throw new Promise((resolve) => {
       const img = new Image();
@@ -61,7 +64,16 @@ function LazyImage({
   height,
   maxWidth,
   maxHeight
-}) {
+}: {
+  altText: string;
+  className: string | null;
+  height: 'inherit' | number;
+  imageRef: {current: null | HTMLImageElement};
+  maxWidth: number;
+  maxHeight: number;
+  src: string;
+  width: 'inherit' | number;
+}): JSX.Element {
   useSuspenseImage(src);
   return (
     <img
@@ -92,18 +104,30 @@ export default function ImageComponent({
   showCaption = false,
   caption,
   captionsEnabled = false,
-}) {
-  const imageRef = useRef(null);
-  const buttonRef = useRef(null);
+}: {
+  altText: string;
+  caption: LexicalEditor;
+  height: 'inherit' | number;
+  maxWidth: number;
+  maxHeight: number;
+  nodeKey: NodeKey;
+  resizable: boolean;
+  showCaption: boolean;
+  src: string;
+  width: 'inherit' | number;
+  captionsEnabled: boolean;
+}): JSX.Element {
+  const imageRef = useRef<null | HTMLImageElement>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
   const [isSelected, setSelected, clearSelection] =
     useLexicalNodeSelection(nodeKey);
-  const [isResizing, setIsResizing] = useState(false);
+  const [isResizing, setIsResizing] = useState<boolean>(false);
   const [editor] = useLexicalComposerContext();
-  const [selection, setSelection] = useState(null);
-  const activeEditorRef = useRef(null);
+  const [selection, setSelection] = useState<BaseSelection | null>(null);
+  const activeEditorRef = useRef<LexicalEditor | null>(null);
 
   const onDelete = useCallback(
-    (payload) => {
+    (payload: KeyboardEvent) => {
       if (isSelected && $isNodeSelection($getSelection())) {
         const event = payload;
         event.preventDefault();
@@ -118,7 +142,7 @@ export default function ImageComponent({
   );
 
   const onEnter = useCallback(
-    (event) => {
+    (event: KeyboardEvent) => {
       const latestSelection = $getSelection();
       const buttonElem = buttonRef.current;
       if (
@@ -147,7 +171,7 @@ export default function ImageComponent({
   );
 
   const onEscape = useCallback(
-    (event) => {
+    (event: KeyboardEvent) => {
       if (
         activeEditorRef.current === caption ||
         buttonRef.current === event.target
@@ -168,7 +192,7 @@ export default function ImageComponent({
   );
 
   const onClick = useCallback(
-    (payload) => {
+    (payload: MouseEvent) => {
       const event = payload;
 
       if (isResizing) {
@@ -190,10 +214,10 @@ export default function ImageComponent({
   );
 
   const onRightClick = useCallback(
-    (event) => {
+    (event: MouseEvent): void => {
       editor.getEditorState().read(() => {
         const latestSelection = $getSelection();
-        const domElement = event.target;
+        const domElement = event.target as HTMLElement;
         if (
           domElement.tagName === 'IMG' &&
           $isRangeSelection(latestSelection) &&
@@ -298,8 +322,8 @@ export default function ImageComponent({
   };
 
   const onResizeEnd = (
-    nextWidth,
-    nextHeight,
+    nextWidth: 'inherit' | number,
+    nextHeight: 'inherit' | number,
   ) => {
     // Delay hiding the resize bars for click case
     setTimeout(() => {

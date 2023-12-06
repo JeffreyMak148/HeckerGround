@@ -14,9 +14,10 @@ import {
   DRAGOVER_COMMAND,
   DRAGSTART_COMMAND,
   DROP_COMMAND,
+  LexicalCommand,
+  LexicalEditor,
   createCommand
 } from 'lexical';
-import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { CAN_USE_DOM } from '../utils/canUseDOM';
 
@@ -27,22 +28,28 @@ import fetchUtil from '../../util/fetchUtil';
 import {
   $createImageNode,
   $isImageNode,
-  ImageNode
+  ImageNode,
+  ImagePayload
 } from '../nodes/ImageNode';
 import Button from '../ui/Button';
 import FileInput from '../ui/FileInput';
 import TextInput from '../ui/TextInput';
 
-const getDOMSelection = (targetWindow) =>
+export type InsertImagePayload = Readonly<ImagePayload>;
+
+const getDOMSelection = (targetWindow: Window | null): Selection | null =>
   CAN_USE_DOM ? (targetWindow || window).getSelection() : null;
 
-export const INSERT_IMAGE_COMMAND =
+  export const INSERT_IMAGE_COMMAND: LexicalCommand<InsertImagePayload> =
   createCommand('INSERT_IMAGE_COMMAND');
 
 export function InsertImageDialog({
   activeEditor,
   handleClose
-}) {
+}: {
+  activeEditor: LexicalEditor;
+  handleClose: () => void;
+}): JSX.Element {
 
   const ACCEPTABLE_IMAGE_TYPES = [
     'image/',
@@ -55,23 +62,23 @@ export function InsertImageDialog({
     'image/webp',
   ];
 
-  const [tempUrlSrc, setTempUrlSrc] = useState('');
-  const [urlSrc, setUrlSrc] = useState(null);
-  const [uploadSrc, setUploadSrc] = useState(null);
-  const [imageBlobUrl, setImageBlobUrl] = useState(null);
-  const [validUploadInput, setValidUploadInput] = useState(false);
-  const [imageFile, setImageFile] = useState(null);
+  const [tempUrlSrc, setTempUrlSrc] = useState<string>('');
+  const [urlSrc, setUrlSrc] = useState<string | null>(null);
+  const [uploadSrc, setUploadSrc] = useState<string | null>(null);
+  const [imageBlobUrl, setImageBlobUrl] = useState<string | null>(null);
+  const [validUploadInput, setValidUploadInput] = useState<boolean>(false);
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [show, setShow] = useState(true);
   const loading = useLoading();
   const modal = useModal();
   const user = useUser();
 
-  function uploadImage(imageFile) {
+  function uploadImage(imageFile: File): void {
     let formData = new FormData();
     formData.append("file", imageFile);
 
     loading.setBackgroundLoading(true);
-    fetchUtil(`/api/file`, formData, "POST", true)
+    fetchUtil(`/api/file`, "POST", formData, true)
     .then(({status, currentUser, data}) => {
       user.setCurrentUser(currentUser);
       if(!!imageBlobUrl) {
@@ -88,13 +95,14 @@ export function InsertImageDialog({
     })
   }
 
-  const loadImage = (files) => {
+  const loadImage = (files: FileList | null) => {
 
     if(!files) {
       setImageBlobUrl(null);
       setImageFile(null);
       setUploadSrc(null);
       setValidUploadInput(false);
+      return false;
     } else if(files.length > 0 && !ACCEPTABLE_IMAGE_TYPES.includes(files[0]?.type)) {
       modal.showPopup("Error", "Accepts only image file types");
       setValidUploadInput(false);
@@ -112,7 +120,7 @@ export function InsertImageDialog({
 
   useEffect(() => {
     hasModifier.current = false;
-    const handler = (e) => {
+    const handler = (e: KeyboardEvent) => {
       hasModifier.current = e.altKey;
     };
     document.addEventListener('keydown', handler);
@@ -138,6 +146,9 @@ export function InsertImageDialog({
 
   useEffect(() => {
     if(!!uploadSrc) {
+      if(imageFile == null) {
+        return;
+      }
       const payload = {
         altText: imageFile.name,
         src: uploadSrc
@@ -212,7 +223,9 @@ export function InsertImageDialog({
 
 export default function ImagesPlugin({
   captionsEnabled,
-}) {
+}: {
+  captionsEnabled?: boolean;
+}): JSX.Element | null {
   const [editor] = useLexicalComposerContext();
 
   useEffect(() => {
@@ -221,7 +234,7 @@ export default function ImagesPlugin({
     }
 
     return mergeRegister(
-      editor.registerCommand(
+      editor.registerCommand<InsertImagePayload>(
         INSERT_IMAGE_COMMAND,
         (payload) => {
           const imageNode = $createImageNode(payload);
@@ -235,21 +248,21 @@ export default function ImagesPlugin({
         },
         COMMAND_PRIORITY_EDITOR,
       ),
-      editor.registerCommand(
+      editor.registerCommand<DragEvent>(
         DRAGSTART_COMMAND,
         (event) => {
           return onDragStart(event);
         },
         COMMAND_PRIORITY_HIGH,
       ),
-      editor.registerCommand(
+      editor.registerCommand<DragEvent>(
         DRAGOVER_COMMAND,
         (event) => {
           return onDragover(event);
         },
         COMMAND_PRIORITY_LOW,
       ),
-      editor.registerCommand(
+      editor.registerCommand<DragEvent>(
         DROP_COMMAND,
         (event) => {
           return onDrop(event, editor);
@@ -267,7 +280,7 @@ const TRANSPARENT_IMAGE =
 const img = document.createElement('img');
 img.src = TRANSPARENT_IMAGE;
 
-function onDragStart(event) {
+function onDragStart(event: DragEvent): boolean {
   
   const node = getImageNodeInSelection();
   if (!node) {
@@ -300,7 +313,7 @@ function onDragStart(event) {
   return true;
 }
 
-function onDragover(event) {
+function onDragover(event: DragEvent): boolean {
   
   const node = getImageNodeInSelection();
   if (!node) {
@@ -312,7 +325,7 @@ function onDragover(event) {
   return true;
 }
 
-function onDrop(event, editor) {
+function onDrop(event: DragEvent, editor: LexicalEditor): boolean {
   
   const node = getImageNodeInSelection();
   if (!node) {
@@ -336,7 +349,7 @@ function onDrop(event, editor) {
   return true;
 }
 
-function getImageNodeInSelection() {
+function getImageNodeInSelection(): ImageNode | null {
   const selection = $getSelection();
   if (!$isNodeSelection(selection)) {
     return null;
@@ -346,7 +359,7 @@ function getImageNodeInSelection() {
   return $isImageNode(node) ? node : null;
 }
 
-function getDragImageData(event) {
+function getDragImageData(event: DragEvent): null | InsertImagePayload {
   
   const dragData = event.dataTransfer?.getData('application/x-lexical-drag');
   if (!dragData) {
@@ -360,7 +373,14 @@ function getDragImageData(event) {
   return data;
 }
 
-function canDropImage(event) {
+declare global {
+  interface DragEvent {
+    rangeOffset?: number;
+    rangeParent?: Node;
+  }
+}
+
+function canDropImage(event: DragEvent): boolean {
   
   const target = event.target;
   return !!(
@@ -372,15 +392,15 @@ function canDropImage(event) {
   );
 }
 
-function getDragSelection(event) {
+function getDragSelection(event: DragEvent): Range | null | undefined {
   let range;
-  const target = event.target;
+  const target = event.target as null | Element | Document;
   const targetWindow =
     target == null
       ? null
       : target.nodeType === 9
-      ? target.defaultView
-      : target.ownerDocument.defaultView;
+      ? (target as Document).defaultView
+      : (target as Element).ownerDocument.defaultView;
   const domSelection = getDOMSelection(targetWindow);
   if (document.caretRangeFromPoint) {
     range = document.caretRangeFromPoint(event.clientX, event.clientY);

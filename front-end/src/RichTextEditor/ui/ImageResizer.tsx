@@ -1,8 +1,9 @@
 
+import { LexicalEditor } from 'lexical';
 import * as React from 'react';
 import { useRef } from 'react';
 
-function clamp(value, min, max) {
+function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
 
@@ -24,13 +25,34 @@ export default function ImageResizer({
   showCaption,
   setShowCaption,
   captionsEnabled,
-}) {
-  const controlWrapperRef = useRef(null);
+}: {
+  editor: LexicalEditor;
+  buttonRef: {current: null | HTMLButtonElement};
+  imageRef: {current: null | HTMLElement};
+  maxWidth?: number;
+  maxHeight?: number;
+  onResizeEnd: (width: 'inherit' | number, height: 'inherit' | number) => void;
+  onResizeStart: () => void;
+  setShowCaption: (show: boolean) => void;
+  showCaption: boolean;
+  captionsEnabled: boolean;
+}): JSX.Element {
+  const controlWrapperRef = useRef<HTMLDivElement>(null);
   const userSelect = useRef({
     priority: '',
     value: 'default',
   });
-  const positioningRef = useRef({
+  const positioningRef = useRef<{
+    currentHeight: 'inherit' | number;
+    currentWidth: 'inherit' | number;
+    direction: number;
+    isResizing: boolean;
+    ratio: number;
+    startHeight: number;
+    startWidth: number;
+    startX: number;
+    startY: number;
+  }>({
     currentHeight: 0,
     currentWidth: 0,
     direction: 0,
@@ -57,7 +79,7 @@ export default function ImageResizer({
   const minWidth = 100;
   const minHeight = 100;
 
-  const setStartCursor = (direction) => {
+  const setStartCursor = (direction: number) => {
     const ew = direction === Direction.east || direction === Direction.west;
     const ns = direction === Direction.north || direction === Direction.south;
     const nwse =
@@ -108,8 +130,8 @@ export default function ImageResizer({
   };
 
   const handlePointerDown = (
-    event,
-    direction,
+    event: React.PointerEvent<HTMLDivElement>,
+    direction: number,
   ) => {
     if (!editor.isEditable()) {
       return;
@@ -143,7 +165,7 @@ export default function ImageResizer({
       document.addEventListener('pointerup', handlePointerUp);
     }
   };
-  const handlePointerMove = (event) => {
+  const handlePointerMove = (event: PointerEvent) => {
     const image = imageRef.current;
     const positioning = positioningRef.current;
 

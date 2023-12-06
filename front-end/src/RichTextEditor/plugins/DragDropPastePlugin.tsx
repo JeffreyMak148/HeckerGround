@@ -18,7 +18,7 @@ const ACCEPTABLE_IMAGE_TYPES = [
   'image/webp',
 ];
 
-export default function DragDropPaste() {
+export default function DragDropPaste(): null {
   const [editor] = useLexicalComposerContext();
   const loading = useLoading();
   const modal = useModal();
@@ -38,7 +38,7 @@ export default function DragDropPaste() {
               let formData = new FormData();
               formData.append("file", file);
               loading.setBackgroundLoading(true);
-              fetchUtil(`/api/file`, formData, "POST", true)
+              fetchUtil(`/api/file`, "POST", formData, true)
               .then(({status, currentUser, data}) => {
                 user.setCurrentUser(currentUser);
                 const filename = data;

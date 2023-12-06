@@ -1,5 +1,5 @@
 import { $generateHtmlFromNodes } from '@lexical/html';
-import { $getRoot, $nodesOfType } from 'lexical';
+import { $getRoot, $nodesOfType, EditorState, LexicalEditor } from 'lexical';
 import { useEffect } from 'react';
 import "./RichTextEditor.css";
 import "./ui/DropDown.css";
@@ -68,7 +68,7 @@ function MyCustomAutoFocusPlugin() {
 // Catch any errors that occur during Lexical updates and log them
 // or throw them as needed. If you don't throw them, Lexical will
 // try to recover gracefully without losing user data.
-function onError(error) {
+function onError(error: Error) {
   console.error(error);
 }
 
@@ -77,7 +77,12 @@ function RichTextEditor({
   setText = () => {},
   setImageSrcs = () => {},
   setEmpty = () => {}
-  }) {
+  }: {
+    setHTML: (html: string) => void;
+    setText: (text: string) => void;
+    setImageSrcs: (imageSrcs: string[]) => void;
+    setEmpty: (empty: boolean) => void;
+  }): JSX.Element {
   const lexicalConfig = {
     namespace: 'MyEditor',
     theme: LexicalTheme,
@@ -97,7 +102,7 @@ function RichTextEditor({
         ImageNode,
         {
           replace: AutoLinkNode,
-          with: (node) => {
+          with: (node: AutoLinkNode) => {
             return new AutoLinkNode(
               node.getURL(),
               { target: "_blank"},
@@ -107,7 +112,7 @@ function RichTextEditor({
         },
         {
           replace: LinkNode,
-          with: (node) => {
+          with: (node: LinkNode) => {
             return new LinkNode(
               node.getURL(),
               { target: "_blank"},
@@ -118,21 +123,23 @@ function RichTextEditor({
     ]
   };
 
-  const extractImageNodeSrc = (imageNodes) => {
+  const extractImageNodeSrc = (imageNodes: ImageNode[]): string[] => {
     return imageNodes.map(node => node.__src);
   }
 
-  const onChange = (editorState, editor) => {
+  const onChange = (editorState: EditorState, editor: LexicalEditor) => {
     editor.update(() => {
       editorState.read(() => {
             const root = $getRoot();
-            setText(root.__cachedText.replace(/(\r\n|\n|\r)/gm, " "));
+            if(root.__cachedText !== null) {
+              setText(root.__cachedText.replace(/(\r\n|\n|\r)/gm, " "));
+            }
       });
       const rawHTML = $generateHtmlFromNodes(editor, null);
       setHTML(rawHTML);
       
       setImageSrcs(extractImageNodeSrc($nodesOfType(ImageNode)));
-      setEmpty($isRootTextContentEmpty() && extractImageNodeSrc($nodesOfType(ImageNode))?.length <= 0);
+      setEmpty($isRootTextContentEmpty(false) && extractImageNodeSrc($nodesOfType(ImageNode))?.length <= 0);
     });
   }
 
@@ -143,6 +150,7 @@ function RichTextEditor({
             <div className="editor-inner">
                 <RichTextPlugin
                     contentEditable={<ContentEditable className="editor-input"/>}
+                    placeholder={null}
                     ErrorBoundary={LexicalErrorBoundary}
                 />
                 <OnChangePlugin onChange={onChange} />

@@ -4,6 +4,15 @@ import * as React from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import TextInput from './TextInput';
 
+interface ColorPickerProps {
+  color: string;
+  onChange?: (color: string) => void;
+}
+
+export interface Position {
+  x: number;
+  y: number;
+}
 
 const basicColors = [
   '#d0021b',
@@ -26,7 +35,7 @@ const basicColors = [
 const WIDTH = 214;
 const HEIGHT = 150;
 
-export default function ColorPicker({ color, onChange }) {
+export default function ColorPicker({ color, onChange }: Readonly<ColorPickerProps>): JSX.Element {
   const [selfColor, setSelfColor] = useState(transformColor('hex', color));
   const [inputColor, setInputColor] = useState(color);
   const innerDivRef = useRef(null);
@@ -46,7 +55,7 @@ export default function ColorPicker({ color, onChange }) {
     [selfColor.hsv],
   );
 
-  const onSetHex = (hex) => {
+  const onSetHex = (hex: string) => {
     setInputColor(hex);
     if (/^#[0-9A-Fa-f]{6}$/i.test(hex)) {
       const newColor = transformColor('hex', hex);
@@ -54,7 +63,7 @@ export default function ColorPicker({ color, onChange }) {
     }
   };
 
-  const onMoveSaturation = ({x, y}) => {
+  const onMoveSaturation = ({x, y}: Position) => {
     const newHsv = {
       ...selfColor.hsv,
       s: (x / WIDTH) * 100,
@@ -65,7 +74,7 @@ export default function ColorPicker({ color, onChange }) {
     setInputColor(newColor.hex);
   };
 
-  const onMoveHue = ({x}) => {
+  const onMoveHue = ({x}: Position) => {
     const newHsv = {...selfColor.hsv, h: (x / WIDTH) * 360};
     const newColor = transformColor('hsv', newHsv);
 
@@ -137,10 +146,17 @@ export default function ColorPicker({ color, onChange }) {
   );
 }
 
-function MoveWrapper({className, style, onChange, children}) {
-  const divRef = useRef(null);
+interface MoveWrapperProps {
+  className?: string;
+  style?: React.CSSProperties;
+  onChange: (position: Position) => void;
+  children: JSX.Element;
+}
 
-  const move = (e) => {
+function MoveWrapper({className, style, onChange, children}: MoveWrapperProps) {
+  const divRef = useRef<HTMLDivElement>(null);
+
+  const move = (e: React.MouseEvent | MouseEvent): void => {
     if (divRef.current) {
       const {current: div} = divRef;
       const {width, height, left, top} = div.getBoundingClientRect();
@@ -152,16 +168,16 @@ function MoveWrapper({className, style, onChange, children}) {
     }
   };
 
-  const onMouseDown = (e) => {
+  const onMouseDown = (e: React.MouseEvent): void => {
     if (e.button !== 0) return;
 
     move(e);
 
-    const onMouseMove = (_e) => {
+    const onMouseMove = (_e: MouseEvent): void => {
       move(_e);
     };
 
-    const onMouseUp = (_e) => {
+    const onMouseUp = (_e: MouseEvent): void => {
       document.removeEventListener('mousemove', onMouseMove, false);
       document.removeEventListener('mouseup', onMouseUp, false);
 
@@ -183,11 +199,27 @@ function MoveWrapper({className, style, onChange, children}) {
   );
 }
 
-function clamp(value, max, min) {
+function clamp(value: number, max: number, min: number) {
   return value > max ? max : value < min ? min : value;
 }
 
-export function toHex(value) {
+interface RGB {
+  b: number;
+  g: number;
+  r: number;
+}
+interface HSV {
+  h: number;
+  s: number;
+  v: number;
+}
+interface Color {
+  hex: string;
+  hsv: HSV;
+  rgb: RGB;
+}
+
+export function toHex(value: string): string {
   if (!value.startsWith('#')) {
     const ctx = document.createElement('canvas').getContext('2d');
 
@@ -212,7 +244,7 @@ export function toHex(value) {
   return '#000000';
 }
 
-function hex2rgb(hex) {
+function hex2rgb(hex: string): RGB {
   const rbgArr = (
     hex
       .replace(
@@ -230,7 +262,7 @@ function hex2rgb(hex) {
   };
 }
 
-function rgb2hsv({r, g, b}) {
+function rgb2hsv({r, g, b}: RGB): HSV {
   r /= 255;
   g /= 255;
   b /= 255;
@@ -251,7 +283,7 @@ function rgb2hsv({r, g, b}) {
   return {h, s, v};
 }
 
-function hsv2rgb({h, s, v}) {
+function hsv2rgb({h, s, v}: HSV): RGB {
   s /= 100;
   v /= 100;
 
@@ -269,29 +301,32 @@ function hsv2rgb({h, s, v}) {
   return {b, g, r};
 }
 
-function rgb2hex({b, g, r}) {
+function rgb2hex({b, g, r}: RGB): string {
   return '#' + [r, g, b].map((x) => x.toString(16).padStart(2, '0')).join('');
 }
 
-function transformColor (format,color) {
+function transformColor<M extends keyof Color, C extends Color[M]>(
+  format: M,
+  color: C,
+): Color {
   let hex = toHex('#121212');
   let rgb = hex2rgb(hex);
   let hsv = rgb2hsv(rgb);
 
   if (format === 'hex') {
-    const value = color;
+    const value = color as Color['hex'];
 
     hex = toHex(value);
     rgb = hex2rgb(hex);
     hsv = rgb2hsv(rgb);
   } else if (format === 'rgb') {
-    const value = color;
+    const value = color as Color['rgb'];
 
     rgb = value;
     hex = rgb2hex(rgb);
     hsv = rgb2hsv(rgb);
   } else if (format === 'hsv') {
-    const value = color;
+    const value = color as Color['hsv'];
 
     hsv = value;
     rgb = hsv2rgb(hsv);
