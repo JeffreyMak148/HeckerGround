@@ -1,6 +1,16 @@
+export interface CurrentUser {
+    id: number;
+    createDateTime: string;
+    username: string;
+    enabled: boolean;
+    locked: boolean;
+    authenticated: boolean;
+    unreadNotification: number;
+}
+
 interface FetchUtilResponse extends Response {
     status: number;
-    currentUser?: any;
+    currentUser?: CurrentUser;
     data?: any;
 }
 
