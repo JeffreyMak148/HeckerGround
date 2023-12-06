@@ -7,10 +7,15 @@ import { useMenu } from '../Context/MenuProvider';
 import { useModal } from '../Context/ModalProvider';
 import { useTopic } from '../Context/TopicProvider';
 import { useUser } from '../Context/UserProvider';
-import { ReactComponent as BookmarkLogo } from '../assets/bookmarks.svg';
+import BookmarkLogo from '../assets/bookmarks.svg';
 import fetchUtil from '../util/fetchUtil';
 import useOutsideClick from '../util/useOutsideClick';
 import "./Menu.css";
+
+export type CategoryData = {
+    category: string;
+    catId: number;
+}
 
 const Menu = () => {
     const user = useUser();
@@ -19,7 +24,7 @@ const Menu = () => {
     const navigate = useNavigate();
     const modal = useModal();
     const menu = useMenu();
-    const [menuData, setMenuData] = useState([]);
+    const [menuData, setMenuData] = useState<CategoryData[]>([]);
         
 
     const menuRef = useRef(null);
@@ -53,7 +58,7 @@ const Menu = () => {
     }, [user.showLogin, user.showProfile]);
 
     const handleOpen = () => {
-        modal.setProfileModal({show: false, profileId: user.userProfile.id});
+        modal.setProfileModal({show: false, profileId: user.userProfile.id, from: null});
         user.setShowProfile(true);
     }
 
