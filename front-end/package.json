@@ -8,6 +8,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@types/dompurify": "^3.0.5",
     "@types/jest": "^29.5.10",
     "@types/node": "^20.10.3",
     "@types/react": "^18.2.42",

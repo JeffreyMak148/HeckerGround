@@ -1,5 +1,8 @@
+import {
+    Element
+} from 'domhandler';
 import DOMPurify from "dompurify";
-import HTMLReactParser from "html-react-parser";
+import HTMLReactParser, { HTMLReactParserOptions } from "html-react-parser";
 import { Tweet } from "react-twitter-widgets";
 
 const TEMPORARY_ATTRIBUTE = 'data-temp-href-target';
@@ -27,16 +30,17 @@ DOMPurify.addHook('afterSanitizeAttributes', function (node) {
     }
 });
 
-const options = {
-    replace(node) {
+const options: HTMLReactParserOptions = {
+    replace(node): JSX.Element | void {
+        const typedDomNode = node as Element;
         // Twitter
-        if(node.tagName === 'div' && node.attribs && !!node.attribs['data-lexical-tweet-id']) {
-            return <Tweet tweetId={node.attribs['data-lexical-tweet-id']} options={{ theme: "dark" }}/>;
+        if(typedDomNode.tagName === 'div' && typedDomNode.attribs && !!typedDomNode.attribs['data-lexical-tweet-id']) {
+            return <Tweet tweetId={typedDomNode.attribs['data-lexical-tweet-id']} options={{ theme: "dark" }} />;                
         }
     }
 }
 
-function renderHtml (html) {
+function renderHtml (html: string) {
     return HTMLReactParser(DOMPurify.sanitize(html, { ADD_TAGS: ["iframe"], ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling'] }), options);
 }
 
