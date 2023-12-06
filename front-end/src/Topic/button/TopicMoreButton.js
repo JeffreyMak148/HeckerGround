@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { MdChecklistRtl, MdDeleteForever, MdMoreVert } from "react-icons/md";
 
 
@@ -33,7 +33,7 @@ export const TopicMoreButton = ({currentTopic}) => {
         if(!loadingBar.topicLoading) {
             loadingBar.setTopicLoading(true);
             setShow(false);
-            fetchUtil(`/api/notifications/delete/all`, null, "POST")
+            fetchUtil(`/api/notifications/delete/all`, "POST", null)
             .then(({status, data, currentUser}) => {
                 user.setCurrentUser(currentUser);
             })
@@ -58,7 +58,7 @@ export const TopicMoreButton = ({currentTopic}) => {
         if(!loadingBar.topicLoading) {
             loadingBar.setTopicLoading(true);
             setShow(false);
-            fetchUtil(`/api/notifications/read/all`, null, "POST")
+            fetchUtil(`/api/notifications/read/all`, "POST", null)
             .then(({status, data, currentUser}) => {
                 user.setCurrentUser(currentUser);
             })
@@ -83,7 +83,7 @@ export const TopicMoreButton = ({currentTopic}) => {
         if(!loadingBar.topicLoading) {
             loadingBar.setTopicLoading(true);
             setShow(false);
-            fetchUtil(`/api/bookmarks/delete/all`, null, "POST")
+            fetchUtil(`/api/bookmarks/delete/all`, "POST", null)
             .then(({status, data, currentUser}) => {
                 user.setCurrentUser(currentUser);
             })

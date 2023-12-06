@@ -1,4 +1,3 @@
-import React from 'react';
 import { BiSolidDownvote, BiSolidUpvote } from "react-icons/bi";
 import { useContent } from '../../Context/ContentProvider';
 import { useLoading } from '../../Context/LoadingProvider';
@@ -22,7 +21,7 @@ export const Vote = ({comment}) => {
                 return;
             }
             loadingBar.setBackgroundLoading(true);
-            fetchUtil(`/api/comments/upvote/${id}`, null, "POST")
+            fetchUtil(`/api/comments/upvote/${id}`, "POST", null)
             .then(({status, data, currentUser}) => {
                 user.setCurrentUser(currentUser);
                 if(status === 200) {
@@ -50,7 +49,7 @@ export const Vote = ({comment}) => {
                 return;
             }
             loadingBar.setBackgroundLoading(true);
-            fetchUtil(`/api/comments/downvote/${id}`, null, "POST")
+            fetchUtil(`/api/comments/downvote/${id}`, "POST", null)
             .then(({status, data, currentUser}) => {
                 user.setCurrentUser(currentUser);
                 if(status === 200) {

@@ -1,5 +1,11 @@
-function fetchUtil (url, requestBody, requestMethod, isMultipart) {
-    const fetchData = {
+interface FetchUtilResponse extends Response {
+    status: number;
+    currentUser?: any;
+    data?: any;
+}
+
+async function fetchUtil (url: string, requestMethod: "POST" | "GET", requestBody?: null | any, isMultipart?: boolean): Promise<FetchUtilResponse> {
+    const fetchData: RequestInit = {
         method: requestMethod,
     };
 
@@ -27,19 +33,10 @@ function fetchUtil (url, requestBody, requestMethod, isMultipart) {
                     status: response.status,
                     currentUser: data.currentUser,
                     data: data.data
-                })))
-            } else {
-                return Promise.resolve(response.text().then(data => ({
-                    status: response.status,
-                    currentUser: data.currentUser,
-                    data: data.data
-                })))
+                })) as Promise<FetchUtilResponse>)
             }
         }
         if(response.status >= 400 && response.status <= 599) {
-            // if(response.status === 401) {
-            //     throw new Error(response.statusText);
-            // }
             return response.json().then(data => Promise.reject({
                 status: response.status,
                 currentUser: data.currentUser,

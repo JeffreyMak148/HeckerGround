@@ -1,4 +1,3 @@
-import React from 'react';
 import { BsBookmark } from "react-icons/bs";
 import { useContent } from '../../Context/ContentProvider';
 import { useLoading } from '../../Context/LoadingProvider';
@@ -20,7 +19,7 @@ export const BookmarkButton = () => {
                 return;
             }
             loadingBar.setBackgroundLoading(true);
-            fetchUtil(`/api/bookmarks/${content.postId}`, null, "POST")
+            fetchUtil(`/api/bookmarks/${content.postId}`, "POST", null)
             .then(({status, data, currentUser}) => {
                 user.setCurrentUser(currentUser);
                 if(status === 200) {

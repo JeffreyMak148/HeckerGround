@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 import { BsPlusLg } from "react-icons/bs";
 import { useLoading } from '../Context/LoadingProvider';
@@ -55,7 +55,7 @@ const CreatePost = () => {
                 plainText: text,
                 imageSrcs: imageSrcs
             }
-            fetchUtil("/api/posts", reqBody, "POST")
+            fetchUtil("/api/posts", "POST", reqBody)
             .then(({status, data, currentUser}) => {
                 user.setCurrentUser(currentUser);
                 if(status === 200) {

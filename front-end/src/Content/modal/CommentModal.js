@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import { AiOutlineClose } from "react-icons/ai";
 import { Tooltip } from 'react-tooltip';
@@ -27,7 +27,7 @@ export const CommentModal = () => {
 
     useEffect(() => {
         if(!!modal.commentModal.commentId) {
-            fetchUtil(`/api/comments/${modal.commentModal.commentId}`, null, "GET")
+            fetchUtil(`/api/comments/${modal.commentModal.commentId}`, "GET", null)
             .then(({status, data, currentUser}) => {
                 user.setCurrentUser(currentUser);
                 setComment(data.comment);

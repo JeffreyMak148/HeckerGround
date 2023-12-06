@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { IoNotificationsCircle, IoPersonCircle } from "react-icons/io5";
 import { Link, useNavigate } from 'react-router-dom';
 import { LoginButton } from '../Account/Login/LoginButton';
@@ -33,7 +33,7 @@ const Menu = () => {
 
     useEffect(() => {
         if(!topic.category) {
-            fetchUtil("/api/posts/category", null, "GET")
+            fetchUtil("/api/posts/category", "GET", null)
             .then(({status, currentUser, data}) => {
                 user.setCurrentUser(currentUser);
                 setMenuData(data);

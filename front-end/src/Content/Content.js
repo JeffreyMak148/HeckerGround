@@ -159,7 +159,7 @@ const Content = ({notFound}) => {
                 setHasMore(true);
                 setComments([]);
             }
-            fetchUtil(`/api/posts/${postIdOption}?page=${pageNumOption-1}&size=${pageSizeOption}&sortBy=${sortByOption.sortBy}&sortOrder=${sortByOption.sortOrder}`, null, "GET")
+            fetchUtil(`/api/posts/${postIdOption}?page=${pageNumOption-1}&size=${pageSizeOption}&sortBy=${sortByOption.sortBy}&sortOrder=${sortByOption.sortOrder}`, "GET", null)
             .then(({status, data, currentUser}) => {
                 user.setCurrentUser(currentUser);
                 if(!data.comments && !data.post) {
@@ -236,7 +236,7 @@ const Content = ({notFound}) => {
             const pageEnd = renderedPages.length > 0 ? renderedPages.at(-1) : 0;
             if(!loadingBar.contentLoading) {
                 loadingBar.setContentLoading(true);
-                fetchUtil(`/api/posts/${content.postId}/range?pageStart=${pageStart-1}&pageEnd=${pageEnd-1}&size=${pageSize}&sortBy=${content.sort.sortBy}&sortOrder=${content.sort.sortOrder}`, null, "GET")
+                fetchUtil(`/api/posts/${content.postId}/range?pageStart=${pageStart-1}&pageEnd=${pageEnd-1}&size=${pageSize}&sortBy=${content.sort.sortBy}&sortOrder=${content.sort.sortOrder}`, "GET", null)
                 .then(({status, data, currentUser}) => {
                     user.setCurrentUser(currentUser);
                     setComments(currentComments => ([...populateCommentDisplayNum(data.comments, pageStart-1)]));

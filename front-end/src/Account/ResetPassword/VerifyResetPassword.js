@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Col, Container, Modal, Row } from 'react-bootstrap';
 import isEmail from 'validator/lib/isEmail';
 import { useLoading } from '../../Context/LoadingProvider';
@@ -39,7 +39,7 @@ export const VerifyResetPassword = ({modalType, setModalType, show, handleClose,
 
         loadingBar.setBackgroundLoading(true);
 
-        fetchUtil(`/api/auth/reset-password/send`, reqBody, "POST")
+        fetchUtil(`/api/auth/reset-password/send`, "POST", reqBody)
         .then(({status, data, currentUser}) => {
             user.setCurrentUser(currentUser);
         })
@@ -82,7 +82,7 @@ export const VerifyResetPassword = ({modalType, setModalType, show, handleClose,
 
         loadingBar.setBackgroundLoading(true);
 
-        fetchUtil(`/api/auth/reset-password/verify`, reqBody, "POST")
+        fetchUtil(`/api/auth/reset-password/verify`, "POST", reqBody)
         .then(({status, data, currentUser}) => {
             user.setCurrentUser(currentUser);
         })

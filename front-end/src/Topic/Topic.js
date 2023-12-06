@@ -100,7 +100,7 @@ const Topic = () => {
                 setHasMore(true);
             }
             loadingBar.setTopicLoading(true);
-            fetchUtil(`/api/posts/category/${catIdOption}?page=${pageNumOption-1}&size=${pageSizeOption}`, null, "GET")
+            fetchUtil(`/api/posts/category/${catIdOption}?page=${pageNumOption-1}&size=${pageSizeOption}`, "GET", null)
             .then(({status, data, currentUser}) => {
                 if(!!data) {
                     if(data.topics.length === pageSizeOption) {
@@ -135,7 +135,7 @@ const Topic = () => {
                 setDatas([]);
                 setHasMore(true);
             }
-            fetchUtil(`/api/profile/${profileIdOption}?page=${pageNumOption-1}&size=${pageSizeOption}`, null, "GET")
+            fetchUtil(`/api/profile/${profileIdOption}?page=${pageNumOption-1}&size=${pageSizeOption}`, "GET", null)
             .then(({status, data, currentUser}) => {
                 if(!!data.posts) {
                     if(data.posts.length === pageSizeOption) {
@@ -171,7 +171,7 @@ const Topic = () => {
                 setDatas([]);
                 setHasMore(true);
             }
-            fetchUtil(`/api/notifications?page=${pageNumOption-1}&size=${pageSizeOption}`, null, "GET")
+            fetchUtil(`/api/notifications?page=${pageNumOption-1}&size=${pageSizeOption}`, "GET", null)
             .then(({status, data, currentUser}) => {
                 if(!!data) {
                     if(data.notifications.length === pageSizeOption) {
@@ -206,7 +206,7 @@ const Topic = () => {
                 setDatas([]);
                 setHasMore(true);
             }
-            fetchUtil(`/api/bookmarks?page=${pageNumOption-1}&size=${pageSizeOption}`, null, "GET")
+            fetchUtil(`/api/bookmarks?page=${pageNumOption-1}&size=${pageSizeOption}`, "GET", null)
             .then(({status, data, currentUser}) => {
                 if(!!data) {
                     if(data.topics.length === pageSizeOption) {
@@ -238,7 +238,7 @@ const Topic = () => {
     function setNotificationRead(notification) {
         if(!loadingBar.topicLoading && !!notification) {
             loadingBar.setTopicLoading(true);
-            fetchUtil(`/api/notifications/read/${notification.id}`, null, "POST")
+            fetchUtil(`/api/notifications/read/${notification.id}`, "POST", null)
             .then(({status, data, currentUser}) => {
                 setDatas(currentTopic => {
                     let temp = [...currentTopic];
@@ -259,7 +259,7 @@ const Topic = () => {
     function deleteNotification(notification) {
         if(!loadingBar.topicLoading && !!notification) {
             loadingBar.setTopicLoading(true);
-            fetchUtil(`/api/notifications/delete/${notification.id}`, null, "POST")
+            fetchUtil(`/api/notifications/delete/${notification.id}`, "POST", null)
             .then(({status, data, currentUser}) => {
                 user.setCurrentUser(currentUser);
                 setDatas(notifications => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import { AiOutlineClose } from 'react-icons/ai';
 import { IoPersonCircle } from 'react-icons/io5';
@@ -18,7 +18,7 @@ export const Profile = () => {
     
     useEffect(() => {
         if(!!modal.profileModal.profileId) {
-            fetchUtil(`/api/profile/user/${modal.profileModal.profileId}`, null, "GET")
+            fetchUtil(`/api/profile/user/${modal.profileModal.profileId}`, "GET", null)
             .then(({status, currentUser, data}) => {
                 user.setCurrentUser(currentUser);
                 setProfileUser(data.user);
@@ -39,7 +39,7 @@ export const Profile = () => {
 
     function sendLogoutRequest() {
         loadingBar.setBackgroundLoading(true);
-        fetchUtil("/api/auth/signout", null, "POST")
+        fetchUtil("/api/auth/signout", "POST", null)
         .then(({status, data, currentUser}) => {
             user.setCurrentUser(currentUser);
         })

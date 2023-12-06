@@ -1,6 +1,6 @@
-import React from 'react';
 import { TiDelete } from "react-icons/ti";
 import { useTopic } from '../../Context/TopicProvider';
+import fetchUtil from "../../util/fetchUtil";
 import "./RefreshTopic.css";
 
 export const DeleteNotification = ({notificationId}) => {
@@ -10,7 +10,7 @@ export const DeleteNotification = ({notificationId}) => {
     const loadingBar = useLoading();
 
     const deleteNotification = () => {
-        fetchUtil(`/api/notifications/delete/${notificationId}`, null, "POST")
+        fetchUtil(`/api/notifications/delete/${notificationId}`, "POST", null)
             .then(({status, data, currentUser}) => {
                 user.setCurrentUser(currentUser);
             })
