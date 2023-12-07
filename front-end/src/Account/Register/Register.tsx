@@ -5,32 +5,42 @@ import { useLoading } from '../../Context/LoadingProvider';
 import { useModal } from '../../Context/ModalProvider';
 import "./Register.css";
 
-export const Register = ({modalType, setModalType, show, handleClose, setTempRegUsername, setTempRegEmail, setTempRegPassword}) => {
+type RegisterProps = Readonly<{
+    modalType: string;
+    setModalType: React.Dispatch<React.SetStateAction<string>>;
+    show: boolean;
+    handleClose: () => void;
+    setTempRegUsername: React.Dispatch<React.SetStateAction<string>>;
+    setTempRegEmail: React.Dispatch<React.SetStateAction<string>>;
+    setTempRegPassword: React.Dispatch<React.SetStateAction<string>>;
+}>;
+
+export const Register = ({modalType, setModalType, show, handleClose, setTempRegUsername, setTempRegEmail, setTempRegPassword}: RegisterProps): JSX.Element => {
     const modal = useModal();
     const loadingBar = useLoading();
-    const [registerUsername, setRegisterUsername] = useState("");
-    const [registerEmail, setRegisterEmail] = useState("");
-    const [registerPassword, setRegisterPassword] = useState("");
-    const [registerConfirmPassword, setRegisterConfirmPassword] = useState("");
-    const [validUsername, setValidUsername] = useState(true);
-    const [validEmail, setValidEmail] = useState(true);
-    const [validPassword, setValidPassword] = useState(true);
-    const [validConfirmPassword, setValidConfirmPassword] = useState(true);
+    const [registerUsername, setRegisterUsername] = useState<string>("");
+    const [registerEmail, setRegisterEmail] = useState<string>("");
+    const [registerPassword, setRegisterPassword] = useState<string>("");
+    const [registerConfirmPassword, setRegisterConfirmPassword] = useState<string>("");
+    const [validUsername, setValidUsername] = useState<boolean>(true);
+    const [validEmail, setValidEmail] = useState<boolean>(true);
+    const [validPassword, setValidPassword] = useState<boolean>(true);
+    const [validConfirmPassword, setValidConfirmPassword] = useState<boolean>(true);
 
-    function validateEmail (e) {
+    function validateEmail (e: string) {
         setValidEmail(isEmail(e));
     }
 
-    function validateUsername (e) {
+    function validateUsername (e: string) {
         setValidUsername(!!e);
     }
 
-    function validatePassword (e) {
+    function validatePassword (e: string) {
         setValidPassword(!!e);
         validateConfirmPassword(registerConfirmPassword);
     }
 
-    function validateConfirmPassword (e) {
+    function validateConfirmPassword (e: string) {
         setValidConfirmPassword(!!e && e === registerPassword);
     }
 

@@ -6,20 +6,26 @@ import { Link } from 'react-router-dom';
 import { useLoading } from '../../Context/LoadingProvider';
 import { useModal } from '../../Context/ModalProvider';
 import { useUser } from '../../Context/UserProvider';
-import fetchUtil from '../../util/fetchUtil';
+import fetchUtil, { FetchUtilResponse } from '../../util/fetchUtil';
 import { formatDateString } from '../../util/formatDate';
 import "./Profile.css";
 
-export const Profile = () => {
+export type UserData = {
+    id: number;
+    createDateTime: string;
+    username: string;
+}
+
+export const Profile = (): JSX.Element => {
     const modal = useModal();
     const user = useUser();
     const loadingBar = useLoading();
-    const [profileUser, setProfileUser] = useState(null);
+    const [profileUser, setProfileUser] = useState<UserData | null>(null);
     
     useEffect(() => {
         if(!!modal.profileModal.profileId) {
             fetchUtil(`/api/profile/user/${modal.profileModal.profileId}`, "GET", null)
-            .then(({status, currentUser, data}) => {
+            .then(({status, currentUser, data}: FetchUtilResponse) => {
                 user.setCurrentUser(currentUser);
                 setProfileUser(data.user);
                 modal.setProfileModal(profileModal => ({...profileModal, show: true}));
@@ -32,7 +38,7 @@ export const Profile = () => {
     }, [modal.profileModal.profileId]);
 
     const handleClose = () => {
-        modal.setProfileModal({show: false, profileId: null});
+        modal.setProfileModal({show: false, profileId: null, from: null});
         user.setShowProfile(false);
     }
     
@@ -88,14 +94,14 @@ export const Profile = () => {
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link className="profile-item margin-top-8 disable-link">
+                                        <Link className="profile-item margin-top-8 disable-link" to={""}>
                                             Account created: {formatDateString(profileUser.createDateTime)}
                                         </Link>
                                     </li>
                                     {
-                                        user.isLoggedIn && profileUser.id === user.userProfile.id &&
+                                        user.isLoggedIn && profileUser.id === user.userProfile?.id &&
                                             <li>
-                                                <Link className="profile-item center-text logout-text-color" onClick={() => sendLogoutRequest()}>
+                                                <Link className="profile-item center-text logout-text-color" to={""} onClick={() => sendLogoutRequest()}>
                                                     Logout
                                                 </Link>
                                             </li>

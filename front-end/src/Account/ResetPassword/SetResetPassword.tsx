@@ -7,30 +7,62 @@ import { useUser } from '../../Context/UserProvider';
 import fetchUtil from '../../util/fetchUtil';
 import "./ResetPassword.css";
 
-export const SendResetPassword = ({modalType, setModalType, show, handleClose, setTempResetEmail}) => {
+type SetResetPasswordProps = Readonly<{
+    modalType: string;
+    setModalType: React.Dispatch<React.SetStateAction<string>>;
+    show: boolean;
+    handleClose: () => void;
+    tempResetEmail: string;
+    tempResetCode: string;
+}>;
+
+export const SetResetPassword = ({modalType, setModalType, show, handleClose, tempResetEmail, tempResetCode}: SetResetPasswordProps): JSX.Element => {
     const modal = useModal();
     const user = useUser();
     const loadingBar = useLoading();
-    const [resetEmail, setResetEmail] = useState("");
-    const [validEmail, setValidEmail] = useState(true);
+    const [resetPassword, setResetPassword] = useState<string>("");
+    const [confirmResetPassword, setConfirmResetPassword] = useState<string>("");
+    const [validPassword, setValidPassword] = useState<boolean>(true);
+    const [validConfirmPassword, setValidConfirmPassword] = useState<boolean>(true);
 
-    function validateEmail(e) {
-        setValidEmail(isEmail(e));
+    function validatePassword (e: string) {
+        setValidPassword(!!e);
+        validateConfirmPassword(confirmResetPassword);
     }
 
-    function sendResetPasswordRequest () {
-        if(modalType !== "sendResetPassword") {
-            setModalType("sendResetPassword");
+    function validateConfirmPassword (e: string) {
+        setValidConfirmPassword(!!e && e === resetPassword);
+    }
+
+    function setResetPasswordRequest () {
+        if(modalType !== "setResetPassword") {
+            setModalType("setResetPassword");
             return;
         }
 
         let inputMissing = false;
 
-        if(!resetEmail) {
-            modal.showPopup("Reset Password Failed", "Please enter email.");
-            inputMissing = true;
-        } else if(!isEmail(resetEmail)) {
+        if(!tempResetEmail) {
             modal.showPopup("Reset Password Failed", "Email is invalid.");
+            inputMissing = true;
+        } else if(!isEmail(tempResetEmail)) {
+            modal.showPopup("Reset Password Failed", "Email is invalid.");
+            inputMissing = true;
+        }
+
+        if(!tempResetCode) {
+            modal.showPopup("Reset Password Failed", "Code is invalid.");
+            inputMissing = true;
+        }
+
+        if(!resetPassword) {
+            modal.showPopup("Reset Password Failed", "Please enter password.");
+            inputMissing = true;
+        } else if(!confirmResetPassword) {
+            modal.showPopup("Reset Password Failed", "Please confirm password.");
+            inputMissing = true;
+        } else if(resetPassword !== confirmResetPassword) {
+            modal.showPopup("Reset Password Failed", "Password didn't match.");
             inputMissing = true;
         }
 
@@ -38,19 +70,25 @@ export const SendResetPassword = ({modalType, setModalType, show, handleClose, s
             return;
         }
 
+        if(inputMissing) {
+            return;
+        }
+
         const reqBody = {
-            email: resetEmail,
+            email: tempResetEmail,
+            code: tempResetCode,
+            password: resetPassword
         }
 
         loadingBar.setBackgroundLoading(true);
 
-        fetchUtil(`/api/auth/reset-password/send`, "POST", reqBody)
+        fetchUtil(`/api/auth/reset-password/set`, "POST", reqBody)
         .then(({status, data, currentUser}) => {
             user.setCurrentUser(currentUser);
-            setTempResetEmail(data);
         })
         .then(() => {
-            setModalType("verifyResetPassword");
+            setModalType("login");
+            modal.showPopup("Notification", "Password has been reset.");
         })
         .catch(error => {
             modal.showErrorPopup(error.status, error.data?.errorMessage);
@@ -58,7 +96,6 @@ export const SendResetPassword = ({modalType, setModalType, show, handleClose, s
         .finally(() => {
             loadingBar.setBackgroundLoading(false);
         });
-
     }
 
     return (
@@ -73,7 +110,7 @@ export const SendResetPassword = ({modalType, setModalType, show, handleClose, s
                                         <p>Reset Password</p>
                                     </div>
                                     <div className="header-logo">
-                                        <img src={'/static/images/logo_fade.png'} />
+                                        <img src={'/static/images/logo_fade.png'} alt="Logo" />
                                     </div>
                                 </div>
                             </Col>
@@ -85,22 +122,23 @@ export const SendResetPassword = ({modalType, setModalType, show, handleClose, s
                         <Row>
                             <Col>
                                 <div>
-                                    <p className="reset-password-text">A code will be sent to the email if an account is associated with the email.</p>
+                                    <input className={`reset-password-password-input${!validPassword ? " invalid-input" : ""}`} placeholder="New Password" type="password" id="resetPassword" 
+                                        value={resetPassword} onChange={(e) => setResetPassword(e.target.value)} onBlur={(e) => validatePassword(e.target.value)}/>
                                 </div>
                             </Col>
                         </Row>
                         <Row>
                             <Col>
                                 <div>
-                                    <input className={`reset-password-email-input${!validEmail ? " invalid-input" : ""}`} placeholder="Email" type="email" id="resetEmail" 
-                                        value={resetEmail} onChange={(e) => setResetEmail(e.target.value)} onBlur={(e) => validateEmail(e.target.value)}/>
+                                    <input className={`reset-password-confirm-password-input${!validConfirmPassword ? " invalid-input" : ""}`} placeholder="Confirm new Password" type="password" id="confirmResetPassword" 
+                                        value={confirmResetPassword} onChange={(e) => setConfirmResetPassword(e.target.value)} onBlur={(e) => validateConfirmPassword(e.target.value)}/>
                                 </div>
                             </Col>
                         </Row>
                         <Row>
                             <Col>
                                 <div>
-                                    <button className="reset-password-button" onClick={() => sendResetPasswordRequest()}>
+                                    <button className="reset-password-button" onClick={() => setResetPasswordRequest()}>
                                         Reset Password
                                     </button>
                                 </div>

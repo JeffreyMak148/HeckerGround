@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useUser } from '../Context/UserProvider';
 import "./AccountModal.css";
 import { Login } from './Login/Login';
@@ -8,15 +8,15 @@ import { SendResetPassword } from './ResetPassword/SendResetPassword';
 import { SetResetPassword } from './ResetPassword/SetResetPassword';
 import { VerifyResetPassword } from './ResetPassword/VerifyResetPassword';
 
-const AccountModal = () => {
+const AccountModal = (): JSX.Element => {
     const user = useUser();
-    const [show, setShow] = useState(false);
-    const [modalType, setModalType] = useState("login");
-    const [tempRegUsername, setTempRegUsername] = useState("");
-    const [tempRegEmail, setTempRegEmail] = useState("")
-    const [tempRegPassword, setTempRegPassword] = useState("");
-    const [tempResetEmail, setTempResetEmail] = useState("");
-    const [tempResetCode, setTempResetCode] = useState("");
+    const [show, setShow] = useState<boolean>(false);
+    const [modalType, setModalType] = useState<string>("login");
+    const [tempRegUsername, setTempRegUsername] = useState<string>("");
+    const [tempRegEmail, setTempRegEmail] = useState<string>("");
+    const [tempRegPassword, setTempRegPassword] = useState<string>("");
+    const [tempResetEmail, setTempResetEmail] = useState<string>("");
+    const [tempResetCode, setTempResetCode] = useState<string>("");
 
     const handleClose = () => {
         user.setShowLogin(false);

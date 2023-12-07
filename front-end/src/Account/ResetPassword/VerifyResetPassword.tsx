@@ -7,58 +7,35 @@ import { useUser } from '../../Context/UserProvider';
 import fetchUtil from '../../util/fetchUtil';
 import "./ResetPassword.css";
 
-export const SetResetPassword = ({modalType, setModalType, show, handleClose, tempResetEmail, tempResetCode}) => {
+type VerifyResetPasswordProps = Readonly<{
+    modalType: string;
+    setModalType: React.Dispatch<React.SetStateAction<string>>;
+    show: boolean;
+    handleClose: () => void;
+    tempResetEmail: string;
+    setTempResetCode: React.Dispatch<React.SetStateAction<string>>;
+}>;
+
+export const VerifyResetPassword = ({modalType, setModalType, show, handleClose, tempResetEmail, setTempResetCode}: VerifyResetPasswordProps): JSX.Element => {
     const modal = useModal();
     const user = useUser();
     const loadingBar = useLoading();
-    const [resetPassword, setResetPassword] = useState("");
-    const [confirmResetPassword, setConfirmResetPassword] = useState("");
-    const [validPassword, setValidPassword] = useState(true);
-    const [validConfirmPassword, setValidConfirmPassword] = useState(true);
+    const [resetCode, setResetCode] = useState("");
+    const [validCode, setValidCode] = useState(true);
 
-    function validatePassword (e) {
-        setValidPassword(!!e);
-        validateConfirmPassword(confirmResetPassword);
+    function validateCode(e: string) {
+        setValidCode(!!e);
     }
 
-    function validateConfirmPassword (e) {
-        setValidConfirmPassword(!!e && e === resetPassword);
-    }
-
-    function setResetPasswordRequest () {
-        if(modalType !== "setResetPassword") {
-            setModalType("setResetPassword");
-            return;
-        }
-
+    function sendNewCodeRequest () {
         let inputMissing = false;
 
         if(!tempResetEmail) {
-            modal.showPopup("Reset Password Failed", "Email is invalid.");
+            modal.showPopup("Send code failed", "Email is empty.");
             inputMissing = true;
         } else if(!isEmail(tempResetEmail)) {
-            modal.showPopup("Reset Password Failed", "Email is invalid.");
+            modal.showPopup("Send code failed", "Invalid email.");
             inputMissing = true;
-        }
-
-        if(!tempResetCode) {
-            modal.showPopup("Reset Password Failed", "Code is invalid.");
-            inputMissing = true;
-        }
-
-        if(!resetPassword) {
-            modal.showPopup("Reset Password Failed", "Please enter password.");
-            inputMissing = true;
-        } else if(!confirmResetPassword) {
-            modal.showPopup("Reset Password Failed", "Please confirm password.");
-            inputMissing = true;
-        } else if(resetPassword !== confirmResetPassword) {
-            modal.showPopup("Reset Password Failed", "Password didn't match.");
-            inputMissing = true;
-        }
-
-        if(inputMissing) {
-            return;
         }
 
         if(inputMissing) {
@@ -66,20 +43,61 @@ export const SetResetPassword = ({modalType, setModalType, show, handleClose, te
         }
 
         const reqBody = {
-            email: tempResetEmail,
-            code: tempResetCode,
-            password: resetPassword
+            email: tempResetEmail
         }
 
         loadingBar.setBackgroundLoading(true);
 
-        fetchUtil(`/api/auth/reset-password/set`, "POST", reqBody)
+        fetchUtil(`/api/auth/reset-password/send`, "POST", reqBody)
         .then(({status, data, currentUser}) => {
             user.setCurrentUser(currentUser);
         })
         .then(() => {
-            setModalType("login");
-            modal.showPopup("Notification", "Password has been reset.");
+            modal.showPopup("Notification", "Code sent.");
+        })
+        .catch(error => {
+            modal.showErrorPopup(error.status, error.data?.errorMessage);
+        })
+        .finally(() => {
+            loadingBar.setBackgroundLoading(false);
+        });
+    }
+
+    function verifyResetPasswordRequest () {
+        if(modalType !== "verifyResetPassword") {
+            setModalType("verifyResetPassword");
+            return;
+        }
+
+        let inputMissing = false;
+
+        if(!resetCode) {
+            modal.showPopup("Verify Failed", "Please enter code.");
+            inputMissing = true;
+        } else if(!validCode) {
+            modal.showPopup("Verify Failed", "Code is invalid.");
+            inputMissing = true;
+        }
+
+        if(inputMissing) {
+            return;
+        }
+
+
+        const reqBody = {
+            email: tempResetEmail,
+            code: resetCode
+        }
+
+        loadingBar.setBackgroundLoading(true);
+
+        fetchUtil(`/api/auth/reset-password/verify`, "POST", reqBody)
+        .then(({status, data, currentUser}) => {
+            user.setCurrentUser(currentUser);
+        })
+        .then(() => {
+            setTempResetCode(resetCode);
+            setModalType("setResetPassword");
         })
         .catch(error => {
             modal.showErrorPopup(error.status, error.data?.errorMessage);
@@ -101,7 +119,7 @@ export const SetResetPassword = ({modalType, setModalType, show, handleClose, te
                                         <p>Reset Password</p>
                                     </div>
                                     <div className="header-logo">
-                                        <img src={'/static/images/logo_fade.png'} alt="Logo" />
+                                        <img src={'/static/images/logo_fade.png'} />
                                     </div>
                                 </div>
                             </Col>
@@ -112,25 +130,33 @@ export const SetResetPassword = ({modalType, setModalType, show, handleClose, te
                     <Container>
                         <Row>
                             <Col>
+                                <p className="reset-password-text">
+                                    A code has been sent to the email if an account is associated with the email.
+                                </p>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
                                 <div>
-                                    <input className={`reset-password-password-input${!validPassword ? " invalid-input" : ""}`} placeholder="New Password" type="password" id="resetPassword" 
-                                        value={resetPassword} onChange={(e) => setResetPassword(e.target.value)} onBlur={(e) => validatePassword(e.target.value)}/>
+                                    <input className={`reset-password-code-input${!validCode ? " invalid-input" : ""}`} placeholder="Code" type="text" id="resetCode" 
+                                        value={resetCode} onChange={(e) => setResetCode(e.target.value)} onBlur={(e) => validateCode(e.target.value)}/>
                                 </div>
                             </Col>
                         </Row>
                         <Row>
                             <Col>
                                 <div>
-                                    <input className={`reset-password-confirm-password-input${!validConfirmPassword ? " invalid-input" : ""}`} placeholder="Confirm new Password" type="password" id="confirmResetPassword" 
-                                        value={confirmResetPassword} onChange={(e) => setConfirmResetPassword(e.target.value)} onBlur={(e) => validateConfirmPassword(e.target.value)}/>
+                                    <button className="send-new-code-button" onClick={() => sendNewCodeRequest()}>
+                                        Send new code
+                                    </button>
                                 </div>
                             </Col>
                         </Row>
                         <Row>
                             <Col>
                                 <div>
-                                    <button className="reset-password-button" onClick={() => setResetPasswordRequest()}>
-                                        Reset Password
+                                    <button className="verify-code-button" onClick={() => verifyResetPasswordRequest()}>
+                                        Verify Code
                                     </button>
                                 </div>
                             </Col>

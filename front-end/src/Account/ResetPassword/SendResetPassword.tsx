@@ -1,45 +1,44 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Col, Container, Modal, Row } from 'react-bootstrap';
 import isEmail from 'validator/lib/isEmail';
 import { useLoading } from '../../Context/LoadingProvider';
 import { useModal } from '../../Context/ModalProvider';
 import { useUser } from '../../Context/UserProvider';
-import "./Login.css";
+import fetchUtil from '../../util/fetchUtil';
+import "./ResetPassword.css";
 
-export const Login = ({modalType, setModalType, show, handleClose}) => {
+type SendResetPasswordProps = Readonly<{
+    modalType: string;
+    setModalType: React.Dispatch<React.SetStateAction<string>>;
+    show: boolean;
+    handleClose: () => void;
+    setTempResetEmail: React.Dispatch<React.SetStateAction<string>>;
+}>;
+
+export const SendResetPassword = ({modalType, setModalType, show, handleClose, setTempResetEmail}: SendResetPasswordProps): JSX.Element => {
     const modal = useModal();
     const user = useUser();
     const loadingBar = useLoading();
-    const [loginEmail, setLoginEmail] = useState("");
-    const [loginPassword, setLoginPassword] = useState("");
-    const [validEmail, setValidEmail] = useState(true);
-    const [validPassword, setValidPassword] = useState(true);
+    const [resetEmail, setResetEmail] = useState<string>("");
+    const [validEmail, setValidEmail] = useState<boolean>(true);
 
-    function validateEmail(e) {
+    function validateEmail(e: string) {
         setValidEmail(isEmail(e));
     }
 
-    function validatePassword(e) {
-        setValidPassword(!!e);
-    }
-    function sendLoginRequest () {
-        if(modalType !== "login") {
-            setModalType("login");
+    function sendResetPasswordRequest () {
+        if(modalType !== "sendResetPassword") {
+            setModalType("sendResetPassword");
             return;
         }
 
         let inputMissing = false;
 
-        if(!loginEmail) {
-            modal.showPopup("Login Failed", "Please enter login email.");
+        if(!resetEmail) {
+            modal.showPopup("Reset Password Failed", "Please enter email.");
             inputMissing = true;
-        } else if(!isEmail(loginEmail)) {
-            modal.showPopup("Login Failed", "Login email is invalid.");
-            inputMissing = true;
-        }
-
-        if(!loginPassword) {            
-            modal.showPopup("Login Failed", "Please enter login password.");
+        } else if(!isEmail(resetEmail)) {
+            modal.showPopup("Reset Password Failed", "Email is invalid.");
             inputMissing = true;
         }
 
@@ -48,40 +47,26 @@ export const Login = ({modalType, setModalType, show, handleClose}) => {
         }
 
         const reqBody = {
-            email: loginEmail,
-            password: loginPassword
+            email: resetEmail,
         }
 
         loadingBar.setBackgroundLoading(true);
 
-        // Http only cookie can not be assessed by javascript
-        fetch("/api/auth/signin", {
-            "headers": {
-            "Content-Type": "application/json",
-            },
-            "method": "POST",
-            body: JSON.stringify(reqBody),
+        fetchUtil(`/api/auth/reset-password/send`, "POST", reqBody)
+        .then(({status, data, currentUser}) => {
+            user.setCurrentUser(currentUser);
+            setTempResetEmail(data);
         })
-        .then((response) => {
-            if(response.status === 200) {
-                user.setIsLoggedIn(true);
-                return Promise.all([response.json(), response.headers]);
-            } else {
-                return response.json().then(data => Promise.reject({
-                    status: response.status,
-                    data
-                }))
-            }
+        .then(() => {
+            setModalType("verifyResetPassword");
         })
-        .then(([body, headers]) => {
-            window.location.href = "";
-        })
-        .catch((error) => {
+        .catch(error => {
             modal.showErrorPopup(error.status, error.data?.errorMessage);
         })
         .finally(() => {
             loadingBar.setBackgroundLoading(false);
         });
+
     }
 
     return (
@@ -93,7 +78,7 @@ export const Login = ({modalType, setModalType, show, handleClose}) => {
                             <Col>
                                 <div className="header-flex">
                                     <div className="header-text">
-                                        <p>Login</p>
+                                        <p>Reset Password</p>
                                     </div>
                                     <div className="header-logo">
                                         <img src={'/static/images/logo_fade.png'} />
@@ -108,30 +93,31 @@ export const Login = ({modalType, setModalType, show, handleClose}) => {
                         <Row>
                             <Col>
                                 <div>
-                                    <input className={`login-email-input${!validEmail ? " invalid-input" : ""}`} placeholder="Login email" type="email" id="loginEmail" 
-                                        value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} onBlur={(e) => validateEmail(e.target.value)}/>
+                                    <p className="reset-password-text">A code will be sent to the email if an account is associated with the email.</p>
                                 </div>
                             </Col>
                         </Row>
                         <Row>
                             <Col>
                                 <div>
-                                    <input className={`login-password-input${!validPassword ? " invalid-input" : ""}`} placeholder="Password" type="password" id="loginPassword" 
-                                        value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} onBlur={(e) => validatePassword(e.target.value)}/>
+                                    <input className={`reset-password-email-input${!validEmail ? " invalid-input" : ""}`} placeholder="Email" type="email" id="resetEmail" 
+                                        value={resetEmail} onChange={(e) => setResetEmail(e.target.value)} onBlur={(e) => validateEmail(e.target.value)}/>
                                 </div>
                             </Col>
                         </Row>
                         <Row>
-                            <Col>                        
+                            <Col>
                                 <div>
-                                    <button onClick={() => setModalType("sendResetPassword")} className="forgot-password-button">Forgot password?</button>
+                                    <button className="reset-password-button" onClick={() => sendResetPasswordRequest()}>
+                                        Reset Password
+                                    </button>
                                 </div>
                             </Col>
                         </Row>
                     </Container>
                 </Modal.Body>
                 <Modal.Footer className="login-modal-footer">
-                        <button className="login-button" id="submit" type="button" onClick={() => sendLoginRequest()}>
+                        <button className="login-button" id="submit" type="button" onClick={() => setModalType("login")}>
                             Login
                         </button>
                         <button className="register-button" type="button" onClick={() => setModalType("register")}>

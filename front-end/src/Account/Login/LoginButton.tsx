@@ -1,9 +1,8 @@
-import React from 'react';
 import { IoPersonCircle } from 'react-icons/io5';
 import { useUser } from '../../Context/UserProvider';
 import "./Login.css";
 
-export const LoginButton = () => {
+export const LoginButton = (): JSX.Element => {
     const user = useUser();
 
     const handleOpen = () => {

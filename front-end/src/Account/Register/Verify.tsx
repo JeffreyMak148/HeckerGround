@@ -6,13 +6,23 @@ import { useModal } from '../../Context/ModalProvider';
 import { useUser } from '../../Context/UserProvider';
 import "./Verify.css";
 
-export const Verify = ({modalType, setModalType, show, handleClose, tempRegUsername, tempRegEmail, tempRegPassword}) => {
+type VerifyProps = Readonly<{
+    modalType: string;
+    setModalType: React.Dispatch<React.SetStateAction<string>>;
+    show: boolean;
+    handleClose: () => void;
+    tempRegUsername: string;
+    tempRegEmail: string;
+    tempRegPassword: string;
+}>;
+
+export const Verify = ({modalType, setModalType, show, handleClose, tempRegUsername, tempRegEmail, tempRegPassword}: VerifyProps): JSX.Element => {
     const modal = useModal();
     const user = useUser();
     const loadingBar = useLoading();
     const [verificationCode, setVerificationCode] = useState("");
     const [validVerificationCode, setValidVerificationCode] = useState(true);
-    function validateCode (e) {
+    function validateCode (e: string) {
         setValidVerificationCode(!!e);
     }
 
