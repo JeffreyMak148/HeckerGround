@@ -12,7 +12,7 @@ import Main from './Main';
 
 // import { useLocalState } from './util/useLocalStorage';
 
-function App() {
+function App(): JSX.Element {
   return (
     <>
 
