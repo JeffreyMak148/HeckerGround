@@ -13,7 +13,7 @@ import fetchUtil from '../util/fetchUtil';
 import renderHtml from '../util/renderHtml';
 import "./CreateComment.css";
 
-const CreateComment = () => {
+const CreateComment = (): JSX.Element => {
 
     const [html, setHTML] = useState<string>("");
     const [text, setText] = useState<string>("");

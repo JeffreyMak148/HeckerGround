@@ -8,7 +8,7 @@ export interface CurrentUser {
     unreadNotification: number;
 }
 
-interface FetchUtilResponse extends Response {
+export interface FetchUtilResponse extends Response {
     status: number;
     currentUser?: CurrentUser;
     data?: any;

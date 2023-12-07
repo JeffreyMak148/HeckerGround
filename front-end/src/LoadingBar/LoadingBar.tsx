@@ -1,8 +1,7 @@
-import React from 'react';
 import { useLoading } from '../Context/LoadingProvider';
 import "./LoadingBar.css";
 
-const LoadingBar = () => {
+const LoadingBar = (): JSX.Element => {
 
     const loading = useLoading();
 

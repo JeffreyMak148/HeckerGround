@@ -8,10 +8,10 @@ import { useUser } from '../Context/UserProvider';
 import { CategoryData } from '../Menu/Menu';
 import RichTextEditor from '../RichTextEditor/RichTextEditor';
 import ResizeableDiv from '../util/ResizeableDiv';
-import fetchUtil from '../util/fetchUtil';
+import fetchUtil, { CurrentUser } from '../util/fetchUtil';
 import "./CreatePost.css";
 
-const CreatePost = () => {
+const CreatePost = (): JSX.Element => {
 
     const [topicInput, setTopicInput] = useState<string>("");
     const [categoryInput, setCategoryInput] = useState<number>(1);
@@ -58,7 +58,7 @@ const CreatePost = () => {
             }
             fetchUtil("/api/posts", "POST", reqBody)
             .then(({status, data, currentUser}) => {
-                user.setCurrentUser(currentUser);
+                user.setCurrentUser(currentUser as CurrentUser);
                 if(status === 200) {
                     setHTML("");
                     setText("");

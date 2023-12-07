@@ -7,7 +7,7 @@ import { useMenu } from '../Context/MenuProvider';
 import { useModal } from '../Context/ModalProvider';
 import { useTopic } from '../Context/TopicProvider';
 import { useUser } from '../Context/UserProvider';
-import BookmarkLogo from '../assets/bookmarks.svg';
+import { ReactComponent as BookmarkLogo } from '../assets/bookmarks.svg';
 import fetchUtil from '../util/fetchUtil';
 import useOutsideClick from '../util/useOutsideClick';
 import "./Menu.css";
@@ -58,7 +58,7 @@ const Menu = () => {
     }, [user.showLogin, user.showProfile]);
 
     const handleOpen = () => {
-        modal.setProfileModal({show: false, profileId: user.userProfile.id, from: null});
+        modal.setProfileModal({show: false, profileId: user.userProfile?.id, from: null});
         user.setShowProfile(true);
     }
 

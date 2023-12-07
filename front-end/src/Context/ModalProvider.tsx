@@ -23,7 +23,7 @@ interface CreatePostModal {
 }
 
 interface ProfileModal {
-    profileId: null | number;
+    profileId: null | number | undefined;
     from: null | string;
     show: boolean;
 }

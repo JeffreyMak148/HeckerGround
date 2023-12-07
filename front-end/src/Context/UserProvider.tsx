@@ -1,15 +1,16 @@
 import React, { PropsWithChildren, createContext, useContext, useState } from 'react';
+import { CurrentUser } from '../util/fetchUtil';
 
 interface UserContextProps {
     isLoggedIn: boolean;
     setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
     showLogin: boolean;
     setShowLogin: React.Dispatch<React.SetStateAction<boolean>>;
-    userProfile: null | any; // Replace 'any' with the actual type of userProfile if available
-    setUserProfile: React.Dispatch<React.SetStateAction<null | any>>;
+    userProfile: null | CurrentUser;
+    setUserProfile: React.Dispatch<React.SetStateAction<null | CurrentUser>>;
     showProfile: boolean;
     setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
-    setCurrentUser: (currentUser: any) => void; // Replace 'any' with the actual type of currentUser if available
+    setCurrentUser: (currentUser: CurrentUser | undefined) => void;
 }
 
 const UserContext = createContext<UserContextProps | undefined>(undefined);
@@ -17,10 +18,10 @@ const UserContext = createContext<UserContextProps | undefined>(undefined);
 const UserProvider = ({ children }: PropsWithChildren<{}>) => {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [showLogin, setShowLogin] = useState<boolean>(false);
-    const [userProfile, setUserProfile] = useState<null | any>(null); // Replace 'any' with the actual type of userProfile if available
+    const [userProfile, setUserProfile] = useState<null | CurrentUser>(null);
     const [showProfile, setShowProfile] = useState<boolean>(false);
 
-    const setCurrentUser = (currentUser: any) => {
+    const setCurrentUser = (currentUser: CurrentUser | undefined) => {
         if (!!currentUser && currentUser.authenticated) {
             setIsLoggedIn(true);
             setUserProfile(currentUser);
