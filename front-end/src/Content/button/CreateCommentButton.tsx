@@ -1,11 +1,15 @@
-import React from 'react';
 import { BsChatRightDots } from "react-icons/bs";
 import { useContent } from '../../Context/ContentProvider';
 import { useModal } from '../../Context/ModalProvider';
 import { useUser } from '../../Context/UserProvider';
+import { CommentData } from '../Content';
 import "./CreateCommentButton.css";
 
-export const CreateCommentButton = ({reply}) => {
+type CreateCommentButtonProps = {
+    reply?: CommentData;
+}
+
+export const CreateCommentButton = ({reply}: CreateCommentButtonProps): JSX.Element => {
     const content = useContent();
     const user = useUser();
     const modal = useModal();

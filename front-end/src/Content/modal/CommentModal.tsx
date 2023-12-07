@@ -7,6 +7,7 @@ import { useUser } from '../../Context/UserProvider';
 import fetchUtil from '../../util/fetchUtil';
 import formatDate, { formatFullDate } from '../../util/formatDate';
 import renderHtml from '../../util/renderHtml';
+import { CommentData } from '../Content';
 import { ReplyComment } from '../ReplyComment';
 import { CommentCount } from '../button/CommentCount';
 import { CreateCommentButton } from '../button/CreateCommentButton';
@@ -14,10 +15,10 @@ import { ShareButton } from '../button/ShareButton';
 import { Vote } from '../button/Vote';
 import "./CommentModal.css";
 
-export const CommentModal = () => {
+export const CommentModal = (): JSX.Element => {
 
-    const [comment, setComment] = useState(null);
-    const [replyComments, setReplyComments] = useState(null);
+    const [comment, setComment] = useState<CommentData | null>(null);
+    const [replyComments, setReplyComments] = useState<CommentData[] | null>(null);
     const modal = useModal();
     const user = useUser();
 
@@ -41,7 +42,7 @@ export const CommentModal = () => {
 
     }, [modal.commentModal.commentId]);
 
-    function showProfileModal(profileId) {
+    function showProfileModal(profileId: number) {
         if(!!profileId) {
             modal.setProfileModal(profileModal => ({...profileModal, profileId: profileId}));
         }
@@ -74,7 +75,7 @@ export const CommentModal = () => {
                                             <CreateCommentButton reply={comment} />
                                         </div>
                                         <div className="comment-modal-share-button" data-tooltip-id="comment-modal-share-tooltip" data-tooltip-content="Share" data-tooltip-place="top" title="Share">
-                                            <ShareButton postId={comment.post.id} commentNum={comment.commentNumber} title={comment.post.title} commentModal={true}/>
+                                            <ShareButton postId={comment.post.id} commentNum={comment.commentNumber} title={comment.post.title} />
                                         </div>
                                         <div></div>
                                     </div>
@@ -109,7 +110,7 @@ export const CommentModal = () => {
                                             <CreateCommentButton reply={data}/>
                                         </div>
                                         <div className="comment-modal-share-button" data-tooltip-id="comment-modal-share-tooltip" data-tooltip-content="Share" data-tooltip-place="top" title="Share">
-                                            <ShareButton postId={data.post.id} commentNum={data.commentNumber} title={data.post.title} commentModal={true}/>
+                                            <ShareButton postId={data.post.id} commentNum={data.commentNumber} title={data.post.title} />
                                         </div>
                                         <div></div>
                                     </div>

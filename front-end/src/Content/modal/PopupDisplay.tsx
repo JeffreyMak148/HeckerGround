@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { useModal } from '../../Context/ModalProvider';
+import { useEffect, useState } from 'react';
+import { Popup, useModal } from '../../Context/ModalProvider';
 import "./PopupDisplay.css";
 import { PopupModal } from './PopupModal';
 
-export const PopupDisplay = () => {
+export const PopupDisplay = (): JSX.Element => {
     const modal = useModal();
-    const [popups, setPopups] = useState([]);
+    const [popups, setPopups] = useState<Popup[]>([]);
 
     useEffect(() => {
         setPopups(modal.popupModal);

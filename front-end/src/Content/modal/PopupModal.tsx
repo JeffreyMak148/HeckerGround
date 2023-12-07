@@ -1,13 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
-import { useModal } from '../../Context/ModalProvider';
+import { Popup, useModal } from '../../Context/ModalProvider';
 import "./PopupModal.css";
 
-export const PopupModal = ({position, id}) => {
+type PopupModalProps = {
+    position: number;
+    id: number;
+}
+
+export const PopupModal = ({position, id}: PopupModalProps): JSX.Element => {
     const modal = useModal();
 
-    const [isClosing, setIsClosing] = useState(false);
-    const [popup, setPopup] = useState(null);
+    const [isClosing, setIsClosing] = useState<boolean>(false);
+    const [popup, setPopup] = useState<Popup | null | undefined>(null);
 
     useEffect(() => {
         setPopup(modal.popupModal.find(e => e.popupId === id));

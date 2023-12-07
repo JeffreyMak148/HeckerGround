@@ -10,14 +10,40 @@ import { useLoading } from '../Context/LoadingProvider';
 import { useModal } from '../Context/ModalProvider';
 import { useTopic } from '../Context/TopicProvider';
 import { useUser } from '../Context/UserProvider';
-import fetchUtil from '../util/fetchUtil';
+import fetchUtil, { CurrentUserData } from '../util/fetchUtil';
 import formatDate from '../util/formatDate';
 import sortUtil from '../util/sortUtil';
 import "./Topic.css";
 
+import { UserData } from '../Account/Profile/Profile';
+import { CommentData } from '../Content/Content';
 import { CreatePostButton } from './button/CreatePostButton';
 import { TopicHeader } from './header/TopicHeader';
 
+export type PostData = {
+    id: string;
+    user: UserData;
+    createDateTime: string;
+    title: string;
+    catId: number;
+    upvote: number;
+    downvote: number;
+    numOfReplies: number;
+    bookmarked: boolean;
+}
+
+export type NotificationData = {
+    id: number;
+    user: CurrentUserData;
+    post: PostData;
+    comment: CommentData;
+    voteCount: number;
+    createDateTime: string;
+    type: string;
+    title: string;
+    message: string;
+    isRead: boolean;
+}
 
 const Topic = () => {
 
@@ -29,9 +55,9 @@ const Topic = () => {
     const loadingBar = useLoading();
     const pageSize = 20;
 
-    const [datas, setDatas] = useState([]);
-    const [pageNum, setPageNum] = useState(1);
-    const [hasMore, setHasMore] = useState(true);
+    const [datas, setDatas] = useState<Array<PostData | NotificationData>>([]);
+    const [pageNum, setPageNum] = useState<number>(1);
+    const [hasMore, setHasMore] = useState<boolean>(true);
 
     useEffect(() => {
         const catId = parseInt(location.pathname.split("/category/")[1]);
@@ -93,7 +119,12 @@ const Topic = () => {
 
     }, [location, content.post]);
 
-    function fetchTopicsByCatIdAndPagination(catIdOption, pageNumOption, pageSizeOption, refreshOption) {
+    function fetchTopicsByCatIdAndPagination(
+        catIdOption: number,
+        pageNumOption: number,
+        pageSizeOption: number,
+        refreshOption?: boolean,
+    ) {
         if(!!topic.selectedCatId && !loadingBar.topicLoading) {
             if(refreshOption) {
                 setDatas([]);
@@ -128,7 +159,12 @@ const Topic = () => {
         }
     }
 
-    function fetchProfileByProfileIdAndPagination(profileIdOption, pageNumOption, pageSizeOption, refreshOption) {
+    function fetchProfileByProfileIdAndPagination(
+        profileIdOption: number, 
+        pageNumOption: number, 
+        pageSizeOption: number, 
+        refreshOption?: boolean
+    ) {
         if(!!topic.profileId && !loadingBar.topicLoading) {
             loadingBar.setTopicLoading(true);
             if(refreshOption) {
@@ -164,7 +200,11 @@ const Topic = () => {
         }
     }
 
-    function fetchNotificationByPagination(pageNumOption, pageSizeOption, refreshOption) {
+    function fetchNotificationByPagination(
+        pageNumOption: number, 
+        pageSizeOption: number, 
+        refreshOption?: boolean
+    ) {
         if(topic.notification && !loadingBar.topicLoading) {
             loadingBar.setTopicLoading(true);
             if(refreshOption) {
@@ -199,7 +239,11 @@ const Topic = () => {
         }
     }
 
-    function fetchBookmarkByPagination(pageNumOption, pageSizeOption, refreshOption) {
+    function fetchBookmarkByPagination(
+        pageNumOption: number, 
+        pageSizeOption: number, 
+        refreshOption?: boolean
+    ) {
         if(topic.bookmark && !loadingBar.topicLoading) {
             loadingBar.setTopicLoading(true);
             if(refreshOption) {
@@ -235,14 +279,14 @@ const Topic = () => {
         }
     }
 
-    function setNotificationRead(notification) {
+    function setNotificationRead(notification: NotificationData) {
         if(!loadingBar.topicLoading && !!notification) {
             loadingBar.setTopicLoading(true);
             fetchUtil(`/api/notifications/read/${notification.id}`, "POST", null)
             .then(({status, data, currentUser}) => {
                 setDatas(currentTopic => {
                     let temp = [...currentTopic];
-                    Object.assign(temp.find(item => data.id === item.id), data);
+                    Object.assign(temp.find(item => data.id === item.id) as NotificationData, data as NotificationData);
                     return temp;
                 });
                 user.setCurrentUser(currentUser);
@@ -256,7 +300,7 @@ const Topic = () => {
         }
     }
 
-    function deleteNotification(notification) {
+    function deleteNotification(notification: NotificationData) {
         if(!loadingBar.topicLoading && !!notification) {
             loadingBar.setTopicLoading(true);
             fetchUtil(`/api/notifications/delete/${notification.id}`, "POST", null)
@@ -335,8 +379,8 @@ const Topic = () => {
 
     }, [topic.refresh]);
 
-    const observer = useRef();
-    const lastDataRef = useCallback(node => {
+    const observer = useRef<IntersectionObserver>();
+    const lastDataRef = useCallback((node: Element | null) => {
         if(loadingBar.topicLoading) return;
         if(observer.current) observer.current.disconnect();
         observer.current = new IntersectionObserver(entries => {
@@ -351,21 +395,23 @@ const Topic = () => {
         if(node) observer.current.observe(node);
     }, [loadingBar.topicLoading, hasMore, topic.selectedCatId, topic.profileId, topic.notification, topic.bookmark, pageNum]);
 
-    const topicRef = useRef();
+    const topicRef = useRef<HTMLDivElement | null>(null);
     const scrollToTop = () => {
-        topicRef.current.scroll({
-            top: 0,
-            behavior: "smooth"
-        });
+        if(!!topicRef.current) {
+            topicRef.current.scroll({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
     };
 
-    function setPost(postId) {
+    function setPost(postId: string) {
         content.setPostId(postId);
         //Clear comment modal
         modal.setCreateCommentModal({show: false, postId: null, replyComment: null});
     }
 
-    const chooseNotification = (notification) => {
+    const chooseNotification = (notification: NotificationData) => {
         if(!loadingBar.contentLoading) {
             setPost(notification.post.id);
             topic.setNotificationId(notification.id);
@@ -381,7 +427,7 @@ const Topic = () => {
                     loadingBar.topicLoading && (!datas || (!!datas && datas.length === 0)) ?
                         <ul>
                             {
-                                Array(pageSize).fill().map((data,index) => 
+                                Array(pageSize).fill(0).map((data,index) => 
                                     <li key={index}>
                                         <div className="post-topic-div">
                                             <div className="post-topic-div-inner">
@@ -407,7 +453,7 @@ const Topic = () => {
                             </div>
                     :   <ul>
                             {
-                                datas && datas.map((data, index) => {
+                                datas && datas.map((data: any, index) => {
                                     return <React.Fragment key={data.id}>
                                         {
                                             topic.notification && !!data.post ?
@@ -457,7 +503,7 @@ const Topic = () => {
                                 })
                             }
                             {
-                                loadingBar.topicLoading && hasMore && Array(3).fill().map((data, index) => 
+                                loadingBar.topicLoading && hasMore && Array(3).fill(0).map((data, index) => 
                                     <li key={index}>
                                         <div className="post-topic-div">
                                             <div className="post-topic-div-inner">

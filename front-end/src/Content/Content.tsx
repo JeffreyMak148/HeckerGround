@@ -2,10 +2,12 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Placeholder } from 'react-bootstrap';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip';
-import { useContent } from '../Context/ContentProvider';
+import { UserData } from '../Account/Profile/Profile';
+import { Sort, useContent } from '../Context/ContentProvider';
 import { useLoading } from '../Context/LoadingProvider';
 import { useModal } from '../Context/ModalProvider';
 import { useUser } from '../Context/UserProvider';
+import { PostData } from '../Topic/Topic';
 import fetchUtil from '../util/fetchUtil';
 import formatDate, { formatFullDate } from '../util/formatDate';
 import renderHtml from '../util/renderHtml';
@@ -24,21 +26,43 @@ import { ContentHeader } from './header/ContentHeader';
 import { Privacy } from './tnc/Privacy';
 import { Terms } from './tnc/Terms';
 
-const Content = ({notFound}) => {
+export type CommentData = {
+    id: number;
+    user: UserData;
+    post: PostData;
+    replyComment?: CommentData;    
+    createDateTime: string;
+    content: string;
+    plainTest: String;
+    imageSrcs: string[];
+    commentNumber: number;
+    numberOfReply: number;
+    upvote: number;
+    downvote: number;
+    upvoted: boolean;
+    downvoted: boolean;
+    commentDisplayNum?: number;
+}
+
+type ContentProps = {
+    notFound: boolean;
+}
+
+const Content = ({notFound}: ContentProps): JSX.Element => {
 
     const [searchParams, setSearchParams] = useSearchParams();
-    const [terms, setTerms] = useState(false);
-    const [privacy, setPrivacy] = useState(false);
-    const [comments, setComments] = useState([]);
-    const [pageNum, setPageNum] = useState(null);
-    const [displayPageNum, setDisplayPageNum] = useState(null);
-    const [hasMore, setHasMore] = useState(true);
-    const [error, setError] = useState(false);
-    const [totalPage, setTotalPage] = useState(null);
-    const [renderedPages, setRenderedPages] = useState([]);
-    const contentRef = useRef(null);
-    const scrollRef = useRef([]);
-    const pageNumRef = useRef([]);
+    const [terms, setTerms] = useState<boolean>(false);
+    const [privacy, setPrivacy] = useState<boolean>(false);
+    const [comments, setComments] = useState<CommentData[] | null>([]);
+    const [pageNum, setPageNum] = useState<number | null>(null);
+    const [displayPageNum, setDisplayPageNum] = useState<number | null>(null);
+    const [hasMore, setHasMore] = useState<boolean>(true);
+    const [error, setError] = useState<boolean>(false);
+    const [totalPage, setTotalPage] = useState<number | null>(null);
+    const [renderedPages, setRenderedPages] = useState<number[] | null>([]);
+    const contentRef = useRef<HTMLDivElement | null>(null);
+    const scrollRef = useRef<HTMLDivElement[]>([]);
+    const pageNumRef = useRef<HTMLDivElement[]>([]);
     const location = useLocation();
     const content = useContent();
     const modal = useModal();
@@ -49,7 +73,7 @@ const Content = ({notFound}) => {
     useEffect(() => {
         if(!!displayPageNum) {
             const url = new URL(window.location.toString());
-            url.searchParams.set('page', displayPageNum);
+            url.searchParams.set('page', displayPageNum.toString());
             window.history.replaceState(
                 null,
                 "",
@@ -58,51 +82,52 @@ const Content = ({notFound}) => {
         }
     }, [displayPageNum]);
 
-    const pageParam = () => {
+    const pageParam = (): number => {
         const pageValidation = searchParams.get("page");
-        if(pageValidation == null || pageValidation <= 0) {
+        if(pageValidation == null || parseInt(pageValidation) <= 0) {
             return 1;
         }
         return !!parseInt(pageValidation) ? parseInt(pageValidation) : 1;
     }
 
-    const commentParam = () => {
-        return parseInt(searchParams.get("comment")) > 0 ? parseInt(searchParams.get("comment")) : NaN;
+    const commentParam = (): number => {
+        const param = searchParams.get("comment");
+        return param !== null && parseInt(param) > 0 ? parseInt(param) : NaN;
     }
 
-    const scrollTo = (pageNum) => {
+    const scrollTo = (pageNum: number) => {
         if(!loadingBar.contentLoading && pageNumRef.current.length && !!pageNumRef.current[pageNum]) {
             pageNumRef.current[pageNum].scrollIntoView();
         } else {
-            fetchCommentsByPostIdAndPagination(content.postId, pageNum, pageSize, content.sort, false, false, false, true);
+            fetchCommentsByPostIdAndPagination(content.postId as string, pageNum, pageSize, content.sort, false, null, null, true);
         }
     }
 
-    const scrollToComment = (commentNum) => {
+    const scrollToComment = (commentNum: number) => {
         if(!loadingBar.contentLoading && scrollRef.current.length && !!scrollRef.current[commentNum]) {
             scrollRef.current[commentNum].scrollIntoView();
         } else {
-            fetchCommentsByPostIdAndPagination(content.postId, getPageNumber(commentNum), pageSize, content.sort, false, false, commentNum, true);
+            fetchCommentsByPostIdAndPagination(content.postId as string, getPageNumber(commentNum), pageSize, content.sort, false, null, commentNum, true);
         }
     }
 
-    const pageRange = (start, end) => {
+    const pageRange = (start: number, end: number) => {
         // inclusive
         const length = end + 1 - start;
         return Array.from({length}, (_, i) => start + i);
     }
 
-    const getPageNumber = (commentNumber) => {
+    const getPageNumber = (commentNumber: number): number => {
         return Math.ceil(commentNumber / pageSize);
     }
     
-    function showProfileModal(profileId) {
+    function showProfileModal(profileId: number) {
         if(!!profileId) {
             modal.setProfileModal(profileModal => ({...profileModal, profileId: profileId}));
         }
     }
 
-    const populateCommentDisplayNum = (comments, pageNum) => {
+    const populateCommentDisplayNum = (comments: CommentData[], pageNum: number) => {
         return comments.map((comment, i) => ({...comment, commentDisplayNum: pageNum*pageSize + i + 1}));
     }
     
@@ -142,15 +167,24 @@ const Content = ({notFound}) => {
         setRenderedPages([]);
         if(!!commentParam()) {
             setPageNum(getPageNumber(commentParam()));
-            fetchCommentsByPostIdAndPagination(content.postId, getPageNumber(commentParam()), pageSize, content.sort, false, false, commentParam());
+            fetchCommentsByPostIdAndPagination(content.postId as string, getPageNumber(commentParam()), pageSize, content.sort, false, null, commentParam());
         } else {
             setPageNum(pageParam());
-            fetchCommentsByPostIdAndPagination(content.postId, pageParam(), pageSize, content.sort);
+            fetchCommentsByPostIdAndPagination(content.postId as string, pageParam(), pageSize, content.sort);
         }
         
     }, [content.postId, content.sort]);
 
-    function fetchCommentsByPostIdAndPagination(postIdOption, pageNumOption, pageSizeOption, sortByOption, previousPageOption, scrollToPageNumOption, scrollToCommentNumOption, resetOption) {
+    function fetchCommentsByPostIdAndPagination(
+        postIdOption: string,
+        pageNumOption: number,
+        pageSizeOption: number,
+        sortByOption: Sort,
+        previousPageOption?: boolean,
+        scrollToPageNumOption?: number | null,
+        scrollToCommentNumOption?: number | null,
+        resetOption?: boolean,
+    ): void {
         if(!!postIdOption && !loadingBar.contentLoading) {
             loadingBar.setContentLoading(true);
             if(resetOption) {
@@ -167,7 +201,7 @@ const Content = ({notFound}) => {
                 }
                 if(!!data.comments && !previousPageOption) {
                     if(data.comments.length === pageSizeOption) {
-                        setPageNum(currentPageNum => (currentPageNum + 1));
+                        setPageNum(currentPageNum => (currentPageNum as number + 1));
                     }
                     if(data.comments.length < pageSizeOption) {
                         setHasMore(false);
@@ -177,9 +211,9 @@ const Content = ({notFound}) => {
                 if(resetOption) {
                     setComments(currentComments => [...populateCommentDisplayNum(data.comments, pageNumOption-1)]);
                 } else if(!previousPageOption) {
-                    setComments(currentComments => ([...currentComments, ...populateCommentDisplayNum(data.comments, pageNumOption-1)]));
+                    setComments(currentComments => ([...currentComments as CommentData[], ...populateCommentDisplayNum(data.comments, pageNumOption-1)]));
                 } else {
-                    setComments(currentComments => ([...populateCommentDisplayNum(data.comments, pageNumOption-1), ...currentComments]));
+                    setComments(currentComments => ([...populateCommentDisplayNum(data.comments, pageNumOption-1), ...currentComments as CommentData[]]));
                 }
                 setTotalPage(getPageNumber(data.post.numOfReplies));
             })
@@ -211,19 +245,19 @@ const Content = ({notFound}) => {
 
     function fetchPreviousPage() {
         if(!!renderedPages && renderedPages.length > 0) {
-            const previousPage = renderedPages.at(0)-1;
-            const currentPage = renderedPages.at(0);
-            fetchCommentsByPostIdAndPagination(content.postId, previousPage, pageSize, content.sort, true, currentPage);
+            const previousPage = renderedPages.at(0) as number -1;
+            const currentPage = renderedPages.at(0) as number;
+            fetchCommentsByPostIdAndPagination(content.postId as string, previousPage, pageSize, content.sort, true, currentPage);
         }
     }
 
-    const lastDataObserver = useRef();
-    const lastDataRef = useCallback(node => {
+    const lastDataObserver = useRef<IntersectionObserver>();
+    const lastDataRef = useCallback((node: Element | null) => {
         if(loadingBar.contentLoading) return;
         if(lastDataObserver.current) lastDataObserver.current.disconnect();
         lastDataObserver.current = new IntersectionObserver(entries => {
-            if(entries[0].isIntersecting && hasMore && comments.length >= pageSize) {
-                fetchCommentsByPostIdAndPagination(content.postId, pageNum, pageSize, content.sort);
+            if(entries[0].isIntersecting && hasMore && !!comments && comments.length >= pageSize) {
+                fetchCommentsByPostIdAndPagination(content.postId as string, pageNum as number, pageSize, content.sort);
             }
         });
 
@@ -231,9 +265,9 @@ const Content = ({notFound}) => {
     }, [loadingBar.contentLoading, hasMore]);
 
     useEffect(() => {
-        if(content.refresh) {
-            const pageStart = renderedPages.length > 0 ? renderedPages.at(0) : 0;
-            const pageEnd = renderedPages.length > 0 ? renderedPages.at(-1) : 0;
+        if(content.refresh && !!renderedPages) {
+            const pageStart = (renderedPages.length > 0 ? renderedPages.at(0) : 0) as number;
+            const pageEnd = (renderedPages.length > 0 ? renderedPages.at(-1) : 0) as number;
             if(!loadingBar.contentLoading) {
                 loadingBar.setContentLoading(true);
                 fetchUtil(`/api/posts/${content.postId}/range?pageStart=${pageStart-1}&pageEnd=${pageEnd-1}&size=${pageSize}&sortBy=${content.sort.sortBy}&sortOrder=${content.sort.sortOrder}`, "GET", null)
@@ -261,14 +295,16 @@ const Content = ({notFound}) => {
 
     useEffect(() => {
         if(!loadingBar.contentLoading && !!comments && comments.length > 0) {
+            const firstCommentDisplayNum = comments.at(0)?.commentDisplayNum as number;
+            const lastCommentDisplayNum = comments.at(-1)?.commentDisplayNum as number;
             setRenderedPages(prevRenderedPages => {
-                return pageRange(getPageNumber(comments.at(0).commentDisplayNum), getPageNumber(comments.at(-1).commentDisplayNum));
+                return pageRange(getPageNumber(firstCommentDisplayNum), getPageNumber(lastCommentDisplayNum));
             });
         }
     }, [loadingBar.contentLoading]);
 
     const scrollToTop = () => {
-        if(!!contentRef) {
+        if(!!contentRef && !!contentRef.current) {
             contentRef.current.scrollTop = 0;
         }
     }
@@ -287,7 +323,7 @@ const Content = ({notFound}) => {
                                     <Placeholder xs={1} bsPrefix="content-placeholder"/>
                                 </div>
                                 {
-                                    Array(1).fill().map((data, index) => 
+                                    Array(1).fill(0).map((data, index) => 
                                         <li key={index}>
                                             <div className="content-div">
                                                 <div className="content-info flex-display padding-top-10">
@@ -310,7 +346,7 @@ const Content = ({notFound}) => {
                         :
                             <>
                                 {
-                                    (!!comments && !!content.postId && renderedPages.length > 0 && !renderedPages.includes(1)) &&
+                                    (!!comments && !!content.postId && !!renderedPages && renderedPages.length > 0 && !renderedPages.includes(1)) &&
                                         <div>
                                             <LoadPreviousPage fetchData={fetchPreviousPage} />
                                         </div>
@@ -320,16 +356,16 @@ const Content = ({notFound}) => {
                                     comments && comments.map((data, index) => {
                                             return <React.Fragment key={data.id}>
                                                 {
-                                                    (data.commentDisplayNum === 1 || (data.commentDisplayNum-1) % pageSize === 0) &&
-                                                        <div id={`page_${getPageNumber(data.commentDisplayNum)}`} ref={node => pageNumRef.current[getPageNumber(data.commentDisplayNum)] = node}>
+                                                    !!data.commentDisplayNum && (data.commentDisplayNum === 1 || (data.commentDisplayNum-1) % pageSize === 0) &&
+                                                        <div id={`page_${getPageNumber(data.commentDisplayNum)}`} ref={(node: HTMLDivElement) => pageNumRef.current[getPageNumber(data.commentDisplayNum as number)] = node}>
                                                             <PageNumber
-                                                                pageRange={pageRange(1, totalPage)} 
+                                                                pageRange={pageRange(1, totalPage as number)} 
                                                                 pageNum={getPageNumber(data.commentDisplayNum)}
                                                                 setDisplayPageNum={setDisplayPageNum}
                                                                 scrollTo={scrollTo}/>
                                                         </div>
                                                 }
-                                                <div id={`comment_${data.commentNumber}`} ref={node => {
+                                                <div id={`comment_${data.commentNumber}`} ref={(node: HTMLDivElement) => {
                                                         scrollRef.current[data.commentNumber] = node;
                                                     }} className={`content-div ${!!commentParam() && commentParam() === data.commentNumber ? "highlighted" : ""}`}>
                                                     <li>
@@ -372,7 +408,7 @@ const Content = ({notFound}) => {
                                         })
                                     }
                                     {
-                                        loadingBar.contentLoading && hasMore && Array(3).fill().map((data, index) => 
+                                        loadingBar.contentLoading && hasMore && Array(3).fill(0).map((data, index) => 
                                             <li key={index}>
                                                 <div className="content-div">
                                                     <div className="content-info flex-display padding-top-10">
@@ -392,9 +428,9 @@ const Content = ({notFound}) => {
                                         )
                                     }
                                 </ul>
-                                { (!!comments && !!content.postId && renderedPages.length > 0) &&
+                                { (!!comments && !!content.postId && !!renderedPages && renderedPages.length > 0) &&
                                         <>
-                                            <PageButton pageRange={pageRange(1, totalPage)} pageNumber={displayPageNum} scrollTo={scrollTo} />
+                                            <PageButton pageRange={pageRange(1, totalPage as number)} pageNumber={displayPageNum as number} scrollTo={scrollTo} />
                                             <div ref={node => lastDataRef(node)}>
                                                 <RefreshContent />
                                             </div>

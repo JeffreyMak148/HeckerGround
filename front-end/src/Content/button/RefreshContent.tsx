@@ -1,8 +1,7 @@
-import React from 'react';
 import { useContent } from '../../Context/ContentProvider';
 import "./RefreshContent.css";
 
-export const RefreshContent = () => {
+export const RefreshContent = (): JSX.Element => {
 
     const content = useContent();
 

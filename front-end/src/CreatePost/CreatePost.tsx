@@ -8,7 +8,7 @@ import { useUser } from '../Context/UserProvider';
 import { CategoryData } from '../Menu/Menu';
 import RichTextEditor from '../RichTextEditor/RichTextEditor';
 import ResizeableDiv from '../util/ResizeableDiv';
-import fetchUtil, { CurrentUser } from '../util/fetchUtil';
+import fetchUtil, { CurrentUserData } from '../util/fetchUtil';
 import "./CreatePost.css";
 
 const CreatePost = (): JSX.Element => {
@@ -58,7 +58,7 @@ const CreatePost = (): JSX.Element => {
             }
             fetchUtil("/api/posts", "POST", reqBody)
             .then(({status, data, currentUser}) => {
-                user.setCurrentUser(currentUser as CurrentUser);
+                user.setCurrentUser(currentUser as CurrentUserData);
                 if(status === 200) {
                     setHTML("");
                     setText("");

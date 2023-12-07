@@ -2,14 +2,21 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { BiSolidDownArrow } from 'react-icons/bi';
 import "../Content.css";
 
-export const PageNumber = ({pageRange, pageNum, setDisplayPageNum, scrollTo}) => {
-    const [range, setRange] = useState([]);
+type PageNumberProps = Readonly<{
+    pageRange: number[];
+    pageNum: number;
+    setDisplayPageNum: React.Dispatch<React.SetStateAction<number | null>>;
+    scrollTo: (pageNum: number) => void;
+}>;
+
+export const PageNumber = ({pageRange, pageNum, setDisplayPageNum, scrollTo}: PageNumberProps): JSX.Element => {
+    const [range, setRange] = useState<number[]>([]);
     useEffect(() => {
         setRange(pageRange);
     }, [pageRange]);
 
-    const observer = useRef();
-    const observeRef = useCallback(node => {
+    const observer = useRef<IntersectionObserver>();
+    const observeRef = useCallback((node: Element | null) => {
         if(observer.current) observer.current.disconnect();
         observer.current = new IntersectionObserver(entries => {
             if(entries[0].isIntersecting || entries[0].boundingClientRect.top < 0) {

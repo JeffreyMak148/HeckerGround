@@ -4,17 +4,22 @@ import { useLoading } from '../../Context/LoadingProvider';
 import { useModal } from '../../Context/ModalProvider';
 import { useUser } from '../../Context/UserProvider';
 import fetchUtil from '../../util/fetchUtil';
+import { CommentData } from "../Content";
 import { VoteCountBar } from '../bar/VoteCountBar';
 import "./Vote.css";
 
-export const Vote = ({comment}) => {
+type VoteProps = {
+    comment: CommentData;
+}
+
+export const Vote = ({comment}: VoteProps): JSX.Element => {
     const loadingBar = useLoading();
     const modal = useModal();
     const content = useContent();
     const user = useUser();
 
     
-    function upvoteComment(id) {
+    function upvoteComment(id: number) {
         if(!!id && !loadingBar.backgroundLoading) {
             if(!user.isLoggedIn) {
                 user.setShowLogin(true);
@@ -42,7 +47,7 @@ export const Vote = ({comment}) => {
         }
     }
 
-    function downvoteComment(id) {
+    function downvoteComment(id: number) {
         if(!!id && !loadingBar.backgroundLoading) {
             if(!user.isLoggedIn) {
                 user.setShowLogin(true);
@@ -70,7 +75,7 @@ export const Vote = ({comment}) => {
         }
     }
 
-    function isDisabled(comment) {
+    function isDisabled(comment: CommentData) {
         return comment.downvoted || comment.upvoted;
     }
     

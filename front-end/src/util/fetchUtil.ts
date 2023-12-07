@@ -1,4 +1,4 @@
-export interface CurrentUser {
+export interface CurrentUserData {
     id: number;
     createDateTime: string;
     username: string;
@@ -10,7 +10,7 @@ export interface CurrentUser {
 
 export interface FetchUtilResponse extends Response {
     status: number;
-    currentUser?: CurrentUser;
+    currentUser?: CurrentUserData;
     data?: any;
 }
 

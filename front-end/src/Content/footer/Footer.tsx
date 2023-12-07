@@ -1,9 +1,8 @@
-import React from 'react';
 import { AiOutlineCopyrightCircle } from "react-icons/ai";
 import { Link } from 'react-router-dom';
 import "./Footer.css";
 
-export const Footer = ({scrollToTop}) => {
+export const Footer = ({scrollToTop}: {scrollToTop: () => void}): JSX.Element => {
 
     return (
         <div className="footer">

@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useModal } from '../Context/ModalProvider';
 import renderHtml from '../util/renderHtml';
+import { CommentData } from './Content';
 import "./ReplyComment.css";
 
-export const ReplyComment = ({replyComment, showCount}) => {
-    const [showMore, setShowMore] = useState(false);
+type ReplyCommentProps = {
+    replyComment?: CommentData;
+    showCount: number;
+}
+
+export const ReplyComment = ({replyComment, showCount}: ReplyCommentProps): JSX.Element => {
+    const [showMore, setShowMore] = useState<boolean>(false);
     const modal = useModal();
 
     function changeCommentId() {

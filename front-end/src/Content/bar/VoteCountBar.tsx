@@ -1,7 +1,13 @@
-import React from 'react';
 import "./VoteCountBar.css";
 
-export const VoteCountBar = ({upvoteCount, downvoteCount, upvoted, downvoted}) => {
+type VoteCountBarProps = Readonly<{
+    upvoteCount: number;
+    downvoteCount: number;
+    upvoted: boolean;
+    downvoted: boolean;
+}>;
+
+export const VoteCountBar = ({upvoteCount, downvoteCount, upvoted, downvoted}: VoteCountBarProps): JSX.Element => {
 
     const upvoteCountPercentage = () => {
         if(upvoteCount === 0 && downvoteCount === 0) {

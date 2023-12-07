@@ -1,11 +1,11 @@
 import React, { PropsWithChildren, createContext, useContext, useState } from 'react';
-interface Sort {
+export interface Sort {
     sortBy: string;
     sortOrder: string;
 }
 interface ContentContextProps {
-    postId: null | number;
-    setPostId: React.Dispatch<React.SetStateAction<null | number>>;
+    postId: null | string;
+    setPostId: React.Dispatch<React.SetStateAction<null | string>>;
     post: null | any; // Replace 'any' with the actual type of post if available
     setPost: React.Dispatch<React.SetStateAction<null | any>>;
     refresh: boolean;
@@ -15,7 +15,7 @@ interface ContentContextProps {
 }
 const ContentContext = createContext<ContentContextProps | undefined>(undefined);
 const ContentProvider = ({ children }: PropsWithChildren<{}>) => {
-    const [postId, setPostId] = useState<null | number>(null);
+    const [postId, setPostId] = useState<null | string>(null);
     const [post, setPost] = useState<null | any>(null);
     const [refresh, setRefresh] = useState<boolean>(false);
     const [sort, setSort] = useState<Sort>({ sortBy: "id", sortOrder: "asc" });

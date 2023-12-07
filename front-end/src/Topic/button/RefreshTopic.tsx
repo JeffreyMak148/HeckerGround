@@ -1,9 +1,8 @@
-import React from 'react';
 import { MdRefresh } from "react-icons/md";
 import { useTopic } from '../../Context/TopicProvider';
 import "./RefreshTopic.css";
 
-export const RefreshTopic = () => {
+export const RefreshTopic = (): JSX.Element => {
 
     const topic = useTopic();
 

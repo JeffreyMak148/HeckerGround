@@ -5,6 +5,7 @@ import { useContent } from "../../Context/ContentProvider";
 import { useMenu } from "../../Context/MenuProvider";
 import { useModal } from "../../Context/ModalProvider";
 import { useTopic } from "../../Context/TopicProvider";
+import { CategoryData } from "../../Menu/Menu";
 import { CategoryConstant } from "../../constant";
 import "../Topic.css";
 import { CreatePostButton } from "../button/CreatePostButton";
@@ -17,7 +18,7 @@ export const TopicHeader = () => {
     const topic = useTopic();
     const modal = useModal();
     const menu = useMenu();
-    const [title, setTitle] = useState("Chatting");
+    const [title, setTitle] = useState<string>("Chatting");
     const location = useLocation();
 
     useEffect(() => {
@@ -26,12 +27,12 @@ export const TopicHeader = () => {
         const notification = location.pathname === "/notifications";
         const bookmark = location.pathname === "/bookmarks";
         if(!!catId && !!topic.category) {
-            let currentCat = topic.category.find(c => c.catId === parseInt(catId));
+            let currentCat = topic.category.find((c: CategoryData) => c.catId === parseInt(catId));
             if(!!currentCat) {
                 setTitle(currentCat.category);
             } else {
                 const error = {
-                    status: null,
+                    status: "Error",
                     data: {
                         status: null,
                         errorMessage: "Category not found"
@@ -56,7 +57,7 @@ export const TopicHeader = () => {
         const postCatId = !!content.post ? content.post.catId : null;
         if(!topic.bookmark && !topic.notification && !topic.profileId && !!postCatId) {
             if(!!topic.category) {
-                let currentCat = topic.category.find(c => c.catId === parseInt(postCatId));
+                let currentCat = topic.category.find((c: CategoryData) => c.catId === parseInt(postCatId));
                 if(currentCat.category !== title) {
                     setTitle(currentCat.category);
                 }

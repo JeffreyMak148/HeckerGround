@@ -11,8 +11,8 @@ import { CategoryConstant } from "../../constant";
 import fetchUtil from '../../util/fetchUtil';
 import "./TopicMoreButton.css";
 
-export const TopicMoreButton = ({currentTopic}) => {
-    const [show, setShow] = useState(false);
+export const TopicMoreButton = ({currentTopic}: {currentTopic: string}): JSX.Element => {
+    const [show, setShow] = useState<boolean>(false);
     const showMoreButtonCategory = [
         CategoryConstant.CATEGORY_TITLE_NOTIFICATIONS, 
         CategoryConstant.CATEGORY_TITLE_BOOKMARKS

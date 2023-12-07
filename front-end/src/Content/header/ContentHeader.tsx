@@ -1,19 +1,17 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useContent } from "../../Context/ContentProvider";
-import { useTopic } from "../../Context/TopicProvider";
 import "../Content.css";
 import { BookmarkButton } from "../button/BookmarkButton";
 import { CreateCommentButton } from "../button/CreateCommentButton";
 import { ShareButton } from "../button/ShareButton";
 import { SortButton } from "../button/SortButton";
 
-export const ContentHeader = () => {
+export const ContentHeader = (): JSX.Element => {
 
     const content = useContent();
-    const topic = useTopic();
-    const [contentTitle, setContentTitle] = useState("");
-    const [infoPage, setInfoPage] = useState(false);
+    const [contentTitle, setContentTitle] = useState<string>("");
+    const [infoPage, setInfoPage] = useState<boolean>(false);
     const location = useLocation();
 
     useEffect(() => {
@@ -43,12 +41,12 @@ export const ContentHeader = () => {
                 </div>
                 <div>
                     {
-                        !!content.post && !infoPage &&
+                        !!content.post && content.postId !== null && !infoPage &&
                             <>
                                 <div className="flex-display">
                                     <div data-tooltip-id={`share-tooltip`} data-tooltip-content="Share" data-tooltip-place="bottom" title="Share">
                                         <ShareButton postId={content.postId} title={contentTitle} />
-                                    </div>                                    
+                                    </div>
                                     <div data-tooltip-id={`bookmark-tooltip`} data-tooltip-content="Bookmark" data-tooltip-place="bottom" title="Bookmark">
                                         <BookmarkButton />
                                     </div>

@@ -1,11 +1,11 @@
-import React from 'react';
 import { BsPlusLg } from "react-icons/bs";
 import { Link } from 'react-router-dom';
 import { useModal } from '../../Context/ModalProvider';
 import { useUser } from '../../Context/UserProvider';
 import "./CreatePostButton.css";
 
-export const CreatePostButton = ({from}) => {
+
+export const CreatePostButton = ({from}: {from?: string}): JSX.Element => {
     const user = useUser();
     const modal = useModal();
 
@@ -25,7 +25,7 @@ export const CreatePostButton = ({from}) => {
                     <div className="post-topic-center">
                         Create Post
                     </div>
-                    <Link className="post-topic-link" onClick={handleExpandCreatePost} />
+                    <Link to="" className="post-topic-link" onClick={handleExpandCreatePost} />
                 </>
             :
                 <button className="add-button" onClick={handleExpandCreatePost}><BsPlusLg/></button>

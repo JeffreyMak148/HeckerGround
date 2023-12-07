@@ -1,35 +1,36 @@
 import React, { PropsWithChildren, createContext, useContext, useState } from 'react';
+import { CommentData } from '../Content/Content';
 
-interface Popup {
+export interface Popup {
     popupId: number;
     popupHeader: string;
     popupBody: string;
     popupType: string;
 }
 
-interface CommentModal {
+export interface CommentModal {
     commentId: null | number;
     show: boolean;
 }
 
-interface CreateCommentModal {
-    postId: null | number;
-    replyComment: null | any; // Replace 'any' with the actual type of replyComment if available
+export interface CreateCommentModal {
+    postId: null | string;
+    replyComment: null | CommentData | undefined;
     show: boolean;
 }
 
-interface CreatePostModal {
+export interface CreatePostModal {
     show: boolean;
 }
 
-interface ProfileModal {
+export interface ProfileModal {
     profileId: null | number | undefined;
     from: null | string;
     show: boolean;
 }
 
-interface ModalContextProps {
-    createCommentModal: CreateCommentModal; // Replace 'any' with the actual type of replyComment if available
+export interface ModalContextProps {
+    createCommentModal: CreateCommentModal;
     setCreateCommentModal: React.Dispatch<React.SetStateAction<CreateCommentModal>>;
     createPostModal: CreatePostModal;
     setCreatePostModal: React.Dispatch<React.SetStateAction<CreatePostModal>>;

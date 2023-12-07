@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
 
@@ -6,19 +6,19 @@ import { Overlay, Popover } from 'react-bootstrap';
 import { BiSort } from "react-icons/bi";
 
 import { useLocation, useSearchParams } from 'react-router-dom';
-import { useContent } from '../../Context/ContentProvider';
+import { Sort, useContent } from '../../Context/ContentProvider';
 import { flipSortOrder } from '../../util/sortUtil';
 import "./SortButton.css";
 
-export const SortButton = () => {
-    const [show, setShow] = useState(false);
+export const SortButton = (): JSX.Element => {
+    const [show, setShow] = useState<boolean>(false);
     
     const target = useRef(null);
     const location = useLocation();
     const content = useContent();
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const getSortOrder = (property) => {
+    const getSortOrder = (property: string) => {
         if(content.sort.sortBy === property) {
             // Currently selected property
             return flipSortOrder(content.sort.sortOrder);
@@ -33,7 +33,7 @@ export const SortButton = () => {
         return "desc";
     }
 
-    const setSort = (sortBy, sortOrder) => {
+    const setSort = (sortBy: string, sortOrder: string) => {
         
         const sort = {
             sortBy: sortBy,
@@ -44,7 +44,7 @@ export const SortButton = () => {
         setShow(false);
     }
 
-    const currentSortOrder = (property) => {
+    const currentSortOrder = (property: string) => {
         if(content.sort.sortBy === property) {
             return content.sort.sortOrder;
         }
@@ -58,11 +58,13 @@ export const SortButton = () => {
         return "desc";
     }
 
-    const sortParam = () => {
-        if(!!searchParams.get("sortBy") && !!searchParams.get("sortOrder")) {
+    const sortParam = (): Sort => {
+        const sortByParam = searchParams.get("sortBy");
+        const sortOrderParam = searchParams.get("sortOrder");
+        if(sortByParam !== null && sortOrderParam !== null) {
             return {
-                "sortBy": searchParams.get("sortBy"),
-                "sortOrder": searchParams.get("sortOrder")
+                "sortBy": sortByParam,
+                "sortOrder": sortOrderParam
             };
         }
 
@@ -72,8 +74,9 @@ export const SortButton = () => {
         }
     }
 
-    const commentParam = () => {
-        return parseInt(searchParams.get("comment")) > 0 ? parseInt(searchParams.get("comment")) : NaN;
+    const commentParam = (): number => {
+        const param = searchParams.get("comment");
+        return param !== null && parseInt(param) > 0 ? parseInt(param) : NaN;
     }
 
     useEffect(() => {

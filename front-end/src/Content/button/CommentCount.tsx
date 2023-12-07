@@ -1,9 +1,14 @@
-import React from 'react';
 import { FaCommentDots } from "react-icons/fa";
 import { useModal } from '../../Context/ModalProvider';
 import "./CommentCount.css";
 
-export const CommentCount = ({count, commentId}) => {
+type CommentCountProps = Readonly<{
+    count: number;
+    commentId: number;
+}>;
+
+
+export const CommentCount = ({count, commentId}: CommentCountProps): JSX.Element => {
 
     const modal = useModal();
 
