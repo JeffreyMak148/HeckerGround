@@ -407,6 +407,7 @@ const Topic = () => {
 
     function setPost(postId: string) {
         content.setPostId(postId);
+        content.setSort({sortBy: "id", sortOrder: "asc"});
         //Clear comment modal
         modal.setCreateCommentModal({show: false, postId: null, replyComment: null});
     }
@@ -493,7 +494,7 @@ const Topic = () => {
                                                             </div>
                                                             <div className="post-topic-bottom-half">
                                                                 <div className="data-title">{data.title}</div>
-                                                                <Link to={`/posts/${data.id}?page=1`} className={`post-topic-link${content.postId === data.id ? ' selected-post-color' : ''}`} onClick={() => {if(!loadingBar.contentLoading) setPost(data.id)}} />
+                                                                <Link to={`/posts/${data.id}?page=1&sortBy=id&sortOrder=asc`} className={`post-topic-link${content.postId === data.id ? ' selected-post-color' : ''}`} onClick={() => {if(!loadingBar.contentLoading) setPost(data.id)}} />
                                                             </div>
                                                         </div>
                                                     </div>

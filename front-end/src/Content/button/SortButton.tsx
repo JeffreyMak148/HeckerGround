@@ -61,7 +61,7 @@ export const SortButton = (): JSX.Element => {
     const sortParam = (): Sort => {
         const sortByParam = searchParams.get("sortBy");
         const sortOrderParam = searchParams.get("sortOrder");
-        if(sortByParam !== null && sortOrderParam !== null) {
+        if(!!sortByParam && !!sortOrderParam) {
             return {
                 "sortBy": sortByParam,
                 "sortOrder": sortOrderParam
@@ -95,7 +95,9 @@ export const SortButton = (): JSX.Element => {
 
     useEffect(() => {
         const postId = location.pathname.split("/posts/")[1]?.split('?')[0];
-        if(!!postId && !commentParam()) {
+        const sortByParam = searchParams.get("sortBy");
+        const sortOrderParam = searchParams.get("sortOrder");
+        if(!!postId && !commentParam() && !!sortByParam && !!sortOrderParam && content.sort.sortBy !== sortByParam && content.sort.sortOrder !== sortOrderParam) {
             // Ignore sort param when comment param is not null
             // TODO: Find a way to scroll to commentParam even if sortParam is provided
             // Current issue: pageNum can not be set correctly if exist both commentParam and sortParam
