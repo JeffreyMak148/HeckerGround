@@ -15,6 +15,7 @@ import "./Content.css";
 import { ReplyComment } from './ReplyComment';
 import { CommentCount } from './button/CommentCount';
 import { CreateCommentButton } from './button/CreateCommentButton';
+import { HideButton } from './button/HideButton';
 import { LoadPreviousPage } from './button/LoadPreviousPage';
 import { PageButton } from './button/PageButton';
 import { PageNumber } from './button/PageNumber';
@@ -53,13 +54,14 @@ const Content = ({notFound}: ContentProps): JSX.Element => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [terms, setTerms] = useState<boolean>(false);
     const [privacy, setPrivacy] = useState<boolean>(false);
-    const [comments, setComments] = useState<CommentData[] | null>([]);
+    const [comments, setComments] = useState<CommentData[] | null | undefined>([]);
     const [pageNum, setPageNum] = useState<number | null>(null);
     const [displayPageNum, setDisplayPageNum] = useState<number | null>(null);
     const [hasMore, setHasMore] = useState<boolean>(true);
     const [error, setError] = useState<boolean>(false);
     const [totalPage, setTotalPage] = useState<number | null>(null);
     const [renderedPages, setRenderedPages] = useState<number[] | null>([]);
+    const [hideComments, setHideComments] = useState<number[]>([]);
     const contentRef = useRef<HTMLDivElement | null>(null);
     const scrollRef = useRef<HTMLDivElement[]>([]);
     const pageNumRef = useRef<HTMLDivElement[]>([]);
@@ -382,10 +384,12 @@ const Content = ({notFound}: ContentProps): JSX.Element => {
                                                             <div className="content-reply-div" data-tooltip-id="reply-tooltip" data-tooltip-content="Reply" data-tooltip-place="top" title="Reply">
                                                                 <CreateCommentButton reply={data}/>
                                                             </div>
+                                                            <div className="content-hide-div" data-tooltip-id="hide-tooltip" data-tooltip-content="Hide" data-tooltip-place="top" title="Hide">
+                                                                <HideButton commentId={data.id} setHideComments={setHideComments} />
+                                                            </div>
                                                             <div className="content-share-div" data-tooltip-id="share-tooltip" data-tooltip-content="Share" data-tooltip-place="top" title="Share">
                                                                 <ShareButton postId={data.post.id} commentNum={data.commentNumber} title={data.post.title} />
                                                             </div>
-                                                            <div></div>
                                                         </div>
                                                         <ReplyComment replyComment={data.replyComment} showCount={3}/>
                                                         <div className="content-comment-div">
@@ -457,6 +461,7 @@ const Content = ({notFound}: ContentProps): JSX.Element => {
             <Tooltip id="bookmark-tooltip" className="content-tooltip" clickable={true}/>
             <Tooltip id="share-tooltip" className="content-tooltip" clickable={true}/>
             <Tooltip id="sort-tooltip" className="content-tooltip" clickable={true}/>
+            <Tooltip id="hide-tooltip" className="content-tooltip" clickable={true}/>            
         </>
     );
 };

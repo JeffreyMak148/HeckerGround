@@ -1,4 +1,7 @@
-import { BsChatRightDots } from "react-icons/bs";
+import { MdOutlineInsertComment } from "react-icons/md";
+
+
+
 import { useContent } from '../../Context/ContentProvider';
 import { useModal } from '../../Context/ModalProvider';
 import { useUser } from '../../Context/UserProvider';
@@ -27,9 +30,9 @@ export const CreateCommentButton = ({reply}: CreateCommentButtonProps): JSX.Elem
         <>
             {
                 !!reply ?
-                    <button className="reply-comment-button" onClick={handleShowCreateComment}><BsChatRightDots/></button>
+                    <button className="reply-comment-button" onClick={handleShowCreateComment}><MdOutlineInsertComment size="1.1em" /></button>
                 :
-                    <button className="new-comment-button" onClick={handleShowCreateComment}><BsChatRightDots/></button>
+                    <button className="new-comment-button" onClick={handleShowCreateComment}><MdOutlineInsertComment size="1.1em"/></button>
             }
         </>
     );

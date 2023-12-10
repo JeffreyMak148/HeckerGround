@@ -1,8 +1,9 @@
-import { BsBookmark } from "react-icons/bs";
+import { MdOutlineBookmarkBorder } from "react-icons/md";
 import { useContent } from '../../Context/ContentProvider';
 import { useLoading } from '../../Context/LoadingProvider';
 import { useModal } from '../../Context/ModalProvider';
 import { useUser } from '../../Context/UserProvider';
+
 import fetchUtil from '../../util/fetchUtil';
 import "./BookmarkButton.css";
 
@@ -42,6 +43,6 @@ export const BookmarkButton = () => {
     }
 
     return (
-        <button className={`${content.post.bookmarked ? 'activated ' : ''}bookmark-button`} onClick={toggleBookmarkPost}><BsBookmark /></button>
+        <button className={`${content.post.bookmarked ? 'activated ' : ''}bookmark-button`} onClick={toggleBookmarkPost}><MdOutlineBookmarkBorder size="1.1em" /></button>
     );
 };

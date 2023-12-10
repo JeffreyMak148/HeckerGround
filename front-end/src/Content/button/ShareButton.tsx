@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { BiSolidCopy } from 'react-icons/bi';
-import { BsShareFill } from 'react-icons/bs';
+import { MdShare } from "react-icons/md";
+
 import "../Content.css";
 
 type ShareButtonProps = Readonly<{
@@ -47,9 +48,9 @@ export const ShareButton = ({postId, commentNum, title}: ShareButtonProps): JSX.
                                 <span>
                                     {
                                         !!commentNum ?
-                                            <button className="content-share-button" onClick={setShareValue}><BsShareFill /></button>
+                                            <button className="content-share-button" onClick={setShareValue}><MdShare size="1.1em" /></button>
                                         :
-                                            <button className="share-button" onClick={setShareValue}><BsShareFill /></button>
+                                            <button className="share-button" onClick={setShareValue}><MdShare size="1.1em" /></button>
                                     }
                                 </span>
                             </OverlayTrigger>
