@@ -31,6 +31,23 @@
     background-color: #9179ce;
 }
 
+.reply-comment-username:before, .reply-comment-date:before, .reply-comment-expand-button:before {
+    border-left: 0.5px solid #4d4b57;
+    content: "";
+    padding-left: 8px;
+}
+
+.reply-comment-comment-number, .reply-comment-username, .reply-comment-date, .reply-comment-expand-button {
+    padding-right: 8px;
+}
+
+.reply-comment-expand {
+    padding: 0;
+    background-color: inherit;
+    border: none;
+    color: #717171;
+}
+
 .show-more-button {
     background-color: #201c2c;
     border: 1px solid #717171;

@@ -44,6 +44,10 @@
     padding-right: 8px;
 }
 
+.content-hide-div {
+    flex: 1;
+}
+
 .content-comment-div {
     font-size: 1.2rem;
     padding-bottom: 1rem;
@@ -53,10 +57,6 @@
 
 .content-vote-div {
     padding-bottom: 1rem;
-}
-
-.content-share-div {
-    margin-left: auto;
 }
 
 .content-comment-count{
@@ -187,7 +187,7 @@ li {
     border-radius: 3px;
 }
 
-.content-hide-button, .content-share-button {
+.show-hidden-button, .content-hide-button, .content-share-button {
     padding: 0;
     background-color: inherit;
     border: none;
@@ -195,7 +195,7 @@ li {
     opacity: 0.7;
 }
 
-.content-hide-button:hover, .content-share-button:hover {
+.show-hidden-button:hover, .content-hide-button:hover, .content-share-button:hover {
     color: #9179ce;
     transition: all 0.1s;
 }

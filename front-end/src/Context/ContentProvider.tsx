@@ -12,15 +12,43 @@ interface ContentContextProps {
     setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
     sort: Sort;
     setSort: React.Dispatch<React.SetStateAction<Sort>>;
+    hiddenCommentIds: number[];
+    setHiddenCommentIds: React.Dispatch<React.SetStateAction<number[]>>;    
+    toggleHiddenComment: (commentId: number) => void;
+    isCommentHidden: (commentId: number) => boolean;
 }
+
 const ContentContext = createContext<ContentContextProps | undefined>(undefined);
 const ContentProvider = ({ children }: PropsWithChildren<{}>) => {
     const [postId, setPostId] = useState<null | string>(null);
     const [post, setPost] = useState<null | any>(null);
     const [refresh, setRefresh] = useState<boolean>(false);
     const [sort, setSort] = useState<Sort>({ sortBy: "id", sortOrder: "asc" });
+    const [hiddenCommentIds, setHiddenCommentIds] = useState<number[]>([]);
 
-    const value: ContentContextProps = {postId, setPostId, post, setPost, refresh, setRefresh, sort, setSort};
+    const toggleHiddenComment = (commentId: number) => {
+        if(!hiddenCommentIds.includes(commentId)) {
+            setHiddenCommentIds(currentHiddenCommentIds => [...currentHiddenCommentIds, commentId]);
+        } else {
+            setHiddenCommentIds(currentHiddenCommentIds => {
+                return currentHiddenCommentIds.filter(c => c !== commentId);
+            })
+        }
+        return;
+    }
+
+    const isCommentHidden = (commentId: number): boolean => {
+        return hiddenCommentIds.includes(commentId);
+    }
+
+    const value: ContentContextProps = {
+        postId, setPostId, 
+        post, setPost, 
+        refresh, setRefresh, 
+        sort, setSort, 
+        hiddenCommentIds, setHiddenCommentIds, 
+        toggleHiddenComment, isCommentHidden
+    };
     
     return <ContentContext.Provider value={value}>{children}</ContentContext.Provider>
 };

@@ -80,7 +80,7 @@
     color: #717171;
 }
 
-.comment-modal-reply-date:before, .comment-modal-comment-date:before {
+.comment-modal-reply-date:before, .comment-modal-comment-date:before, .comment-modal-toggle-button:before {
     border-left: 0.5px solid #4d4b57;
     content: "";
     padding-left: 8px;
@@ -92,7 +92,7 @@
     margin-left: 8px;
 }
 
-.comment-modal-reply-button, .comment-modal-comment-button {
+.comment-modal-reply-button, .comment-modal-comment-button, .comment-modal-toggle-button {
     padding-left: 8px;
 }
 

@@ -90,4 +90,8 @@
     to {
       box-shadow: 0 0 700px 30px #202020;
     }
-  }
+}
+
+svg:focus {
+    outline: none;
+}
