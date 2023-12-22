@@ -21,6 +21,7 @@ import { PageButton } from './button/PageButton';
 import { PageNumber } from './button/PageNumber';
 import { RefreshContent } from './button/RefreshContent';
 import { ShareButton } from './button/ShareButton';
+import { StarButton } from './button/StarButton';
 import { ToggleHideButton } from './button/ToggleHideButton';
 import { Vote } from './button/Vote';
 import { Footer } from './footer/Footer';
@@ -63,6 +64,7 @@ const Content = ({notFound}: ContentProps): JSX.Element => {
     const [error, setError] = useState<boolean>(false);
     const [totalPage, setTotalPage] = useState<number | null>(null);
     const [renderedPages, setRenderedPages] = useState<number[] | null>([]);
+    const [followUserIds, setFollowUserIds] = useState<number[]>([]);
     const contentRef = useRef<HTMLDivElement | null>(null);
     const scrollRef = useRef<HTMLDivElement[]>([]);
     const pageNumRef = useRef<HTMLDivElement[]>([]);
@@ -148,6 +150,7 @@ const Content = ({notFound}: ContentProps): JSX.Element => {
             }
             setComments([]);
             setRenderedPages([]);
+            setFollowUserIds([]);
         }
 
         if(!!termsLocation) {
@@ -168,6 +171,7 @@ const Content = ({notFound}: ContentProps): JSX.Element => {
         setComments([]);
         setHasMore(true);        
         setRenderedPages([]);
+        setFollowUserIds([]);
         if(!!commentParam()) {
             setPageNum(getPageNumber(commentParam()));
             fetchCommentsByPostIdAndPagination(content.postId as string, getPageNumber(commentParam()), pageSize, content.sort, false, null, commentParam());
@@ -312,6 +316,17 @@ const Content = ({notFound}: ContentProps): JSX.Element => {
         }
     }
 
+    const toggleFollowUser = (commentId: number) => {
+        if(!followUserIds.includes(commentId)) {
+            setFollowUserIds(currentFollowUserIds => [...currentFollowUserIds, commentId]);
+        } else {
+            setFollowUserIds(currentFollowUserIds => {
+                return currentFollowUserIds.filter(c => c !== commentId);
+            })
+        }
+        return;
+    }
+
     return (
         <>
             <ContentHeader />
@@ -368,77 +383,86 @@ const Content = ({notFound}: ContentProps): JSX.Element => {
                                                                 scrollTo={scrollTo}/>
                                                         </div>
                                                 }
-                                                <div id={`comment_${data.commentNumber}`} ref={(node: HTMLDivElement) => {
-                                                        scrollRef.current[data.commentNumber] = node;
-                                                    }} className={`content-div ${!!commentParam() && commentParam() === data.commentNumber ? "highlighted" : ""}`}>
-                                                    {
-                                                        content.isCommentHidden(data.id) ?
-                                                            <>
-                                                                <li>
-                                                                    <div className="content-info flex-display">
-                                                                        <div className="content-number-div">
-                                                                            #{data.commentNumber}
-                                                                        </div>
-                                                                        <div className="content-username-div" onClick={() => showProfileModal(data.user.id)}>
-                                                                            {data.user.username}
-                                                                        </div>
-                                                                        <div className="content-date-div" data-tooltip-id="date-tooltip" data-tooltip-content={formatFullDate(data.createDateTime)} data-tooltip-place="top" title={formatFullDate(data.createDateTime)}>
-                                                                            {formatDate(data.createDateTime)}
-                                                                        </div>
-                                                                        <div className="content-reply-div" data-tooltip-id="reply-tooltip" data-tooltip-content="Reply" data-tooltip-place="top" title="Reply">
-                                                                            <CreateCommentButton reply={data}/>
-                                                                        </div>
-                                                                        <div className="content-hide-div">
-                                                                            <ToggleHideButton style={{width: "100%", textAlign: "left"}} showComment={() => content.toggleHiddenComment(data.id)} />
-                                                                        </div>
-                                                                        <div className="content-share-div" data-tooltip-id="share-tooltip" data-tooltip-content="Share" data-tooltip-place="top" title="Share">
-                                                                            <ShareButton postId={data.post.id} commentNum={data.commentNumber} title={data.post.title} />
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-                                                            </>
-                                                        :
-                                                            <>
-                                                                <li>
-                                                                    <div className="content-info flex-display">
-                                                                        <div className="content-number-div">
-                                                                            #{data.commentNumber}
-                                                                        </div>
-                                                                        <div className="content-username-div" onClick={() => showProfileModal(data.user.id)}>
-                                                                            {data.user.username}
-                                                                        </div>
-                                                                        <div className="content-date-div" data-tooltip-id="date-tooltip" data-tooltip-content={formatFullDate(data.createDateTime)} data-tooltip-place="top" title={formatFullDate(data.createDateTime)}>
-                                                                            {formatDate(data.createDateTime)}
-                                                                        </div>
-                                                                        <div className="content-reply-div" data-tooltip-id="reply-tooltip" data-tooltip-content="Reply" data-tooltip-place="top" title="Reply">
-                                                                            <CreateCommentButton reply={data}/>
-                                                                        </div>
-                                                                        <div className="content-hide-div">
-                                                                            <ToggleHideButton hideComment={() => content.toggleHiddenComment(data.id)} />
-                                                                        </div>
-                                                                        <div className="content-share-div" data-tooltip-id="share-tooltip" data-tooltip-content="Share" data-tooltip-place="top" title="Share">
-                                                                            <ShareButton postId={data.post.id} commentNum={data.commentNumber} title={data.post.title} />
-                                                                        </div>
-                                                                    </div>
-                                                                    <ReplyComment toggleHiddenComment={content.toggleHiddenComment} hiddenCommentIds={content.hiddenCommentIds} replyComment={data.replyComment} showCount={3}/>
-                                                                    <div className="content-comment-div">
-                                                                        {renderHtml(data.content)}
-                                                                    </div>
-                                                                    <div className="flex-display">
-                                                                        <div className="content-vote-div">
-                                                                            <Vote comment={data} />
-                                                                        </div>
-                                                                        {
-                                                                            data.numberOfReply > 0 &&
-                                                                                <div className="content-comment-count">
-                                                                                    <CommentCount count={data.numberOfReply} commentId={data.id}/>
+                                                {
+                                                    (followUserIds.length === 0 || followUserIds.includes(data.user.id)) &&
+                                                        <div id={`comment_${data.commentNumber}`} ref={(node: HTMLDivElement) => {
+                                                                scrollRef.current[data.commentNumber] = node;
+                                                            }} className={`content-div ${!!commentParam() && commentParam() === data.commentNumber ? "highlighted" : ""}`}>
+                                                                {
+                                                                    content.isCommentHidden(data.id) ?
+                                                                        <>
+                                                                            <li>
+                                                                                <div className="content-info flex-display">
+                                                                                    <div className="content-number-div">
+                                                                                        #{data.commentNumber}
+                                                                                    </div>
+                                                                                    <div className="content-username-div" onClick={() => showProfileModal(data.user.id)}>
+                                                                                        {data.user.username}
+                                                                                    </div>
+                                                                                    <div className="content-date-div" data-tooltip-id="date-tooltip" data-tooltip-content={formatFullDate(data.createDateTime)} data-tooltip-place="top" title={formatFullDate(data.createDateTime)}>
+                                                                                        {formatDate(data.createDateTime)}
+                                                                                    </div>
+                                                                                    <div className="content-star-div" data-tooltip-id="star-tooltip" data-tooltip-content="Follow comment" data-tooltip-place="top" title="Follow comment">
+                                                                                        <StarButton toggleFollowUser={()=> toggleFollowUser(data.id)} following={followUserIds.includes(data.user.id)} />
+                                                                                    </div>
+                                                                                    <div className="content-reply-div" data-tooltip-id="reply-tooltip" data-tooltip-content="Reply" data-tooltip-place="top" title="Reply">
+                                                                                        <CreateCommentButton reply={data}/>
+                                                                                    </div>
+                                                                                    <div className="content-hide-div">
+                                                                                        <ToggleHideButton style={{width: "100%", textAlign: "left"}} showComment={() => content.toggleHiddenComment(data.id)} />
+                                                                                    </div>
+                                                                                    <div className="content-share-div" data-tooltip-id="share-tooltip" data-tooltip-content="Share" data-tooltip-place="top" title="Share">
+                                                                                        <ShareButton postId={data.post.id} commentNum={data.commentNumber} title={data.post.title} />
+                                                                                    </div>
                                                                                 </div>
-                                                                        }
-                                                                    </div>
-                                                                </li>
-                                                            </>
-                                                    }
-                                                </div>
+                                                                            </li>
+                                                                        </>
+                                                                    :
+                                                                        <>
+                                                                            <li>
+                                                                                <div className="content-info flex-display">
+                                                                                    <div className="content-number-div">
+                                                                                        #{data.commentNumber}
+                                                                                    </div>
+                                                                                    <div className="content-username-div" onClick={() => showProfileModal(data.user.id)}>
+                                                                                        {data.user.username}
+                                                                                    </div>
+                                                                                    <div className="content-date-div" data-tooltip-id="date-tooltip" data-tooltip-content={formatFullDate(data.createDateTime)} data-tooltip-place="top" title={formatFullDate(data.createDateTime)}>
+                                                                                        {formatDate(data.createDateTime)}
+                                                                                    </div>
+                                                                                    <div className="content-star-div" data-tooltip-id="star-tooltip" data-tooltip-content="Follow comment" data-tooltip-place="top" title="Follow comment">
+                                                                                        <StarButton toggleFollowUser={()=> toggleFollowUser(data.user.id)} following={followUserIds.includes(data.user.id)}/>
+                                                                                    </div>
+                                                                                    <div className="content-reply-div" data-tooltip-id="reply-tooltip" data-tooltip-content="Reply" data-tooltip-place="top" title="Reply">
+                                                                                        <CreateCommentButton reply={data}/>
+                                                                                    </div>
+                                                                                    <div className="content-hide-div">
+                                                                                        <ToggleHideButton hideComment={() => content.toggleHiddenComment(data.id)} />
+                                                                                    </div>
+                                                                                    <div className="content-share-div" data-tooltip-id="share-tooltip" data-tooltip-content="Share" data-tooltip-place="top" title="Share">
+                                                                                        <ShareButton postId={data.post.id} commentNum={data.commentNumber} title={data.post.title} />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <ReplyComment toggleHiddenComment={content.toggleHiddenComment} hiddenCommentIds={content.hiddenCommentIds} replyComment={data.replyComment} showCount={3}/>
+                                                                                <div className="content-comment-div">
+                                                                                    {renderHtml(data.content)}
+                                                                                </div>
+                                                                                <div className="flex-display">
+                                                                                    <div className="content-vote-div">
+                                                                                        <Vote comment={data} />
+                                                                                    </div>
+                                                                                    {
+                                                                                        data.numberOfReply > 0 &&
+                                                                                            <div className="content-comment-count">
+                                                                                                <CommentCount count={data.numberOfReply} commentId={data.id}/>
+                                                                                            </div>
+                                                                                    }
+                                                                                </div>
+                                                                            </li>
+                                                                        </>
+                                                                }
+                                                        </div>
+                                                }
                                             </React.Fragment>
                                         })
                                     }

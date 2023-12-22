@@ -13,7 +13,7 @@ interface ContentContextProps {
     sort: Sort;
     setSort: React.Dispatch<React.SetStateAction<Sort>>;
     hiddenCommentIds: number[];
-    setHiddenCommentIds: React.Dispatch<React.SetStateAction<number[]>>;    
+    setHiddenCommentIds: React.Dispatch<React.SetStateAction<number[]>>;
     toggleHiddenComment: (commentId: number) => void;
     isCommentHidden: (commentId: number) => boolean;
 }

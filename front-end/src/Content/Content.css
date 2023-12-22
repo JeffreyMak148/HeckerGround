@@ -34,13 +34,13 @@
     cursor: pointer;
 }
 
-.content-username-div:before, .content-date-div:before, .content-reply-div:before, .content-hide-div:before {
+.content-username-div:before, .content-date-div:before, .content-star-div:before, .content-reply-div:before, .content-hide-div:before {
     border-left: 0.5px solid #4d4b57;
     content: "";
     padding-left: 8px;
 }
 
-.content-number-div, .content-username-div, .content-date-div, .content-reply-div, .content-hide-div {
+.content-number-div, .content-username-div, .content-date-div, .content-star-div, .content-reply-div, .content-hide-div {
     padding-right: 8px;
 }
 
@@ -187,7 +187,7 @@ li {
     border-radius: 3px;
 }
 
-.show-hidden-button, .content-hide-button, .content-share-button {
+.content-star-button, .show-hidden-button, .content-hide-button, .content-share-button {
     padding: 0;
     background-color: inherit;
     border: none;
@@ -195,7 +195,7 @@ li {
     opacity: 0.7;
 }
 
-.show-hidden-button:hover, .content-hide-button:hover, .content-share-button:hover {
+.content-star-button:hover, .show-hidden-button:hover, .content-hide-button:hover, .content-share-button:hover {
     color: #9179ce;
     transition: all 0.1s;
 }
