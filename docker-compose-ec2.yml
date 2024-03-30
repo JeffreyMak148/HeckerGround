@@ -28,15 +28,15 @@ services:
       - ./certbot/conf:/etc/letsencrypt
     command:
       # Comment below before getting the SSL certificate for the first time
-      - renew
+      # - renew
       # Comment below after getting the SSL certificate for the first time
-      # - certonly
-      # - --webroot
-      # - -w
-      # - /var/www/certbot/
-      # - --email=heckerground@gmail.com
-      # - --agree-tos
-      # - --no-eff-email
-      # - -d
-      # - heckerground.com
-      # - -v
+      - certonly
+      - --webroot
+      - -w
+      - /var/www/certbot/
+      - --email=heckerground@gmail.com
+      - --agree-tos
+      - --no-eff-email
+      - -d
+      - heckerground.com
+      - -v
