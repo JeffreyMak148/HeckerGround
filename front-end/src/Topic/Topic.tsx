@@ -454,7 +454,7 @@ const Topic = () => {
                             </div>
                     :   <ul>
                             {
-                                datas && datas.map((data: any, index) => {
+                                datas && datas.map((data: any, index) => {                                
                                     return <React.Fragment key={data.id}>
                                         {
                                             topic.notification && !!data.post ?

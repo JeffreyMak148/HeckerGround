@@ -19,7 +19,7 @@ export const Footer = ({scrollToTop}: {scrollToTop: () => void}): JSX.Element =>
                 </div>
             </div>
             <div className="flex-display footer-name justify-content">
-                <div className="copyright-icon"><AiOutlineCopyrightCircle/></div>2023 Heckerground.com
+                <div className="copyright-icon"><AiOutlineCopyrightCircle/></div>2024 Heckerground.com
             </div>
         </div>
     );
