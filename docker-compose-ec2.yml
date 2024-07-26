@@ -10,7 +10,7 @@ services:
     environment:
       spring.config.name: application-prod
   front-end:
-    image: 769244290740.dkr.ecr.ap-southeast-2.amazonaws.com/hecker-ground/front-end:latest
+    image: 009160074177.dkr.ecr.ap-southeast-2.amazonaws.com/hecker-ground/front-end:latest
     ports:
       - 80:80
       - 443:443
