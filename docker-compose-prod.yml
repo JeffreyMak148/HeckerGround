@@ -2,14 +2,14 @@ version: "3.8"
 
 services:
   back-end:
-    image: 009160074177.dkr.ecr.ap-southeast-2.amazonaws.com/hecker-ground/back-end:latest
+    image: 470684059444.dkr.ecr.ap-southeast-2.amazonaws.com/hecker-ground/back-end:latest
     build:
       context: back-end
       dockerfile: Dockerfile
     ports:
       - 8080:8080
   front-end:
-    image: 009160074177.dkr.ecr.ap-southeast-2.amazonaws.com/hecker-ground/front-end:latest
+    image: 470684059444.dkr.ecr.ap-southeast-2.amazonaws.com/hecker-ground/front-end:latest
     build:
       context: front-end
       dockerfile: Dockerfile
