@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   back-end:
     image: 470684059444.dkr.ecr.ap-southeast-2.amazonaws.com/hecker-ground/back-end:latest
